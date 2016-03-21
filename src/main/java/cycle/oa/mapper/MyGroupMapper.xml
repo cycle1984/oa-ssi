@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cycle.oa.mapper.MyGroupMapper" >
+  <resultMap id="myGroupResultMap" type="cycle.oa.po.MyGroup" >
+  	<id column="id" property="id"/>
+  	<result column="name" property="name"/>
+  	<result column="owner_unit" property="ownerUnit"/>
+  	<result column="remark" property="remark"/>
+  </resultMap>
+  
+  <!-- sql片段对应字段名,id属性值任意 -->
+  <sql id="key">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="name!=null">
+  			name,
+  		</if>
+  		<if test="ownerUnit!=null">
+  			owner_unit,
+  		</if>
+  		<if test="remark!=null">
+  			remark,
+  		</if>
+  	</trim>
+  </sql>
+  
+  <sql id="value">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="name!=null">
+  			#{name},
+  		</if>
+  		<if test="ownerUnit!=null">
+  			#{ownerUnit},
+  		</if>
+  		<if test="remark!=null">
+  			#{remark},
+  		</if>
+  	</trim>
+  </sql>
+  
+  <insert id="insert" parameterType="cycle.oa.po.MyGroup">
+  	insert into myGroup(<include refid="key"/>) values(<include refid="value"/>)
+  </insert>
+  
+  <!-- 传进数组,批量删除 -->
+  <delete id="delete">
+  	delete from myGroup where id in 
+  	<!-- foreach用于迭代数组元素
+		 open表示开始符号
+		 close表示结束符合
+		 separator表示元素间的分隔符
+		 item表示迭代的数组，属性值可以任意，但提倡与方法的数组名相同
+		 #{ids}表示数组中的每个元素值
+	 -->
+  	<foreach collection="array" open="(" close=")" separator="," item="ids">
+  		#{ids}
+  	</foreach>
+  </delete>
+  
+  <update id="update" parameterType="cycle.oa.po.MyGroup">
+  	update myGroup 
+  	<set>
+  		<if test="name!=null">
+  			name = #{name},
+  		</if>
+  		<if test="ownerUnit!=null">
+  			owner_unit = #{ownerUnit},
+  		</if>
+  		<if test="remark!=null">
+  			remark = #{remark},
+  		</if>
+  	</set>
+  	where id = #{id}
+  </update>
+  
+  <select id="selectCount" resultType="long">
+  	select count(id) from myGroup
+  </select>
+  
+  <select id="selectAll" parameterType="map" resultMap="myGroupResultMap">
+  	select id,name,owner_unit,remark from myGroup
+  	<where>
+  		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
+  		<if test="name!=null">
+  			and name like ${name}
+  		</if>
+  	</where> 
+  </select>
+  
+  <select id="seleteById" parameterType="int">
+  	select id,name,owner_unit,remark from myGroup
+  	where id = #{id}
+  </select>
+</mapper>

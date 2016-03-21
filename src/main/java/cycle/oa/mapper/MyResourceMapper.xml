@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cycle.oa.mapper.MyResourceMapper" >
+  <resultMap id="myResourceResultMap" type="cycle.oa.po.MyResource" >
+  	<id column="id" property="id"/>
+  	<result column="name" property="name"/>
+  	<result column="url" property="url"/>
+  	<result column="type" property="type"/>
+  	<association  column="parent_id" property="myResource" select="seleteById"></association>
+  	<collection column="id"  property="myResources" select="getChildren"></collection>
+  </resultMap>
+  
+  <!-- sql片段对应字段名,id属性值任意 -->
+  <sql id="key">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="name!=null and name!=''">
+  			name,
+  		</if>
+  		<if test="url!=null and url!=''">
+  			url,
+  		</if>
+  		<if test="type!=null and type!=''">
+  			type,
+  		</if>
+  		<if test="myResource!=null and myResource!=''">
+  			parent_id,
+  		</if>
+  	</trim>
+  </sql>
+  
+  <sql id="value">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="name!=null and name!=''">
+  			#{name},
+  		</if>
+  		<if test="url!=null and url!=''">
+  			#{url},
+  		</if>
+  		<if test="type!=null and type!=''">
+  			#{type},
+  		</if>
+  		<if test="myResource!=null and myResource!=''">
+  			#{myResource.id},
+  		</if>
+  	</trim>
+  </sql>
+  
+  <insert id="insert" parameterType="cycle.oa.po.MyResource">
+  	insert into myResource(<include refid="key"/>) values(<include refid="value"/>)
+  </insert>
+  
+  <!-- 传进数组,批量删除 -->
+  <delete id="delete">
+  	delete from myResource where id in 
+  	<!-- foreach用于迭代数组元素
+		 open表示开始符号
+		 close表示结束符合
+		 separator表示元素间的分隔符
+		 item表示迭代的数组，属性值可以任意，但提倡与方法的数组名相同
+		 #{ids}表示数组中的每个元素值
+	 -->
+  	<foreach collection="array" open="(" close=")" separator="," item="ids">
+  		#{ids}
+  	</foreach>
+  </delete>
+  
+  
+  <select id="selectAll" parameterType="map" resultMap="myResourceResultMap">
+  	select id,name,url,type,parent_id from myResource
+  	<where>
+  		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
+  		<if test="name!=null">
+  			and name like #{name}
+  		</if>
+  		<if test="type!=null">
+  			and type = #{type}
+  		</if>
+  	</where> 
+  </select>
+  
+  <select id="seleteById" parameterType="int" resultMap="myResourceResultMap">
+  	select id,name,url,type,parent_id from myResource
+  	where id = #{id}
+  </select>
+  
+  <select id="getChildren" parameterType="int" resultMap="myResourceResultMap">  
+        select * from myResource where parent_id = #{id}  
+    </select> 
+</mapper>

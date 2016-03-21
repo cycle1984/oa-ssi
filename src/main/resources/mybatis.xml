@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration >
+<!-- 	<environments default="mysql_developer"> -->
+<!-- 		<environment id="mysql_developer"> -->
+<!-- 			<transactionManager type="jdbc"/>	 -->
+<!-- 			<dataSource type="pooled"> -->
+<!-- 				<property name="driver" value="com.mysql.jdbc.Driver"/> -->
+<!-- 				<property name="url" value="jdbc:mysql://127.0.0.1:3306/scm"/> -->
+<!-- 				<property name="username" value="root"/> -->
+<!-- 				<property name="password" value="admin"/> -->
+<!-- 			</dataSource> -->
+<!-- 		</environment> -->
+<!-- 		<environment id="oracle_developer"> -->
+<!-- 			<transactionManager type="jdbc"/>	 -->
+<!-- 			<dataSource type="pooled"> -->
+<!-- 				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/> -->
+<!-- 				<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:orcl"/> -->
+<!-- 				<property name="username" value="scott"/> -->
+<!-- 				<property name="password" value="tiger"/> -->
+<!-- 			</dataSource> -->
+<!-- 		</environment> -->
+<!-- 	</environments> -->
+</configuration>

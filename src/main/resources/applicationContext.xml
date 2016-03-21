@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	
+	<!--  自动扫描组件，要把controller去除，他们是在spring-mvc.xml中配置，如果不去除会影响事务管理。-->
+	<context:component-scan base-package="cycle/oa">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<!-- 加载jdbc.property,hibenrate.properties -->		
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+	
+	 <!-- 配置C3P0连接池,目的：管理数据库连接 -->
+	<bean id="c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClass}"></property>
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+		<property name="user" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<!-- 配置SqlSessionFactoryBean，目的：加载mybaits配置文件和映射文件，即替代原Mybatis工具类的作用 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 自动扫描mapping.xml文件 --> 
+		<property name="mapperLocations" value="classpath:cycle/oa/mapper/*.xml"></property>
+		<property name="dataSource" ref="c3p0"></property>
+	</bean>
+	<!-- 配置SessionTemplate，已封装了繁琐的数据操作 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<!-- 配置Mybatis的事务管理器，即因为Mybatis底层用的是JDBC事务管事器，所以在这里依然配置JDBC事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="c3p0"></property>
+	</bean>
+	 <!-- 配置事务通知，即让哪些方法需要事务支持 rollback-for="Exception"程序出现错误时回滚-->
+	 <tx:advice id="tx" transaction-manager="transactionManager">
+	 	<tx:attributes>
+	 		<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="*" propagation="SUPPORTS"/>
+	 	</tx:attributes>
+	 </tx:advice>
+	 <!-- 配置事务切面，即让哪些包下的类需要事务 -->
+	  <aop:config>
+      		<aop:pointcut id="pointcut" expression="execution(* cycle.oa.service.*.*(..))"/>
+     		<aop:advisor advice-ref="tx" pointcut-ref="pointcut"/>
+      </aop:config>
+      <!-- 配置 转换器，对于在basePackage设置的包（包括子包）下的接口类，
+	如果接口类的全类名在Mapper.xml文件中和定义过命名空间一致，
+	 将被转换成spring的BEAN，在调用 
+		的地方通过@Autowired方式将可以注入接口实例 -->
+
+	<!-- 配置扫描器 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 扫描me.gacl.mapper这个包以及它的子包下的所有映射接口类 -->
+        <property name="basePackage" value="cycle.oa.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+</beans>
