@@ -1,14 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script type="text/javascript">
+//获取项目绝对路径
+	function getRealPath(){     
+		//获取当前网址，如： http://localhost:8083/myproj/view/my.jsp      
+		var curWwwPath=window.document.location.href;      
+		//获取主机地址之后的目录，如： myproj/view/my.jsp     
+		var pathName=window.document.location.pathname;     
+		var pos=curWwwPath.indexOf(pathName);     
+		//获取主机地址，如： http://localhost:8083     
+		var localhostPaht=curWwwPath.substring(0,pos);     
+		//获取带"/"的项目名，如：/myproj     
+		var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+		//得到了 http://localhost:8083/myproj     
+		var realPath=localhostPaht+projectName;  
+		return realPath;
+	}
+</script>
+<!-- 获得项目的根路径，存入全局变量 -->
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application"/>
+<script type="text/javascript">
+<%--JS gloable varilible--%>  
+	var contextPath = "${contextPath}";
+</script>
+<!-- 项目的ico图标 -->
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/favicon.ico" />
 
 <!-- easyUI组件 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-easyui-1.4.5/jquery.min.js"></script>
 <%-- <script type="text/javascript" src="${pageContext.request.contextPath}/js/js/xheditor-1.2.2/jquery/jquery-1.4.4.min.js"></script> --%>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/easyui1.4.4/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/easyui1.4.4/themes/icon.css" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui1.4.4/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui1.4.4/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery-easyui-1.4.5/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery-easyui-1.4.5/themes/icon.css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-easyui-1.4.5/locale/easyui-lang-zh_CN.js"></script>
 <!-- 引入扩展，用于完善easyUI和Jquery的js -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/syExtEasyUI.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/syExtJquery.js"></script>

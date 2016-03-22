@@ -19,7 +19,7 @@ public class SysController {
 	@Resource(name="myResourceService")
 	private MyResourceService myResourceService;
 	
-	@RequestMapping("/findAllMenu")
+	@RequestMapping("/findAllMenu.do")
 	@ResponseBody
 	public List<Tree> findAllMenu() {
 		List<Tree> tree = new ArrayList<Tree>();

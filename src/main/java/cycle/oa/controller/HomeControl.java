@@ -13,25 +13,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/home")
 public class HomeControl {
 
-	@RequestMapping("/index")
+	@RequestMapping("/index.do")
 	public String index(){
 		System.out.println("index");		
 		return "/home/index";
 	}
 	
-	@RequestMapping("/west")
+	@RequestMapping("/west.do")
 	public String west(){
 		System.out.println("west");		
 		return "/home/west";
 	}
 	
-	@RequestMapping("/main")
+	@RequestMapping("/main.do")
 	public String main(){
 		System.out.println("main");		
 		return "/home/main";
 	}
 	
-	@RequestMapping("/south")
+	@RequestMapping("/south.do")
 	public String south(){
 		System.out.println("south");		
 		return "/home/south";

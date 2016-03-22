@@ -1,6 +1,8 @@
 package cycle.oa.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyGroup implements Serializable {
 	private static final long serialVersionUID = -3072653428705517043L;
@@ -9,6 +11,9 @@ public class MyGroup implements Serializable {
 	private String name;//类别名称
 	private String ownerUnit;
 	private String  remark;//备注
+	
+	private List<Unit> units = new ArrayList<Unit>();
+	
 	public Integer getId() {
 		return id;
 	}
@@ -32,6 +37,12 @@ public class MyGroup implements Serializable {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public List<Unit> getUnits() {
+		return units;
+	}
+	public void setUnits(List<Unit> units) {
+		this.units = units;
 	}
 	
 	

@@ -18,8 +18,10 @@ public class MyGroupServiceImpl implements MyGroupService {
 	private MyGroupMapper myGroupMapper;
 	
 	@Override
-	public List<MyGroup> findAll() throws Exception {
+	public List<MyGroup> findAll(MyGroup group) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println("----------"+group.getName());
+		map.put("group", group);
 		return myGroupMapper.selectAll(map);
 	}
 
@@ -27,6 +29,21 @@ public class MyGroupServiceImpl implements MyGroupService {
 	public Long findCount() throws Exception {
 		
 		return myGroupMapper.selectCount();
+	}
+
+	@Override
+	public void save(MyGroup t) throws Exception {
+		myGroupMapper.insert(t);
+	}
+
+	@Override
+	public void delete(Integer[] ids) throws Exception {
+		myGroupMapper.delete(ids);;
+	}
+
+	@Override
+	public void edit(MyGroup t) throws Exception {
+		myGroupMapper.update(t);
 	}
 
 }

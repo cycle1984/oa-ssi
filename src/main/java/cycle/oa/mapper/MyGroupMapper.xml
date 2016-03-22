@@ -6,6 +6,16 @@
   	<result column="name" property="name"/>
   	<result column="owner_unit" property="ownerUnit"/>
   	<result column="remark" property="remark"/>
+  	<collection property="units" ofType="cycle.oa.po.Unit">
+  		<id column="id" property="id"/>
+	  	<result column="name" property="name"/>
+	  	<result column="createdatetime" property="createdatetime"/>
+	  	<result column="updatedatetime" property="updatedatetime"/>
+	  	<result column="full_name" property="fullName"/>
+	  	<result column="tel" property="tel"/>
+	  	<result column="state" property="state"/>
+	  	<result column="remark" property="remark"/>
+  	</collection>
   </resultMap>
   
   <!-- sql片段对应字段名,id属性值任意 -->
@@ -83,7 +93,7 @@
   	<where>
   		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
   		<if test="name!=null">
-  			and name like ${name}
+  			and name like #{name}
   		</if>
   	</where> 
   </select>

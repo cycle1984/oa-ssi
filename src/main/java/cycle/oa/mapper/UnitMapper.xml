@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cycle.oa.mapper.UnitMapper" >
+  <resultMap id="unitResultMap" type="cycle.oa.po.Unit" >
+  	<id column="id" property="id"/>
+  	<result column="name" property="name"/>
+  	<result column="createdate_time" property="createdatetime"/>
+  	<result column="updatedate_time" property="updatedatetime"/>
+  	<result column="full_name" property="fullName"/>
+  	<result column="tel" property="tel"/>
+  	<result column="state" property="state"/>
+  	<result column="remark" property="remark"/>
+  	<association column="myGroup_id" property="myGroup" javaType="cycle.oa.po.MyGroup">
+  		<id column="id" property="id"/>
+  		<result column="name" property="name"/>
+	  	<result column="owner_unit" property="ownerUnit"/>
+	  	<result column="remark" property="remark"/>
+  	</association>
+  </resultMap>
+  
+  <!-- sql片段对应字段名,id属性值任意 -->
+  <sql id="key">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="createdatetime!=null">
+  			createdate_time,
+  		</if>
+  		<if test="updatedatetime!=null">
+  			updatedate_time,
+  		</if>
+  		<if test="name!=null">
+  			name,
+  		</if>
+  		<if test="fullName!=null">
+  			full_name,
+  		</if>
+  		<if test="tel!=null">
+  			tel,
+  		</if>
+  		<if test="state!=null">
+  			state,
+  		</if>
+  		<if test="remark!=null">
+  			remark,
+  		</if>
+  	</trim>
+  </sql>
+  
+  <sql id="value">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="createdatetime!=null">
+  			#{createdatetime},
+  		</if>
+  		<if test="updatedatetime!=null">
+  			#{updatedatetime},
+  		</if>
+  		<if test="name!=null">
+  			#{name},
+  		</if>
+  		<if test="fullName!=null">
+  			#{fullName},
+  		</if>
+  		<if test="tel!=null">
+  			#{tel},
+  		</if>
+  		<if test="state!=null">
+  			#{state},
+  		</if>
+  		<if test="remark!=null">
+  			#{remark},
+  		</if>
+  	</trim>
+  </sql>
+  
+  <insert id="insert" parameterType="cycle.oa.po.Unit">
+  	insert into unit(<include refid="key"/>) values(<include refid="value"/>)
+  </insert>
+  
+  <!-- 传进数组,批量删除 -->
+  <delete id="delete">
+  	delete from unit where id in 
+  	<!-- foreach用于迭代数组元素
+		 open表示开始符号
+		 close表示结束符合
+		 separator表示元素间的分隔符
+		 item表示迭代的数组，属性值可以任意，但提倡与方法的数组名相同
+		 #{ids}表示数组中的每个元素值
+	 -->
+  	<foreach collection="array" open="(" close=")" separator="," item="ids">
+  		#{ids}
+  	</foreach>
+  </delete>
+  
+  <update id="update" parameterType="cycle.oa.po.Unit">
+  	update unit 
+  	<set>
+  		<if test="createdatetime!=null">
+  			#{createdatetime},
+  		</if>
+  		<if test="updatedatetime!=null">
+  			#{updatedatetime},
+  		</if>
+  		<if test="name!=null">
+  			#{name},
+  		</if>
+  		<if test="fullName!=null">
+  			#{fullName},
+  		</if>
+  		<if test="tel!=null">
+  			#{tel},
+  		</if>
+  		<if test="state!=null">
+  			#{state},
+  		</if>
+  		<if test="remark!=null">
+  			#{remark},
+  		</if>
+  	</set>
+  	where id = #{id}
+  </update>
+  
+  <select id="selectCount" resultType="long">
+  	select count(id) from unit
+  </select>
+  
+  <select id="selectAll" parameterType="map" resultMap="unitResultMap">
+  	select id,name,owner_unit,remark from unit
+  	<where>
+  		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
+  		<if test="name!=null">
+  			and name like ${name}
+  		</if>
+  	</where> 
+  </select>
+  
+  <select id="seleteById" parameterType="int">
+  	select id,createdate_time,name,fullName,tel,state,remark from unit
+  	where id = #{id}
+  </select>
+</mapper>

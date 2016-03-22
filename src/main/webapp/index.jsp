@@ -6,6 +6,7 @@
 	<meta name="renderer" content="webkit">
 </head>
 <body>
+	
 	<%
 	response.sendRedirect(request.getContextPath() + "/user_loginUI.action");
 	 %>

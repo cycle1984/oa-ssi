@@ -14,9 +14,9 @@
 
 		一般 WEB 应用服务器默认的 Servlet 的名称都是 default.
 		若所使用的 WEB 服务器的默认 Servlet 名称不是 default，则需要通过 default-servlet-name 属性显式指定
-		
+		<mvc:default-servlet-handler/>
 	-->
-	<mvc:default-servlet-handler/>
+	
 
 	<!-- 同时开启json格式的支持 -->
 	<mvc:annotation-driven></mvc:annotation-driven>

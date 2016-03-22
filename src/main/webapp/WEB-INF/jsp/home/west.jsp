@@ -12,11 +12,11 @@
 	</div>
 	<script type="text/javascript">
 			$('#home_west_tree').tree({
-				url : '${pageContext.request.contextPath}/sys/findAllMenu',
+				url : '${pageContext.request.contextPath}/sys/findAllMenu.do',
 				parentField : 'pid',
 				onClick : function(node) {
 					if (node.attributes.url) {
-						var url = '${pageContext.request.contextPath}/'+node.attributes.url;
+						var url = '${pageContext.request.contextPath}/'+node.attributes.url+".do";
 						addTab({
 							title : node.text,
 							href : url,

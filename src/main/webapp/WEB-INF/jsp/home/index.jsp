@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/jsp/common/common.jsp"%>
+<%@ include file="/WEB-INF/jsp/common/common.jspf"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,7 @@
 	<script type="text/javascript">
 		$(function(){
 			 $('#home_index_west_div').panel({
-				 href:'${pageContext.request.contextPath}/home/west'
+				 href:'${pageContext.request.contextPath}/home/west.do'
 			 });
 // 			 $('#home_index_main_div').panel({
 // 				 href:'home_main.action'
@@ -19,6 +19,7 @@
 	</script>
 </head>
 <body style="margin: 0 auto;">
+
 	<div id="home_index" class="easyui-layout" style="width:90%;height:100%;margin:0 auto; ">   
 	    <div data-options="region:'north',split:true" style="height:98px;">
 <%-- 	    	<jsp:include page="north.jsp"></jsp:include> --%>

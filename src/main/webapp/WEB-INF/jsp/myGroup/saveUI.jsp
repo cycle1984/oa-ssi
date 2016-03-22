@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/jsp/common/common.jsp"%>
+<%@ include file="/WEB-INF/jsp/common/common.jspf"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,9 +20,9 @@
 				$('#myGroupSaveUI_OKbtn').linkbutton('disable');//确定按钮禁用
 				var url=null;
 				if($('#myGroup_saveUI_form_id').val().length>0){
-					url='myGroup_edit.action';//若隐藏id有值，则是修改，反之是新增
+					url=getRealPath()+'/myGroup/edit.do';//若隐藏id有值，则是修改，反之是新增
 				}else{
-					url='myGroup_save.action';
+					url=getRealPath()+'/myGroup/save.do';
 				}
 				$.post(url,$('#myGroup_saveUI_form').serialize(),function(r){
 					if(r.success){
@@ -76,7 +76,7 @@
 					</tr>
 					<tr>
 						<th>描述</th>
-						<td><input name="description" class="easyui-textbox" data-options="multiline:true,height:50"></td>
+						<td><input name="remark" class="easyui-textbox" data-options="multiline:true,height:50"></td>
 					</tr>
 				</table>
 			</form>

@@ -2,7 +2,7 @@ var myGroupGrid = $('#myGroup_list_grid');
 $(function(){
 	$('#myGroup_list_grid').datagrid({
 		idField:'id',//指定标识字段
-		url:'${pageContext.request.contextPath}/myGroup/grid',//URL从远程站点请求数据
+		url:contextPath+'/myGroup/grid.do',//URL从远程站点请求数据
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		striped : true,//是否显示斑马线
@@ -24,8 +24,8 @@ $(function(){
 			field : 'ownerUnit',
 			title : '所辖单位'
 		}, {
-			field : 'description',
-			title : '描述',
+			field : 'remark',
+			title : '备注',
 			sortable : true
 		}]],
 		toolbar:'#myGroup_list_toolbar'//工具面板
@@ -41,7 +41,7 @@ var addFunMyGroup = function(){
 		width : 400,//dialog宽度
 		top:'10%',//dialog离页面顶部的距离
 		modal: true,
-		href:'myGroup_saveUI.action',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+		href:getRealPath()+'/base/goURL/myGroup/saveUI.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 		buttons: [ {
 			id:'myGroupSaveUI_OKbtn',
 			text : '确定',
@@ -74,7 +74,7 @@ var editFunMyGroup = function(){
 			title:'编辑机构信息',
 			width : 400,
 			top:'10%',
-			href:'myGroup_saveUI.action?id='+arr[0].id,
+			href:getRealPath()+'/base/myGroup/saveUI.do?id='+arr[0].id,
 			buttons : [ {
 				id:'myGroupSaveUI_OKbtn',
 				text : '确定',
@@ -98,30 +98,32 @@ var editFunMyGroup = function(){
  */
 var deleteFunMyGroup = function(){
 	var rows = myGroupGrid.datagrid('getChecked');//在复选框被选中的时候返回所有行
-	var ids ="";
+	var ids =new Array();
 	if (rows.length > 0) {
 		$.messager.confirm('提示信息', '即将删除' + rows.length + '条数据,确认删除？',function(r) {
 			if(r){//点击确认进入
-				// 将id拼成字符串
+				//给数组ids赋值
 				for (var i = 0; i < rows.length; i++) {
-					ids += rows[i].id + ',';
+					ids[i]= rows[i].id;
 				}
-				ids = ids.substring(0, ids.length - 1);
 				$.ajax({
-					url : 'myGroup_delete.action',
+					url :getRealPath()+ '/myGroup/delete.do',
 					data : {
 						ids : ids
 					},
 					dataType : 'json',
 					success : function(r) {
-						myGroupGrid.datagrid('uncheckAll');//取消勾选当前页中的所有行
-						myGroupGrid.datagrid('load');
-//						$.messager.show({
-//							title : '提示',
-//							msg : r.msg
-//						});
-						$.messager.alert('提示', r.msg,'error');
-					}
+						if(r.success){
+							myGroupGrid.datagrid('uncheckAll');//取消勾选当前页中的所有行
+							myGroupGrid.datagrid('load');
+							$.messager.show({
+								title : '提示',
+								msg : r.msg
+							});
+						}else{
+							$.messager.alert('提示', r.msg,'error');
+						}
+					},
 				});
 			}
 		});
