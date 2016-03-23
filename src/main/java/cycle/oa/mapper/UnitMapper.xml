@@ -4,17 +4,17 @@
   <resultMap id="unitResultMap" type="cycle.oa.po.Unit" >
   	<id column="id" property="id"/>
   	<result column="name" property="name"/>
-  	<result column="createdate_time" property="createdatetime"/>
-  	<result column="updatedate_time" property="updatedatetime"/>
+  	<result column="createdate_time" property="createdateTime"/>
+  	<result column="updatedate_time" property="updatedateTime"/>
   	<result column="full_name" property="fullName"/>
   	<result column="tel" property="tel"/>
   	<result column="state" property="state"/>
   	<result column="remark" property="remark"/>
-  	<association column="myGroup_id" property="myGroup" javaType="cycle.oa.po.MyGroup">
-  		<id column="id" property="id"/>
-  		<result column="name" property="name"/>
-	  	<result column="owner_unit" property="ownerUnit"/>
-	  	<result column="remark" property="remark"/>
+  	<association property="myGroup" javaType="cycle.oa.po.MyGroup">
+  		<id column="group_id" property="id"/>
+  		<result column="group_name" property="name"/>
+	  	<result column="group_owner_unit" property="ownerUnit"/>
+	  	<result column="group_remark" property="remark"/>
   	</association>
   </resultMap>
   
@@ -22,10 +22,10 @@
   <sql id="key">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="createdatetime!=null">
+  		<if test="createdateTime!=null">
   			createdate_time,
   		</if>
-  		<if test="updatedatetime!=null">
+  		<if test="updatedateTime!=null">
   			updatedate_time,
   		</if>
   		<if test="name!=null">
@@ -43,17 +43,20 @@
   		<if test="remark!=null">
   			remark,
   		</if>
+  		<if test="myGroup.id!=null">
+  			myGroup_id,
+  		</if>
   	</trim>
   </sql>
   
   <sql id="value">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="createdatetime!=null">
-  			#{createdatetime},
+  		<if test="createdateTime!=null">
+  			#{createdateTime},
   		</if>
-  		<if test="updatedatetime!=null">
-  			#{updatedatetime},
+  		<if test="updatedateTime!=null">
+  			#{updatedateTime},
   		</if>
   		<if test="name!=null">
   			#{name},
@@ -69,6 +72,9 @@
   		</if>
   		<if test="remark!=null">
   			#{remark},
+  		</if>
+  		<if test="myGroup.id!=null">
+  			#{myGroup.id},
   		</if>
   	</trim>
   </sql>
@@ -96,25 +102,25 @@
   	update unit 
   	<set>
   		<if test="createdatetime!=null">
-  			#{createdatetime},
+  			createdate_time = #{createdateTime},
   		</if>
   		<if test="updatedatetime!=null">
-  			#{updatedatetime},
+  			updatedate_time = #{updatedateTime},
   		</if>
   		<if test="name!=null">
-  			#{name},
+  			name = #{name},
   		</if>
   		<if test="fullName!=null">
-  			#{fullName},
+  			full_Name = #{fullName},
   		</if>
   		<if test="tel!=null">
-  			#{tel},
+  			tel = #{tel},
   		</if>
   		<if test="state!=null">
-  			#{state},
+  			state = #{state},
   		</if>
   		<if test="remark!=null">
-  			#{remark},
+  			remark = #{remark},
   		</if>
   	</set>
   	where id = #{id}
@@ -125,7 +131,7 @@
   </select>
   
   <select id="selectAll" parameterType="map" resultMap="unitResultMap">
-  	select id,name,owner_unit,remark from unit
+  	select id,createdate_time,name,full_Name,tel,state,remark FROM unit
   	<where>
   		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
   		<if test="name!=null">
@@ -134,8 +140,35 @@
   	</where> 
   </select>
   
-  <select id="seleteById" parameterType="int">
-  	select id,createdate_time,name,fullName,tel,state,remark from unit
+  <select id="selectById" parameterType="int" resultMap="unitResultMap">
+  	select id,createdate_time,name,full_Name,tel,state,remark from unit
   	where id = #{id}
+  </select>
+  
+  <!-- 通过多条件分页查询，返回数据集 -->
+  <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="unitResultMap">
+  	select 
+  	unit.id,unit.createdate_time,unit.name,unit.full_Name,unit.tel,unit.state,unit.remark,
+  	myGroup.id group_id,myGroup.name group_name,myGroup.owner_unit group_owner_unit 
+  	from unit left join myGroup on unit.MyGROUP_ID=mygroup.id
+  		
+	<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
+  	<if test="sort!=null">
+<!--   		<if test="sort=='fullName'"> -->
+<!--   			ORDER BY full_Name ${order} -->
+<!--   		</if> -->
+<!--   		<if test="sort!='fullName'">ORDER BY ${sort} ${order}</if> -->
+  		<choose>
+  			<when test="sort=='fullName'">ORDER BY full_Name ${order}</when>
+  			<otherwise>ORDER BY ${sort} ${order}</otherwise>
+  		</choose>
+  	</if>
+  	limit #{start},#{rows} 
+  </select>
+  
+   <!-- 通过多条件分页查询，返回总记录数 -->
+  <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
+  	select count(unit.id) from unit left join myGroup on unit.MyGROUP_ID=mygroup.id
+	<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
   </select>
 </mapper>

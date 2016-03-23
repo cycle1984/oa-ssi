@@ -23,7 +23,7 @@
 						<table style="font-size: 13px;">
 							<tr>
 								<td >名称(可模糊查询)</td>
-								<td><input name="QUERY_t#name_S_LK" style="width: 100px; " class="easyui-textbox" value=""/></td>
+								<td><input name="name" style="width: 100px; " class="easyui-textbox" value=""/></td>
 								<td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom',plain:true" onclick="myGroupGrid.datagrid('load',sy.serializeObject($('#myGroup_list_toolbar_form')));">过滤</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom_out',plain:true" onclick="$('#myGroup_list_toolbar_form').form('clear');myGroupGrid.datagrid('load',{});">重置过滤</a></td>
 							</tr>
 						</table>

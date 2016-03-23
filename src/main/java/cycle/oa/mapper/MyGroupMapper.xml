@@ -9,8 +9,8 @@
   	<collection property="units" ofType="cycle.oa.po.Unit">
   		<id column="id" property="id"/>
 	  	<result column="name" property="name"/>
-	  	<result column="createdatetime" property="createdatetime"/>
-	  	<result column="updatedatetime" property="updatedatetime"/>
+	  	<result column="createdate_time" property="createdateTime"/>
+	  	<result column="updatedatet_ime" property="updatedateTime"/>
 	  	<result column="full_name" property="fullName"/>
 	  	<result column="tel" property="tel"/>
 	  	<result column="state" property="state"/>
@@ -98,8 +98,28 @@
   	</where> 
   </select>
   
-  <select id="seleteById" parameterType="int">
+  <select id="selectById" parameterType="int" resultMap="myGroupResultMap">
   	select id,name,owner_unit,remark from myGroup
   	where id = #{id}
+  </select>
+  
+  <!-- 通过多条件分页查询，返回数据集 -->
+  <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="myGroupResultMap">
+  	select id,name,owner_unit,remark from myGroup
+  	<where>
+  		<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
+  	</where>
+  	<if test="sort!=null">
+  		ORDER BY ${sort} ${order}
+  	</if>
+  	limit #{start},#{rows}
+  </select>
+  
+   <!-- 通过多条件分页查询，返回总记录数 -->
+  <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
+  	select count(id) from myGroup
+  	<where>
+  		<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
+  	</where>
   </select>
 </mapper>

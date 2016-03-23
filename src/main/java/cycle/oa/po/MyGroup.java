@@ -44,6 +44,11 @@ public class MyGroup implements Serializable {
 	public void setUnits(List<Unit> units) {
 		this.units = units;
 	}
+	@Override
+	public String toString() {
+		return "MyGroup [id=" + id + ", name=" + name + ", ownerUnit=" + ownerUnit + ", remark=" + remark + ", units="
+				+ units + "]";
+	}
 	
 	
 }

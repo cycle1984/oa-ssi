@@ -41,7 +41,7 @@ var addFunMyGroup = function(){
 		width : 400,//dialog宽度
 		top:'10%',//dialog离页面顶部的距离
 		modal: true,
-		href:getRealPath()+'/base/goURL/myGroup/saveUI.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+		href:getRealPath()+'/myGroup/goURL/myGroup/saveUI.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 		buttons: [ {
 			id:'myGroupSaveUI_OKbtn',
 			text : '确定',

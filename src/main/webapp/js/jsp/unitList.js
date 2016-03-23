@@ -2,7 +2,7 @@ var unitGrid = $('#unit_list_grid');
 $(function(){
 	unitGrid.datagrid({
 		idField:'id',//指定标识字段
-		url:'${pageContext.request.contextPath}/unit_grid.action',//URL从远程站点请求数据
+		url:contextPath+'/unit/grid.do',//URL从远程站点请求数据
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		striped : true,//是否显示斑马线
@@ -31,15 +31,20 @@ $(function(){
 			field : 'fullName',
 			title : '全称',
 			width : 100,
-			sortable : true
+			sortable : true,
+			formatter: function(value,row,index){//value：字段值,row：行记录数据,index: 行索引
+				if(row){
+					return value;
+				}
+			}
 		}, {
 			field : 'tel',
 			title : '办公室电话',
 			width : 100,
 			sortable : true
 		}, {
-			field : 'myGroup',
-			title : '所属单位',
+			field : 'myGroup.name',
+			title : '所属机构',
 			width : 100,
 			sortable : true,
 			formatter: function(value,row,index){//value：字段值,row：行记录数据,index: 行索引
@@ -80,7 +85,7 @@ var addFunUnit = function(){
 		title:'添加单位',
 		width : 400,//dialog宽度
 		top:'10%',//dialog离页面顶部的距离
-		href:'unit_saveUI.action',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+		href:getRealPath()+'/unit/goURL/unit/saveUI.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 		buttons: [ {
 			id:'unitSaveUI_OKbtn',
 			text : '确定',

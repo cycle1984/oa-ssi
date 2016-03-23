@@ -3,17 +3,15 @@ package cycle.oa.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletRequest;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cycle.oa.easyui.Grid;
 import cycle.oa.easyui.Json;
 import cycle.oa.po.MyGroup;
+import cycle.oa.po.Page;
 import cycle.oa.service.MyGroupService;
 
 @Controller
@@ -33,26 +31,36 @@ public class MyGroupController extends BaseController{
 		
 		return "/myGroup/list";
 	}
+	
 	/**
+	 * //通过关键字分页查询
 	 * 返回群组json数据
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/grid.do")
 	@ResponseBody
-	public Grid<MyGroup> grid(MyGroup group) throws Exception{
-		Grid<MyGroup> grid = new Grid<MyGroup>();
-		List<MyGroup> myGroup = myGroupService.findAll(group);
-		Long count = myGroupService.findCount();
-		grid.setTotal(count);
-		grid.setRows(myGroup);
-		return grid;
+	public Object grid(Page<MyGroup> page,MyGroup group) throws Exception{
+		if(group.getName()!=null){//如果name属性不为空， 模糊查询
+			group.setName("%"+group.getName()+"%");
+		}
+		page.setParamEntity(group);//将后台数据传到page模型中
+		
+		Page<MyGroup> p = myGroupService.selectPageDyc(page);
+		return p.getPageMap();
 	}
 	
-	@RequestMapping("/saveUI.do")
-	public String saveUI(){
-		
-		return "/myGroup/saveUI";
+	/**
+	 * 查询所有群组信息
+	 * 返回群组json数据
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/findAll.do")
+	@ResponseBody
+	public List<MyGroup> findAll(Page<MyGroup> page,MyGroup group) throws Exception{
+		List<MyGroup> list = myGroupService.findAll(group);
+		return list;
 	}
 	
 	@RequestMapping("/save.do")
