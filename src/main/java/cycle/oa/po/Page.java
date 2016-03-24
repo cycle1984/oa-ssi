@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * model数据
+ * @author cycle
+ *
+ * @param <T>
+ */
 public class Page<T> implements Serializable {
 
 	private static final long serialVersionUID = 6026241623576800774L;

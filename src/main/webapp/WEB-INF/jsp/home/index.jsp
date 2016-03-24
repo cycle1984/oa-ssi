@@ -20,7 +20,7 @@
 </head>
 <body style="margin: 0 auto;">
 
-	<div id="home_index" class="easyui-layout" style="width:90%;height:100%;margin:0 auto; ">   
+	<div id="home_index" class="easyui-layout" style="width:90%;height:100%;margin:0 auto;">   
 	    <div data-options="region:'north',split:true" style="height:98px;">
 <%-- 	    	<jsp:include page="north.jsp"></jsp:include> --%>
 	    </div>   

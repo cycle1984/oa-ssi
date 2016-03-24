@@ -12,18 +12,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cycle.oa.easyui.Json;
 import cycle.oa.po.Page;
 import cycle.oa.po.Unit;
-import cycle.oa.service.MyGroupService;
+import cycle.oa.po.User;
 import cycle.oa.service.UnitService;
+import cycle.oa.service.UserService;
 
 @Controller
-@RequestMapping("/unit")
-public class UnitController extends BaseController{
-
+@RequestMapping("/user")
+public class UserController extends BaseController{
+	
 	@Resource
 	private UnitService unitService;
 	
 	@Resource
-	private MyGroupService myGroupService;
+	private UserService userService;
 	
 	/**
 	 * //通过关键字分页查询
@@ -33,30 +34,30 @@ public class UnitController extends BaseController{
 	 */
 	@RequestMapping("/grid.do")
 	@ResponseBody
-	public Object grid(Page<Unit> page,Unit unit) throws Exception{
-		if(unit.getName()!=null){//如果name属性不为空， 模糊查询
-			unit.setName("%"+unit.getName()+"%");
+	public Object grid(Page<User> page,User user) throws Exception{
+		if(user.getName()!=null){//如果name属性不为空， 模糊查询
+			user.setName("%"+user.getName()+"%");
 		}
-		page.setParamEntity(unit);//将后台数据传到page模型中
+		page.setParamEntity(user);//将后台数据传到page模型中
 		
-		Page<Unit> p = unitService.selectPageDyc(page);
+		Page<User> p = userService.selectPageDyc(page);
 		return p.getPageMap();
 	}
 	
 	@RequestMapping("/save.do")
 	@ResponseBody
-	public Json save(Unit unit){
-		System.out.println(unit);
+	public Json save(User user){
+		System.out.println(user);
 		Json json = new Json();
-		unit.setCreatedateTime(new Date());
+		user.setCreatedateTime(new Date());
 		try {
-			unitService.save(unit);
-			unit.setMyGroup(myGroupService.selectById(unit.getMyGroup().getId()));
+			userService.save(user);
+			user.setUnit(unitService.selectById(user.getUnit().getId()));
 			json.setSuccess(true);
-			json.setObj(unit);
-			json.setMsg("新建单位【"+unit.getName()+"】成功");
+			json.setObj(user);
+			json.setMsg("新建用户【"+user.getName()+"】成功");
 		} catch (Exception e) {
-			json.setMsg("新建单位失败");
+			json.setMsg("新建用户失败");
 			e.printStackTrace();
 		}
 		return json;
@@ -64,14 +65,14 @@ public class UnitController extends BaseController{
 	
 	@RequestMapping("/edit.do")
 	@ResponseBody
-	public Json edit(Unit unit){
+	public Json edit(User user){
 		
 		Json json = new Json();
 		try {
-			unit.setUpdatedateTime(new Date());
-			unitService.edit(unit);
+			user.setUpdatedateTime(new Date());
+			userService.edit(user);
 			json.setSuccess(true);
-			json.setMsg("修改单位信息【"+unit.getName()+"】成功");
+			json.setMsg("修改用户信息【"+user.getName()+"】成功");
 		} catch (Exception e) {
 			json.setMsg("修改失败");
 			e.printStackTrace();
@@ -84,7 +85,7 @@ public class UnitController extends BaseController{
 	public Json delete(@RequestParam(value="ids[]") Integer[] ids){
 		Json json = new Json();
 		try {
-			unitService.deleteByArray(ids);
+			userService.deleteByArray(ids);
 			json.setSuccess(true);
 			json.setMsg("成功删除【"+ids.length+"】条数据");
 		} catch (Exception e) {

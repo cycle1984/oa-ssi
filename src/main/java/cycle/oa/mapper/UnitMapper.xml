@@ -80,11 +80,15 @@
   </sql>
   
   <insert id="insert" parameterType="cycle.oa.po.Unit">
+  	<!-- 在使用MyBatis做持久层时，insert语句默认是不返回记录的主键值，而是返回插入的记录条数；如果业务层需要得到记录的主键时，可以通过配置的方式来完成这个功能 -->
+  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>
   	insert into unit(<include refid="key"/>) values(<include refid="value"/>)
   </insert>
   
   <!-- 传进数组,批量删除 -->
-  <delete id="delete">
+  <delete id="deleteByArray">
   	delete from unit where id in 
   	<!-- foreach用于迭代数组元素
 		 open表示开始符号
@@ -98,13 +102,14 @@
   	</foreach>
   </delete>
   
+  
   <update id="update" parameterType="cycle.oa.po.Unit">
   	update unit 
   	<set>
-  		<if test="createdatetime!=null">
+  		<if test="createdateTime!=null">
   			createdate_time = #{createdateTime},
   		</if>
-  		<if test="updatedatetime!=null">
+  		<if test="updatedateTime!=null">
   			updatedate_time = #{updatedateTime},
   		</if>
   		<if test="name!=null">
@@ -121,6 +126,9 @@
   		</if>
   		<if test="remark!=null">
   			remark = #{remark},
+  		</if>
+  		<if test="myGroup.id!=null">
+  			myGroup_id = #{myGroup.id},
   		</if>
   	</set>
   	where id = #{id}
@@ -151,8 +159,20 @@
   	unit.id,unit.createdate_time,unit.name,unit.full_Name,unit.tel,unit.state,unit.remark,
   	myGroup.id group_id,myGroup.name group_name,myGroup.owner_unit group_owner_unit 
   	from unit left join myGroup on unit.MyGROUP_ID=mygroup.id
-  		
-	<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
+  	<where>
+  		<if test="paramEntity.name!=null">
+  			and CONCAT(unit.name,unit.full_name) like #{paramEntity.name}
+  		</if>
+  		<if test="paramEntity.tel!=null">
+  			and unit.tel = #{paramEntity.tel}
+  		</if>
+  		<if test="paramEntity.myGroup!=null">
+  			<if test="paramEntity.myGroup.id!=null">
+  				and unit.MyGROUP_ID = #{paramEntity.myGroup.id}
+  			</if>
+  		</if>
+  	</where>
+	
   	<if test="sort!=null">
 <!--   		<if test="sort=='fullName'"> -->
 <!--   			ORDER BY full_Name ${order} -->
@@ -169,6 +189,18 @@
    <!-- 通过多条件分页查询，返回总记录数 -->
   <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
   	select count(unit.id) from unit left join myGroup on unit.MyGROUP_ID=mygroup.id
-	<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
+	<where>
+  		<if test="paramEntity.name!=null">
+  			and CONCAT(unit.name,unit.full_name) like #{paramEntity.name}
+  		</if>
+  		<if test="paramEntity.tel!=null">
+  			and unit.tel = #{paramEntity.tel}
+  		</if>
+  		<if test="paramEntity.myGroup!=null">
+  			<if test="paramEntity.myGroup.id!=null">
+  				and unit.MyGROUP_ID = #{paramEntity.myGroup.id}
+  			</if>
+  		</if>
+  	</where>
   </select>
 </mapper>

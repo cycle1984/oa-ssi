@@ -1,6 +1,5 @@
 package cycle.oa.service.impl;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +37,8 @@ public class MyGroupServiceImpl implements MyGroupService {
 	}
 
 	@Override
-	public void delete(Integer[] ids) throws Exception {
-		myGroupMapper.delete(ids);;
+	public void deleteByArray(Integer[] ids) throws Exception {
+		myGroupMapper.deleteByArray(ids);
 	}
 
 	@Override

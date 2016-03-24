@@ -4,15 +4,17 @@ $(function(){
 		idField:'id',//指定标识字段
 		url:contextPath+'/myGroup/grid.do',//URL从远程站点请求数据
 		fit:true,//当设置为true的时候面板大小将自适应父容器
-		fitColumns:true,//适应网格的宽度，防止水平滚动
+//		fitColumns:true,//适应网格的宽度，防止水平滚动+
+		autoRowHeight:false,//定义设置行的高度，根据该行的内容。设置为false可以提高负载性能。
 		striped : true,//是否显示斑马线
 		rownumbers : true,//显示一个行号列
 		pagination : true,//DataGrid控件底部显示分页工具栏
 		singleSelect : false,//如果为true，则只允许选择一行
+//		nowrap:false,//如果为true，则在同一行中显示数据。设置为true可以提高加载性能。
 		border:false,//是否显示面板边框
 		pageSize : 20,//每页显示记录数
 		pageList : [10, 20, 30, 40, 50, 100, 500],//在设置分页属性的时候 初始化页面大小选择列表
-		columns:[[{
+		frozenColumns:[[{
 			field : 'id',
 			title : '主键',
 			checkbox : true
@@ -20,7 +22,8 @@ $(function(){
 			field : 'name',
 			title : '名称',
 			sortable : true
-		},  {
+		}]],
+		columns:[[{
 			field : 'ownerUnit',
 			title : '所辖单位'
 		}, {
@@ -74,7 +77,7 @@ var editFunMyGroup = function(){
 			title:'编辑机构信息',
 			width : 400,
 			top:'10%',
-			href:getRealPath()+'/base/myGroup/saveUI.do?id='+arr[0].id,
+			href:getRealPath()+'/myGroup/goURL/myGroup/saveUI.do?id='+arr[0].id,
 			buttons : [ {
 				id:'myGroupSaveUI_OKbtn',
 				text : '确定',

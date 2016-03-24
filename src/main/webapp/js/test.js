@@ -1,1 +1,0 @@
-console.info('body ${pageContext.request.contextPath}');

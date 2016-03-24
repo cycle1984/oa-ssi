@@ -10,8 +10,11 @@ public interface BaseMapper<T> {
 	//增加
 	public void insert(T t) throws Exception;
 	
-	//批量删除
-	public void delete(Integer[] ids) throws Exception;
+	//根据ID主键批量删除(数组)
+	public void deleteByArray(Integer[] ids) throws Exception;
+	
+	//根据ID主键批量删除(list)
+	public void deleteByList(Integer[] id) throws Exception;
 	
 	//修改
 	public void update(T t) throws Exception;

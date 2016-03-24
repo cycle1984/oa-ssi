@@ -99,14 +99,13 @@ public class MyGroupController extends BaseController{
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public Json delete(@RequestParam(value="ids[]") Integer[] ids){
-		System.out.println("a"+ids);
 		Json json = new Json();
 		try {
-			myGroupService.delete(ids);
+			myGroupService.deleteByArray(ids);
 			json.setSuccess(true);
 			json.setMsg("成功删除【"+ids.length+"】条数据");
 		} catch (Exception e) {
-			json.setMsg("删除失败");
+			json.setMsg("删除失败,请检查该数据是否有下级数据！");
 			e.printStackTrace();
 		}
 		return json;

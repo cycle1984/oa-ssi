@@ -8,7 +8,5 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/test.js"></script>
-	<script type="text/javascript">console.info('a ${pageContext.request.contextPath}');</script>
 </body>
 </html>

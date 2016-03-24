@@ -10,12 +10,11 @@
 
 	<script type="text/javascript">
 		$(function(){
-			
-			
 		  	 
 		});
 		/**点击确定按钮方法定义 */
 		var myGroup_saveUI_submitForm = function($dialog,$grid){
+			$('#myGroup_saveUI_form').form('enableValidation');//启用验证
 			if($('#myGroup_saveUI_form').form('validate')){//如果表单验证通过
 				$('#myGroupSaveUI_OKbtn').linkbutton('disable');//确定按钮禁用
 				var url=null;
@@ -58,7 +57,7 @@
   			$('#myGroup_saveUI_form').form('load',{//表单内数据赋值
   				id : $data.id,
   				name : $data.name,
-  				description:$data.description
+  				remark:$data.remark
   			});
   			$.messager.progress('close');//关闭数据加载提示窗口
 		};
@@ -67,7 +66,7 @@
 	<div style="text-align: center;vertical-align: middle;">
 		<fieldset>
 			<legend>机构基本信息</legend>
-			<form id="myGroup_saveUI_form" method="post">
+			<form id="myGroup_saveUI_form"  method="post" class="easyui-form" data-options="novalidate:true">
 				<input name="id" id="myGroup_saveUI_form_id" type="hidden"><!-- 隐藏机构的ID主键  -->
 				<table style="margin:0px auto;">
 					<tr>

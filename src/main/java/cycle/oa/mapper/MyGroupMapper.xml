@@ -50,11 +50,15 @@
   </sql>
   
   <insert id="insert" parameterType="cycle.oa.po.MyGroup">
+  	<!-- 在使用MyBatis做持久层时，insert语句默认是不返回记录的主键值，而是返回插入的记录条数；如果业务层需要得到记录的主键时，可以通过配置的方式来完成这个功能 -->
+  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>
   	insert into myGroup(<include refid="key"/>) values(<include refid="value"/>)
   </insert>
   
   <!-- 传进数组,批量删除 -->
-  <delete id="delete">
+  <delete id="deleteByArray">
   	delete from myGroup where id in 
   	<!-- foreach用于迭代数组元素
 		 open表示开始符号
@@ -64,6 +68,20 @@
 		 #{ids}表示数组中的每个元素值
 	 -->
   	<foreach collection="array" open="(" close=")" separator="," item="ids">
+  		#{ids}
+  	</foreach>
+  </delete>
+  
+  <delete id="deleteByList">
+  	delete from myGroup where id in 
+  	<!-- foreach用于迭代数组元素
+		 open表示开始符号
+		 close表示结束符合
+		 separator表示元素间的分隔符
+		 item表示迭代的数组，属性值可以任意，但提倡与方法的数组名相同
+		 #{ids}表示数组中的每个元素值
+	 -->
+  	<foreach collection="list" open="(" close=")" separator="," item="ids">
   		#{ids}
   	</foreach>
   </delete>
@@ -107,7 +125,10 @@
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="myGroupResultMap">
   	select id,name,owner_unit,remark from myGroup
   	<where>
-  		<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
+  		<if test="paramEntity.name!=null">
+<!--   			and name like #{paramEntity.name} -->
+			and CONCAT(name) like #{paramEntity.name}<!-- mysql用于多列模糊查询的函数 -->
+  		</if>
   	</where>
   	<if test="sort!=null">
   		ORDER BY ${sort} ${order}

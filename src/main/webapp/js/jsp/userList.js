@@ -2,7 +2,7 @@ var userGrid = $('#user_list_grid');
 $(function(){
 	userGrid.datagrid({
 		idField:'id',//指定标识字段
-		url:'${pageContext.request.contextPath}/user_grid.action',//URL从远程站点请求数据
+		url:contextPath+'/user/grid.do',//URL从远程站点请求数据
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		striped : true,//是否显示斑马线
@@ -10,8 +10,8 @@ $(function(){
 		pagination : true,//DataGrid控件底部显示分页工具栏
 		singleSelect : false,//如果为true，则只允许选择一行
 		border:false,//是否显示面板边框
-		sortName : 'role.id',
-		sortOrder : 'desc',
+//		sortName : 'role.id',
+//		sortOrder : 'desc',
 		pageSize : 20,//每页显示记录数
 		pageList : [10, 20, 30, 40, 50, 100, 500],//在设置分页属性的时候 初始化页面大小选择列表
 		columns:[[{
@@ -51,7 +51,7 @@ $(function(){
 			width : 100,
 			sortable : true
 		}, {
-			field : 'unit',
+			field : 'unit.id',
 			title : '所属单位',
 			width : 100,
 			sortable : true,
@@ -63,7 +63,7 @@ $(function(){
 				}
 			}
 		}, {
-			field : 'unit.myGroup',//排序时向后台发送的参数
+			field : 'unit.myGroup.name',//排序时向后台发送的参数
 			title : '所属机构',
 			width : 100,
 			sortable : true,
@@ -77,11 +77,18 @@ $(function(){
 				}
 			}
 		}, {
-			field : 'createdatetime',
+			field : 'createdateTime',
 			title : '创建时间',
 			width : 150,
 			align : 'center',
-			sortable : true
+			sortable : true,
+			formatter: function(value,row,index){
+				if (value){
+					return new Date(value);
+				} else {
+					return value;
+				}
+			}
 		},  {
 			field : 'role.id',
 			title : '权限级别',
@@ -95,7 +102,7 @@ $(function(){
 				}
 			}
 		},	{
-			field : 'description',
+			field : 'remark',
 			title : '描述',
 			width : 100
 		}]],

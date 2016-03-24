@@ -37,8 +37,8 @@ public class UnitServiceImpl implements UnitService {
 	}
 
 	@Override
-	public void delete(Integer[] ids) throws Exception {
-		unitMapper.delete(ids);;
+	public void deleteByArray(Integer[] ids) throws Exception {
+		unitMapper.deleteByArray(ids);
 	}
 
 	@Override

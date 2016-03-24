@@ -115,7 +115,7 @@ var editFunUnit = function(){
 			title:'编辑单位信息',
 			width : 400,
 			top:'10%',
-			href:'unit_saveUI.action?id='+arr[0].id,
+			href:getRealPath()+'/unit/goURL/unit/saveUI.do?id='+arr[0].id,
 			buttons : [ {
 				id:'unitSaveUI_OKbtn',
 				text : '确定',
@@ -139,17 +139,17 @@ var editFunUnit = function(){
  */
 var deleteFunUnit = function(){
 	var rows = unitGrid.datagrid('getChecked');//在复选框被选中的时候返回所有行
-	var ids ="";
+	var ids =new Array();
 	if (rows.length > 0) {
 		$.messager.confirm('提示信息', '即将删除' + rows.length + '条数据,确认删除？',function(r) {
 			if(r){//点击确认进入
 				// 将id拼成字符串
+				//给数组ids赋值
 				for (var i = 0; i < rows.length; i++) {
-					ids += rows[i].id + ',';
+					ids[i]= rows[i].id;
 				}
-				ids = ids.substring(0, ids.length - 1);
 				$.ajax({
-					url : 'unit_delete.action',
+					url : getRealPath()+'/unit/delete.do',
 					data : {
 						ids : ids
 					},

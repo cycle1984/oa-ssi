@@ -20,7 +20,9 @@
 	    
 	</script>
 	<div id="home_main_tabs" class="easyui-tabs" data-options="fit:true,plain:false">
-		
+		<div title="Tab1" style="padding:20px;">   
+        tab1   
+    	</div> 
 	</div>
 </body>
 </html>

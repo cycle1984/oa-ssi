@@ -24,8 +24,8 @@
 								<td><input name="name" style="width: 100px;" class="easyui-textbox"/></td>
 								<td >办公室电话(可模糊查询)</td>
 								<td><input name="tel" style="width: 100px; " class="easyui-textbox"/></td>
-<!-- 								<td >所属机构</td> -->
-<!-- 								<td><input name="myGroup.id" style="width: 100px; " class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'myGroup_findAll.action',editable:false"/></td> -->
+								<td >所属机构</td>
+								<td><input name="myGroup.id"  class="easyui-combobox" data-options="valueField:'id',textField:'name',url:'${pageContext.request.contextPath}/myGroup/findAll.do',editable:false"/></td>
 								<td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom',plain:true" onclick="unitGrid.datagrid('load',sy.serializeObject($('#unit_list_toolbar_form')));">过滤</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom_out',plain:true" onclick="$('#unit_list_toolbar_form').form('clear');unitGrid.datagrid('load',{});">重置过滤</a></td>
 							</tr>
 						</table>

@@ -10,7 +10,7 @@
 	<div style="text-align: center;vertical-align: middle;">
 		<fieldset>
 			<legend>单位基本信息</legend>
-			<form id="unit_saveUI_form" method="post">
+			<form id="unit_saveUI_form" method="post" class="easyui-form" data-options="novalidate:true">
 				<input name="id" id="unit_saveUI_form_id" type="hidden"><!-- 隐藏单位的ID主键  -->
 				<table style="margin:0px auto;">
 					<tr>
@@ -35,7 +35,7 @@
 					</tr>
 					<tr>
 						<th>描述</th>
-						<td><input name="description" class="easyui-textbox" data-options="multiline:true,height:50"></td>
+						<td><input name="remark" class="easyui-textbox" data-options="multiline:true,height:50"></td>
 					</tr>
 				</table>
 			</form>
@@ -45,7 +45,6 @@
 	<script type="text/javascript">
 	
 		$(function(){
-			$('#unit_saveUI_form').form('disableValidation');
 			/**
 	  		 * myGroup所属单位下来菜单初始化
 	  		 */
@@ -60,6 +59,7 @@
 		
 		/**点击确定按钮方法定义 */
 		var unit_saveUI_submitForm = function($dialog,$grid){
+			
 			$('#unit_saveUI_form').form('enableValidation');
 			if($('#unit_saveUI_form').form('validate')){//如果表单验证通过
 				$('#unitSaveUI_OKbtn').linkbutton('disable');//确定按钮禁用
@@ -105,7 +105,7 @@
   				name : $data.name,
   				fullName:$data.fullName,
   				tel: $data.tel,
-  				description:$data.description
+  				remark:$data.remark
   			});
   			
   			if($data.state==0){//用于是否允许收文的单选按钮回显
@@ -115,9 +115,10 @@
   			}
   			
   			if($data.myGroup!=null){
-  				$('#unit_saveUI_form').form('load',{//表单内数据赋值
-  					myGroupId:$data.myGroup.id//给所属机构赋值
-  				});
+//   				$('#unit_saveUI_form').form('load',{//表单内数据赋值
+//   					myGroup.id:$data.myGroup.id//给所属机构赋值
+//   				});
+				$('#unit_SaveUI_unitSelect').combobox('setValue',$data.myGroup.id);
   			}
   			$.messager.progress('close');//关闭数据加载提示窗口
 		};

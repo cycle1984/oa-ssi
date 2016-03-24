@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cycle.oa.mapper.UserMapper" >
+  <resultMap id="userResultMap" type="cycle.oa.po.User" >
+  	<id column="id" property="id"/>
+  	<result column="createdate_time" property="createdateTime"/>
+  	<result column="updatedate_time" property="updatedateTime"/>
+  	<result column="login_name" property="loginName"/>
+  	<result column="pwd" property="pwd"/>
+  	<result column="name" property="name"/>
+  	<result column="phone" property="phone"/>
+  	<result column="tel" property="tel"/>
+  	<result column="gender" property="gender"/>
+  	<result column="dep" property="dep"/>
+  	<result column="remark" property="remark"/>
+  	<association property="unit" javaType="cycle.oa.po.Unit">
+  		<id column="unit_id" property="id"/>
+  		<result column="unit_name" property="name"/>
+	  	<result column="unit_full_name" property="fullName"/>
+	  	<association property="myGroup" javaType="cycle.oa.po.MyGroup">
+	  		<id column="group_id" property="id"/>
+	  		<result column="group_name" property="name"/>
+		  	<result column="group_owner_unit" property="ownerUnit"/>
+		  	<result column="group_remark" property="remark"/>
+	  	</association>
+  	</association>
+  </resultMap>
+  
+  <!-- sql片段对应字段名,id属性值任意 -->
+  <sql id="key">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="createdateTime!=null">
+  			createdate_time,
+  		</if>
+  		<if test="updatedateTime!=null">
+  			updatedate_time,
+  		</if>
+  		<if test="loginName!=null">
+  			login_name,
+  		</if>
+  		<if test="pwd!=null">
+  			pwd,
+  		</if>
+  		<if test="name!=null">
+  			name,
+  		</if>
+  		<if test="phone!=null">
+  			phone,
+  		</if>
+  		<if test="tel!=null">
+  			tel,
+  		</if>
+  		<if test="gender!=null">
+  			gender,
+  		</if>
+  		<if test="remark!=null">
+  			remark,
+  		</if>
+  		<if test="unit!=null">
+  			<if test="unit.id!=null">
+	  			unit_id,
+	  		</if>
+  		</if>
+  		
+  	</trim>
+  </sql>
+  
+  <sql id="value">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="createdateTime!=null">
+  			#{createdateTime},
+  		</if>
+  		<if test="updatedateTime!=null">
+  			#{updatedateTime},
+  		</if>
+  		<if test="loginName!=null">
+  			#{loginName},
+  		</if>
+  		<if test="pwd!=null">
+  			#{pwd},
+  		</if>
+  		<if test="name!=null">
+  			#{name},
+  		</if>
+  		<if test="phone!=null">
+  			#{phone},
+  		</if>
+  		<if test="tel!=null">
+  			#{tel},
+  		</if>
+  		<if test="gender!=null">
+  			#{gender},
+  		</if>
+  		<if test="remark!=null">
+  			#{remark},
+  		</if>
+  		<if test="unit!=null">
+  			<if test="unit.id!=null">
+	  			#{unit.id},
+	  		</if>
+  		</if>
+  	</trim>
+  </sql>
+  
+  <insert id="insert" parameterType="cycle.oa.po.User">
+  	<!-- 在使用MyBatis做持久层时，insert语句默认是不返回记录的主键值，而是返回插入的记录条数；如果业务层需要得到记录的主键时，可以通过配置的方式来完成这个功能 -->
+  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+  	insert into user(<include refid="key"/>) values(<include refid="value"/>)
+  </insert>
+  
+  <!-- 传进数组,批量删除 -->
+  <delete id="deleteByArray">
+  	delete from user where id in 
+  	<!-- foreach用于迭代数组元素
+		 open表示开始符号
+		 close表示结束符合
+		 separator表示元素间的分隔符
+		 item表示迭代的数组，属性值可以任意，但提倡与方法的数组名相同
+		 #{ids}表示数组中的每个元素值
+	 -->
+  	<foreach collection="array" open="(" close=")" separator="," item="ids">
+  		#{ids}
+  	</foreach>
+  </delete>
+  
+  
+  <update id="update" parameterType="cycle.oa.po.User">
+  	update user 
+  	<set>
+  		<if test="createdateTime!=null">
+  			createdate_Time = #{createdateTime},
+  		</if>
+  		<if test="updatedateTime!=null">
+  			updatedate_Time = #{updatedateTime},
+  		</if>
+  		<if test="loginName!=null">
+  			login_Name = #{loginName},
+  		</if>
+  		<if test="pwd!=null">
+  			pwd = #{pwd},
+  		</if>
+  		<if test="name!=null">
+  			name = #{name},
+  		</if>
+  		<if test="phone!=null">
+  			phone = #{phone},
+  		</if>
+  		<if test="tel!=null">
+  			tel = #{tel},
+  		</if>
+  		<if test="gender!=null">
+  			gender = #{gender},
+  		</if>
+  		<if test="remark!=null">
+  			remark = #{remark},
+  		</if>
+  		<if test="unit!=null">
+  			<if test="unit.id!=null">
+	  			unit_id = #{unit.id},
+	  		</if>
+  		</if>
+  	</set>
+  	where id = #{id}
+  </update>
+  
+  <select id="selectCount" resultType="long">
+  	select count(id) from user
+  </select>
+  
+  <select id="selectAll" parameterType="map" resultMap="userResultMap">
+  	select 
+  		id,createdate_Time,updatedate_Time,login_Name,pwd,name,phone,tel,gender,remark,unit_id 
+  	FROM user
+  	<where>
+  		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
+  		<if test="name!=null">
+  			and name like ${name}
+  		</if>
+  	</where> 
+  </select>
+  
+  <select id="selectById" parameterType="int" resultMap="userResultMap">
+  	select 
+  		id,createdate_Time,updatedate_Time,login_Name,pwd,name,phone,tel,gender,remark,unit_id 
+  	from user
+  	where id = #{id}
+  </select>
+  
+  <!-- 通过多条件分页查询，返回数据集 -->
+  <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="userResultMap">
+  	select 
+  		user.id,user.createdate_Time,user.updatedate_Time,user.login_Name,user.pwd,user.name,user.phone,user.tel,user.gender,user.dep,user.remark,
+  		unit.id unit_id,unit.name unit_name,
+  		myGroup.id group_id,myGroup.name group_name
+  	from user left join (unit left join myGroup on unit.myGroup_id = myGroup.id) on user.unit_id=unit.id
+  	<where>
+  		<if test="paramEntity.name!=null">
+  			and user.name like #{paramEntity.name}
+  		</if>
+  		<if test="paramEntity.phone!=null">
+  			and user.phone = #{paramEntity.phone}
+  		</if>
+  		<if test="paramEntity.tel!=null">
+  			and user.tel = #{paramEntity.tel}
+  		</if>
+  		<if test="paramEntity.unit!=null">
+  			<if test="paramEntity.unit.id!=null">
+  				and user.unit_id = #{paramEntity.unit.id}
+  			</if>
+  		</if>
+  	</where>
+	
+  	<if test="sort!=null">
+  		<choose>
+  			<when test="sort=='loginName'">ORDER BY login_name ${order}</when>
+  			<when test="sort=='createdateTime'">ORDER BY createdate_Time ${order}</when>
+  			<when test="sort=='unit.myGroup.name'">ORDER BY group_id ${order}</when>
+  			<otherwise>ORDER BY ${sort} ${order}</otherwise>
+  		</choose>
+  	</if>
+  	limit #{start},#{rows} 
+  </select>
+  
+   <!-- 通过多条件分页查询，返回总记录数 -->
+  <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
+  	select 
+  		count(user.id)
+  	from user left join (unit left join myGroup on unit.myGroup_id = myGroup.id) on user.unit_id=unit.id
+  	<where>
+  		<if test="paramEntity.name!=null">
+  			and user.name like #{paramEntity.name}
+  		</if>
+  		<if test="paramEntity.phone!=null">
+  			and user.phone = #{paramEntity.phone}
+  		</if>
+  		<if test="paramEntity.tel!=null">
+  			and user.tel = #{paramEntity.tel}
+  		</if>
+  		<if test="paramEntity.unit!=null">
+  			<if test="paramEntity.unit.id!=null">
+  				and user.unit_id = #{paramEntity.unit.id}
+  			</if>
+  		</if>
+  	</where>
+  </select>
+</mapper>
