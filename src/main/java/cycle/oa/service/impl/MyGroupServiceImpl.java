@@ -60,4 +60,16 @@ public class MyGroupServiceImpl implements MyGroupService {
 		return myGroupMapper.selectById(id);
 	}
 
+	@Override
+	public List<MyGroup> selectListByEntity(MyGroup entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MyGroup selectEntity(MyGroup entity) {
+		// TODO Auto-generated method stub
+		return myGroupMapper.selectEntity(entity);
+	}
+
 }

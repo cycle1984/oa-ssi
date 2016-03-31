@@ -59,4 +59,15 @@ public class UnitServiceImpl implements UnitService {
 		return unitMapper.selectById(id);
 	}
 
+	@Override
+	public List<Unit> selectListByEntity(Unit entity) {
+		return unitMapper.selectListByEntity(entity);
+	}
+
+	@Override
+	public Unit selectEntity(Unit entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

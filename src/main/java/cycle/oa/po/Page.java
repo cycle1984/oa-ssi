@@ -1,6 +1,7 @@
 package cycle.oa.po;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,10 @@ public class Page<T> implements Serializable {
 	private String sort;// 排序字段
 	private String order = "asc";// asc/desc
 	private Map<String, Object> pageMap = new HashMap<String, Object>() ;//可用于向后台传json数据的map
+	
+	//用于工具栏查询的起始和结束时间的参数传递
+	private Date createdateTime_start;
+	private Date createdateTime_end = new Date();
 	
 	public Integer getPage() {
 		return page;
@@ -81,6 +86,19 @@ public class Page<T> implements Serializable {
 	}
 	public void setOrder(String order) {
 		this.order = order;
+	}
+	
+	public Date getCreatedateTime_start() {
+		return createdateTime_start;
+	}
+	public void setCreatedateTime_start(Date createdateTime_start) {
+		this.createdateTime_start = createdateTime_start;
+	}
+	public Date getCreatedateTime_end() {
+		return createdateTime_end;
+	}
+	public void setCreatedateTime_end(Date createdateTime_end) {
+		this.createdateTime_end = createdateTime_end;
 	}
 	@Override
 	public String toString() {

@@ -1,9 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="cycle.oa.po.User"%>
+<%
+	User user = (User) session.getAttribute("userSession");
+%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>北部内容区域</title>
 </head>
 <body>
@@ -12,8 +17,8 @@
 	
 	//注销、退出
 	var logoutFun = function() {
-		$.post('user_logout.action', function(result) {
-			location.replace('${pageContext.request.contextPath}/user_loginUI.action');
+		$.post('${pageContext.request.contextPath}/user/logout.do', function(result) {
+			location.replace('${pageContext.request.contextPath}/index.jsp');
 		}, 'json');
 	};
 	//显示个人信息
@@ -31,7 +36,7 @@
 			title : '修改联系电话',
 			width:500,
 			top:'10%',
-			url : '${pageContext.request.contextPath}/user_modifyInfoUI.action',
+			url : '${pageContext.request.contextPath}/user/modifyInfoUI.do',
 			buttons : [ {
 				id:'modifyInfoUI_OKbtn',
 				text : '确定',
@@ -51,26 +56,26 @@
 			maximizable:true,
 			top:'10%',//dialog离页面顶部的距离
 			//content:'<iframe name="news_saveUI_frame"  src="'+url+'" frameborder="0" style="height:100%;width:100%;" "></iframe>',
-			href:'news_newsDetails.action?id='+$id//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+			href:'${pageContext.request.contextPath}/news/newsDetails.do?id='+$id//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 		});
 	}
 	
 	$(function(){
 		
 		//取出10条news资讯数据
-		$.post('news_newsJSON10.action', function(result) {
-			if(result){
-				for(var i in result){//此处i是下标的意思
-// 					$("#home_north_news_span").append("<a href='#'>"+result[i].title+"</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-					//$("#home_north_news_span").append
-					var ti="" ;
-						if(result[i].unit){
-							ti+=result[i].unit.name+":";
-						}
-					$("#home_north_news_span").append("<sapn title='"+result[i].title+"' onclick='"+"north_span_click("+result[i].id+",this)"+"'>"+ti+result[i].title+"</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-				}
-			}
-		}, 'json');
+// 		$.post('${pageContext.request.contextPath}/news/newsJSON10.do', function(result) {
+// 			if(result){
+// 				for(var i in result){//此处i是下标的意思
+// // 					$("#home_north_news_span").append("<a href='#'>"+result[i].title+"</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+// 					//$("#home_north_news_span").append
+// 					var ti="" ;
+// 						if(result[i].unit){
+// 							ti+=result[i].unit.name+":";
+// 						}
+// 					$("#home_north_news_span").append("<sapn title='"+result[i].title+"' onclick='"+"north_span_click("+result[i].id+",this)"+"'>"+ti+result[i].title+"</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+// 				}
+// 			}
+// 		}, 'json');
 		
 		$('#passwordDialog').show().dialog({
 			modal : true,
@@ -105,9 +110,9 @@
 		}).dialog('close');
 	});
 	</script>
-	<div style="overflow: scroll;overflow: hidden;background: url(style/images/sys/login_topBg.jpg);background-color: white;">
-		<img  src="style/images/sys/top_np.jpg">
-<!-- 		<img  src="style/images/sys/top_jx.jpg"> -->
+	<div style="overflow: scroll;overflow: hidden;background: url(${pageContext.request.contextPath}/style/images/sys/login_topBg.jpg);background-color: white;">
+<%-- 		<img  src="${pageContext.request.contextPath}/style/images/sys/top_np.jpg"> --%>
+		<img  src="${pageContext.request.contextPath}/style/images/sys/top_jx.jpg">
 		<div id="sessionInfoDiv" style="color: white;position: absolute; right: 370px; bottom: -13px;">
 			<marquee direction="left" onmouseout="this.start()" onmouseover="this.stop()" scrollamount="4" behavior="scroll"  scrolldelay="0" loop="-1" width="600" height="25" hspace="10" vspace="10">
 			<span style="color:red;">最新消息：</span>
@@ -117,10 +122,10 @@
 		<span > </span>
 		<div style="position: absolute; right: 0px; bottom: 0px;">
 			
-			<span style="color: white;">当前用户:&nbsp; &nbsp; </span>
-<!-- 			<s:if test="%{#session.userSession.loginName!='admin'}"> -->
-<!-- 				<span style="color: white;">单位:&nbsp; &nbsp; </span> -->
-<!-- 			</s:if> -->
+			<span style="color: white;">当前用户:<% if(user!=null){out.print(user.getName());} %>&nbsp; &nbsp; </span>
+			<c:if test="${sessionScope.userSession.loginName!='admin'}">
+				<span style="color: white;">单位:<% if(user!=null){ if(user.getUnit()!=null){out.print(user.getUnit().getName());} } %>&nbsp; &nbsp; </span>
+			</c:if>
 			<!-- <a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#layout_north_pfMenu',iconCls:'ext-icon-rainbow'">更换皮肤</a>  -->
 			<a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#layout_north_kzmbMenu',iconCls:'ext-icon-cog'"><span style="color: white;">控制面板</span></a> <a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#layout_north_zxMenu',iconCls:'ext-icon-disconnect'"><span style="color: white;">注销</span></a>
 		</div>

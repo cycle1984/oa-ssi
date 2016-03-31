@@ -1,5 +1,8 @@
 package cycle.oa.service.impl;
 
+import java.util.List;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void save(User t) throws Exception {
+		//给用户密码md5加密
+		if(t.getPwd()==null||t.getPwd()==""){//密码为空，则为管理员直接添加用户
+			t.setPwd(DigestUtils.md5Hex("jyj123456"));
+		}else{
+			t.setPwd(DigestUtils.md5Hex(t.getPwd()));
+		}
 		userMapper.insert(t);
 	}
 
@@ -39,6 +48,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User selectById(Integer id) {
 		return userMapper.selectById(id);
+	}
+
+	@Override
+	public List<User> selectListByEntity(User entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User selectEntity(User entity) {
+		return userMapper.selectEntity(entity);
 	}
 
 }

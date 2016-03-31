@@ -84,7 +84,7 @@ $(function(){
 			sortable : true,
 			formatter: function(value,row,index){
 				if (value){
-					return new Date(value);
+					return getFormatDate(new Date(value));
 				} else {
 					return value;
 				}
@@ -103,7 +103,7 @@ $(function(){
 			}
 		},	{
 			field : 'remark',
-			title : '描述',
+			title : '备注',
 			width : 100
 		}]],
 		rowStyler:function(index,row){
@@ -123,7 +123,7 @@ $(function(){
 			title:'选择单位查询',
 			width : 350,
 			top:'10%',
-			href:'${pageContext.request.contextPath}/unit_searchByUnit.action',
+			href:contextPath+'/unit/searchByUnit.do',
 			buttons : [ {
 				id:'document_searchByUnit_OKbtn',
 				text : '确定',
@@ -147,7 +147,7 @@ var addFunUser = function(){
 		title:'添加用户',
 		width : 640,//dialog宽度
 		top:'10%',//dialog离页面顶部的距离
-		href:'user_saveUI.action',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+		href:contextPath+'/user/goURL/user/saveUI.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 		buttons: [ {
 			id:'userSaveUI_OKbtn',
 			text : '确定',
@@ -157,7 +157,7 @@ var addFunUser = function(){
 			}
 		} ],
 		onLoad:function(){
-			$('#user_saveUI_loginName').textbox('textbox').focus();
+			$("#user_saveUI_loginName").textbox('textbox').focus();
 		}
 	});
 };
@@ -177,7 +177,7 @@ var editFunUser = function(){
 			title:'编辑用户信息',
 			width : 640,
 			top:'10%',
-			href:'user_saveUI.action?id='+arr[0].id,
+			href:contextPath+'/user/goURL/user/saveUI.do?id='+arr[0].id,
 			buttons : [ {
 				id:'userSaveUI_OKbtn',
 				text : '确定',
@@ -202,17 +202,16 @@ var editFunUser = function(){
  */
 var deleteFunUser = function(){
 	var rows = userGrid.datagrid('getChecked');//在复选框被选中的时候返回所有行
-	var ids ="";
+	var ids =new Array();
 	if (rows.length > 0) {
 		$.messager.confirm('提示信息', '即将删除' + rows.length + '条数据,确认删除？',function(r) {
 			if(r){//点击确认进入
-				// 将id拼成字符串
+				//给数组ids赋值
 				for (var i = 0; i < rows.length; i++) {
-					ids += rows[i].id + ',';
+					ids[i]= rows[i].id;
 				}
-				ids = ids.substring(0, ids.length - 1);
 				$.ajax({
-					url : 'user_delete.action',
+					url : contextPath+'/user/delete.do',
 					data : {
 						ids : ids
 					},
@@ -251,7 +250,7 @@ var resetPwdFun = function(){
 					ids += rows[i].id + ',';
 				}
 				ids = ids.substring(0, ids.length - 1);//去掉字符串最后的字符（逗号）
-				$.post('user_initPassword.action',{ids : ids},function(r){
+				$.post(contextPath+'/user/initPassword.do',{ids : ids},function(r){
 					if(r.success){
 						userGrid.datagrid('reload');
 						userGrid.datagrid('uncheckAll');
@@ -289,7 +288,7 @@ var checkUserFun = function(){
 			title:'批量审批',
 			width : 200,//dialog宽度
 //			top:'10%',//dialog离页面顶部的距离
-			href:'user_checkUserJsp.action',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+			href:contextPath+'/user/goURL/user/checkUserJsp.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 			buttons: [ {
 				id:'user_checkUser_OKbtn',
 				text : '确定',

@@ -138,6 +138,16 @@
   	select count(id) from unit
   </select>
   
+  <!-- 通过传进来的实体对象查询List -->
+  <select id="selectListByEntity" parameterType="cycle.oa.po.Unit" resultMap="unitResultMap">
+  	select * from unit
+  	<where>
+  		<if test="myGroup!=null">
+  			myGroup_id = #{myGroup.id}
+  		</if>
+  	</where>
+  </select>
+  
   <select id="selectAll" parameterType="map" resultMap="unitResultMap">
   	select id,createdate_time,name,full_Name,tel,state,remark FROM unit
   	<where>

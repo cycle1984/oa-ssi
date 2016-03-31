@@ -22,6 +22,12 @@ public interface BaseMapper<T> {
 	//按ID查找
 	public T selectById(Integer id);
 	
+	//查询单个对象
+	public T selectEntity(T entity);
+	
+	//查询多个对象
+	public List<T> selectListByEntity(T entity);
+	
 	//按条件查询全部
 	public List<T> selectAll(Map<String, Object> map) throws Exception;
 	

@@ -1,6 +1,7 @@
 package cycle.oa.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -42,6 +43,17 @@ public class UnitController extends BaseController{
 		Page<Unit> p = unitService.selectPageDyc(page);
 		return p.getPageMap();
 	}
+	
+	@RequestMapping("/getUnitsByMyGroupId.do")
+	@ResponseBody
+	public Object getUnitsByMyGroupId(Unit unit) throws Exception{
+		
+		System.out.println("myGroupID = "+unit.getMyGroup().getId());
+		List<Unit> units =  unitService.selectListByEntity(unit);
+		return units;
+	}
+	
+	
 	
 	@RequestMapping("/save.do")
 	@ResponseBody

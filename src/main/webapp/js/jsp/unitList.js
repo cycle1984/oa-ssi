@@ -68,7 +68,7 @@ $(function(){
 			}
 		}, {
 			field : 'description',
-			title : '描述',
+			title : '备注',
 			width : 100,
 			sortable : true
 		}]],
@@ -85,7 +85,7 @@ var addFunUnit = function(){
 		title:'添加单位',
 		width : 400,//dialog宽度
 		top:'10%',//dialog离页面顶部的距离
-		href:getRealPath()+'/unit/goURL/unit/saveUI.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+		href:contextPath+'/unit/goURL/unit/saveUI.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 		buttons: [ {
 			id:'unitSaveUI_OKbtn',
 			text : '确定',
@@ -115,7 +115,7 @@ var editFunUnit = function(){
 			title:'编辑单位信息',
 			width : 400,
 			top:'10%',
-			href:getRealPath()+'/unit/goURL/unit/saveUI.do?id='+arr[0].id,
+			href:contextPath+'/unit/goURL/unit/saveUI.do?id='+arr[0].id,
 			buttons : [ {
 				id:'unitSaveUI_OKbtn',
 				text : '确定',
@@ -143,13 +143,12 @@ var deleteFunUnit = function(){
 	if (rows.length > 0) {
 		$.messager.confirm('提示信息', '即将删除' + rows.length + '条数据,确认删除？',function(r) {
 			if(r){//点击确认进入
-				// 将id拼成字符串
 				//给数组ids赋值
 				for (var i = 0; i < rows.length; i++) {
 					ids[i]= rows[i].id;
 				}
 				$.ajax({
-					url : getRealPath()+'/unit/delete.do',
+					url : contextPath+'/unit/delete.do',
 					data : {
 						ids : ids
 					},

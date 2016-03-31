@@ -155,6 +155,9 @@
   		<if test="gender!=null">
   			gender = #{gender},
   		</if>
+  		<if test="dep!=null">
+  			dep = #{dep},
+  		</if>
   		<if test="remark!=null">
   			remark = #{remark},
   		</if>
@@ -190,6 +193,21 @@
   	where id = #{id}
   </select>
   
+  <!-- 查单一对象 -->
+  <select id="selectEntity" parameterType="cycle.oa.po.User" resultMap="userResultMap">
+  	select 
+  		id,createdate_Time,updatedate_Time,login_Name,pwd,name,phone,tel,gender,remark,unit_id 
+  	from user
+  	<where>
+  		<if test="loginName!=null">
+  			and login_Name = #{loginName}
+  		</if>
+  		<if test="pwd!=null">
+  			and pwd = #{pwd}
+  		</if>
+  	</where>
+  </select>
+  
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="userResultMap">
   	select 
@@ -211,6 +229,12 @@
   			<if test="paramEntity.unit.id!=null">
   				and user.unit_id = #{paramEntity.unit.id}
   			</if>
+  		</if>
+  		<if test="createdateTime_start!=null">
+  			and user.createdate_Time <![CDATA[ >= ]]>#{createdateTime_start}
+  		</if>
+  		<if test="createdateTime_end!=null">
+  			and user.createdate_Time <![CDATA[ <= ]]> #{createdateTime_end}
   		</if>
   	</where>
 	

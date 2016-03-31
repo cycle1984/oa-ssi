@@ -3,6 +3,8 @@ package cycle.oa.po;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 /**
  * 用户表
@@ -14,7 +16,9 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 5799322160446271089L;
 
 	private Integer id;//主键
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date createdateTime;// 创建日期
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date updatedateTime;// 最后修改时间
 	private String loginName;// 登陆名
 	private String pwd;// 密码

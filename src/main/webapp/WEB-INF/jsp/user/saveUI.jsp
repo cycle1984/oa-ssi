@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +11,7 @@
 	<script type="text/javascript">
 	
 		$(function(){
+			
 			/**
 			 * 机构下拉菜单初始化
 			 * myGroup
@@ -18,7 +20,7 @@
 					{
 						//value:'-==请选择所属系统==-',
 						//mode:'remote',
-						url : "myGroup_findAll.action",
+						url : contextPath+"/myGroup/findAll.do",
 						valueField : "id",
 						textField : "name",
 						required : false,
@@ -39,7 +41,7 @@
 				onShowPanel : function() {//当下拉面板显示的时候触发
 					var myGroupId = $("#user_saveUI__myGroupCombobox").combobox("getValue");
 					if(myGroupId!=null&&myGroupId!=""){
-						$("#user_saveUI_unitCombobox").combobox('reload','unit_getUnitsByMyGroupId.action?myGroupId='+myGroupId);
+						$("#user_saveUI_unitCombobox").combobox('reload',contextPath+'/unit/getUnitsByMyGroupId.do?myGroup.id='+myGroupId);
 					}
 				}
 			});
@@ -47,26 +49,27 @@
 			/**
 			 * role下来菜单初始化
 			 */
-			$('#user_saveUI_roleCombobox').combobox({
-				url : 'role_findAll.action',
-				valueField : 'id',
-				textField : 'name',
-				editable : false,
-				required : true
-			});
+// 			$('#user_saveUI_roleCombobox').combobox({
+// 				url : 'role_findAll.action',
+// 				valueField : 'id',
+// 				textField : 'name',
+// 				editable : false,
+// 				required : true
+// 			});
 		});
 	
 		/**
 		 * 定义确定按钮js
 		 */
 		var user_saveUI_submitForm = function($dialog,$grid){
+			$('#user_saveUI_form').form('enableValidation');
 			if($('#user_saveUI_form').form('validate')){//如果表单验证通过
 				$('#userSaveUI_OKbtn').linkbutton('disable');//确定按钮禁用
 				var url=null;
 				if($('#user_saveUI_form_id').val().length>0){
-					url='user_edit.action';//若隐藏id有值，则是修改，反之是新增
+					url=contextPath+'/user/edit.do';//若隐藏id有值，则是修改，反之是新增
 				}else{
-					url='user_save.action';
+					url=contextPath+'/user/save.do';
 				}
 				$.post(url,$('#user_saveUI_form').serialize(),function(r){
 					if(r.success){
@@ -121,6 +124,8 @@
 				unitId : unitId,//设置传到后台unitId的值
 				roleId : roleId//设置传到后台roleId的值
   			});
+  			$('#user_saveUI_loginName').textbox('disable');
+  			
   			$('#user_saveUI_unitCombobox').combobox('setText',unitName);//设置回显的text文本
   			$.messager.progress('close');//关闭数据加载提示窗口
 		};
@@ -129,15 +134,13 @@
 	<div style="text-align: center;vertical-align: middle;">
 		<fieldset>
 			<legend>用户基本信息</legend>
-			<form id="user_saveUI_form" method="post">
+			<form id="user_saveUI_form" method="post" class="easyui-form" data-options="novalidate:true">
 				<input name="id" id="user_saveUI_form_id" type="hidden"><!-- 隐藏用户的ID主键  -->
 				<table style="margin:0px auto;">
 					<tr>
 						<td>登录名</td>
 						<td>
-<%-- 							<s:if test="id==null"><input id="user_saveUI_loginName" name="loginName" type="text" class="easyui-textbox" data-options="required:true,delay:1000,validType:['username[$(\'#user_saveUI_loginName\').val()]','remote[\'${pageContext.request.contextPath}/user_searchByLoginName.action\',\'loginName\']']" ></s:if> --%>
-							<input id="user_saveUI_loginName" name="loginName" type="text" class="easyui-textbox" data-options="required:true,delay:1000,validType:['username[$(\'#user_saveUI_loginName\').val()]']"  readonly="readonly">
-							
+							<input id="user_saveUI_loginName" name="loginName" type="text" class="easyui-textbox" data-options="required:true,delay:1000,validType:['username[$(\'#user_saveUI_loginName\').val()]','remote[\'${pageContext.request.contextPath}/user/searchByLoginName.do\',\'loginName\']']" >
 						</td>
 					</tr>
 					<tr>
@@ -158,11 +161,11 @@
 					</tr>
 					<tr>
 						<td>所属机构</td>
-						<td><select id="user_saveUI__myGroupCombobox" name="myGroupId" style="width: 155px"></select></td>
+						<td><select id="user_saveUI__myGroupCombobox" name="unit.myGroup.id" style="width: 155px"></select></td>
 					</tr>
 					<tr>
 						<td>所属单位</td>
-						<td><select id="user_saveUI_unitCombobox" name="unitId" style="width: 155px"></select></td>
+						<td><select id="user_saveUI_unitCombobox" name="unit.id" style="width: 155px"></select></td>
 					</tr>
 					<tr>
 						<td>部门</td>
@@ -173,8 +176,8 @@
 						<td><select id="user_saveUI_roleCombobox" name="roleId" style="width: 155px"></select></td>
 					</tr>
 					<tr>
-						<td>描述</td>
-						<td><input name="description" class="easyui-textbox" data-options="multiline:true,height:50"></td>
+						<td>备注</td>
+						<td><input name="remark" class="easyui-textbox" data-options="multiline:true,height:50"></td>
 					</tr>
 				</table>
 			</form>

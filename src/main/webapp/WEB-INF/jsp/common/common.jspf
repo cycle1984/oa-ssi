@@ -16,6 +16,25 @@
 		var realPath=localhostPaht+projectName;  
 		return realPath;
 	}
+	
+	//将时间格式化成yyyy-MM-dd HH:mm:ss
+	function getFormatDate(date) {
+	    var seperator1 = "-";
+	    var seperator2 = ":";
+	    var year = date.getFullYear();
+	    var month = date.getMonth() + 1;
+	    var strDate = date.getDate();
+	    if (month >= 1 && month <= 9) {
+	        month = "0" + month;
+	    }
+	    if (strDate >= 0 && strDate <= 9) {
+	        strDate = "0" + strDate;
+	    }
+	    var currentdate = year + seperator1 + month + seperator1 + strDate
+	            + " " + date.getHours() + seperator2 + date.getMinutes()
+	            + seperator2 + date.getSeconds();
+	    return currentdate;
+	}
 </script>
 <!-- 获得项目的根路径，存入全局变量 -->
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application"/>

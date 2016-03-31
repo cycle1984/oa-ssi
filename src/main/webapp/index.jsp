@@ -2,13 +2,15 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>公文传输系统</title>
+	<meta charset="UTF-8">
 	<meta name="renderer" content="webkit">
+	<title>公文传输系统</title>
+	
 </head>
 <body>
 	
 	<%
-	response.sendRedirect(request.getContextPath() + "/user_loginUI.action");
+	response.sendRedirect(request.getContextPath() + "/user/goURL/user/loginUI.do");
 	 %>
 </body>
 </html>
