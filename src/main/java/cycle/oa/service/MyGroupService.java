@@ -10,5 +10,5 @@ public interface MyGroupService extends BaseService<MyGroup>{
 	public List<MyGroup> findAll(MyGroup group) throws Exception;
 	
 	//查询总数据量
-	public Long findCount() throws Exception;
+//	public Long findCount() throws Exception;
 }

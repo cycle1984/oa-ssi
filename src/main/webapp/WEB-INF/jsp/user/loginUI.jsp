@@ -16,6 +16,7 @@
 <title>登录页面</title>
 	<script type="text/javascript">
 		var submitForm = function(){
+			$('#user_loginUI_form').form('enableValidation');
 			if ($('#user_loginUI_form').form('validate')) {
 				$('#loginBtn').linkbutton('disable');
 				$('#regBtn').linkbutton('disable');
@@ -147,7 +148,7 @@
 </head>
 <body style="width:100%;height: 100%;margin:0px;padding: 0px;overflow: hidden;"><!-- style里的属性解决在火狐浏览器窗口显示不完整的问题 -->
 	<div id="win" class="easyui-window" title="系统登陆"  style="width:340px;height:200px;text-align:center;"  data-options="border:false,modal:true,collapsible:false,minimizable:false,maximizable:false,closable:false,draggable:false,resizable:false">   
-    	<form id="user_loginUI_form" method="post">
+    	<form id="user_loginUI_form" method="post"  class="easyui-form" data-options="novalidate:true">
     		<table cellpadding="10">
     			<tr>
     				<td>

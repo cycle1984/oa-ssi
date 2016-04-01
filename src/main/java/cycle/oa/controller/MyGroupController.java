@@ -86,7 +86,7 @@ public class MyGroupController extends BaseController{
 		
 		Json json = new Json();
 		try {
-			myGroupService.edit(group);
+			myGroupService.update(group);
 			json.setSuccess(true);
 			json.setMsg("修改机构【"+group.getName()+"】成功");
 		} catch (Exception e) {

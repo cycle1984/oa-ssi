@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void edit(User t) throws Exception {
+	public void update(User t) throws Exception {
 		userMapper.update(t);
 	}
 

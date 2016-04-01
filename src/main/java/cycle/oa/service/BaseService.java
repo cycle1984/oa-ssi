@@ -11,7 +11,7 @@ public interface BaseService<T> {
 	
 	public void deleteByArray(Integer[] ids) throws Exception;
 	
-	public void edit(T t) throws Exception;
+	public void update(T t) throws Exception;
 	
 	public T selectById (Integer id);
 	

@@ -81,7 +81,7 @@ public class UnitController extends BaseController{
 		Json json = new Json();
 		try {
 			unit.setUpdatedateTime(new Date());
-			unitService.edit(unit);
+			unitService.update(unit);
 			json.setSuccess(true);
 			json.setMsg("修改单位信息【"+unit.getName()+"】成功");
 		} catch (Exception e) {

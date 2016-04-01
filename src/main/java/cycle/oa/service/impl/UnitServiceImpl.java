@@ -21,7 +21,6 @@ public class UnitServiceImpl implements UnitService {
 	@Override
 	public List<Unit> findAll(Unit unit) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("unit", unit);
 		return unitMapper.selectAll(map);
 	}
 
@@ -42,7 +41,7 @@ public class UnitServiceImpl implements UnitService {
 	}
 
 	@Override
-	public void edit(Unit t) throws Exception {
+	public void update(Unit t) throws Exception {
 		unitMapper.update(t);
 	}
 

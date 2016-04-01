@@ -157,7 +157,7 @@ public class UserController extends BaseController{
 		Json json = new Json();
 		try {
 			user.setUpdatedateTime(new Date());
-			userService.edit(user);
+			userService.update(user);
 			json.setSuccess(true);
 			json.setMsg("修改用户信息【"+user.getName()+"】成功");
 		} catch (Exception e) {
