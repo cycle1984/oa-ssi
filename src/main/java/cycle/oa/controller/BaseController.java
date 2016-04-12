@@ -12,6 +12,6 @@ public class BaseController {
 	@RequestMapping("/goURL/{folder}/{file}")
 	public String goURL(@PathVariable String folder,@PathVariable String file) {
 		System.out.println("goURL.folder|file===" + folder+"/"+file);
-		return "/"+folder+"/"+file;
+		return folder+"/"+file;
 	}
 }

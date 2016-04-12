@@ -5,9 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -83,37 +86,68 @@ public class UserController extends BaseController{
 		}
 	}
 	
+//	/**
+//	 * 基于URL拦截的登录
+//	 * 登录
+//	 * @return
+//	 */
+//	@RequestMapping("/login.do")
+//	@ResponseBody
+//	public Json login(HttpSession session, User user){
+//		Json json = new Json();
+//		//查询出用户表
+//		user.setPwd(DigestUtils.md5Hex(user.getPwd()));
+//		User u = userService.selectEntity(user);
+//		if(u!=null){
+//			if(u.getUnit()!=null){
+//				//查询出所属单位
+//				Unit unit = unitService.selectById(u.getUnit().getId());
+//				if(unit!=null){
+//					//查询出所属机构
+//					MyGroup m = myGroupService.selectById(unit.getId());
+//					unit.setMyGroup(m);
+//				}
+//				u.setUnit(unit);
+//			}
+//			//session
+//			session.setAttribute("userSession", u);
+//			
+//			json.setSuccess(true);
+//			json.setMsg("登录成功！");
+//		}else{
+//			json.setMsg("登录失败，用户名或密码错误!");
+//		}
+//		return json;
+//	}
+	
 	/**
 	 * 
 	 * 登录
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("/login.do")
 	@ResponseBody
-	public Json login(HttpSession session, User user){
+	public Json login(HttpSession session,HttpServletRequest request, User user) throws Exception{
 		Json json = new Json();
-		//查询出用户表
-		user.setPwd(DigestUtils.md5Hex(user.getPwd()));
-		User u = userService.selectEntity(user);
-		if(u!=null){
-			if(u.getUnit()!=null){
-				//查询出所属单位
-				Unit unit = unitService.selectById(u.getUnit().getId());
-				if(unit!=null){
-					//查询出所属机构
-					MyGroup m = myGroupService.selectById(unit.getId());
-					unit.setMyGroup(m);
-				}
-				u.setUnit(unit);
+		//如果登陆失败从request中获取认证异常信息，shiroLoginFailure就是shiro异常类的全限定名
+		String exceptionClassName = (String) request.getAttribute("shiroLoginFailure");
+		//根据shiro返回的异常类路径判断，抛出指定异常信息
+		if(exceptionClassName!=null){
+			if (UnknownAccountException.class.getName().equals(exceptionClassName)) {
+				//最终会抛给异常处理器
+				json.setMsg("账号不存在");
+			} else if (IncorrectCredentialsException.class.getName().equals(
+					exceptionClassName)) {
+				json.setMsg("用户名/密码错误");
+			} else if("randomCodeError".equals(exceptionClassName)){
+				json.setMsg("验证码错误");
+			}else {
+				throw new Exception();//最终在异常处理器生成未知错误
 			}
-			//session
-			session.setAttribute("userSession", u);
-			
-			json.setSuccess(true);
-			json.setMsg("登录成功！");
-		}else{
-			json.setMsg("登录失败，用户名或密码错误!");
 		}
+		//此方法不处理登陆成功（认证成功），shiro认证成功会自动跳转到上一个请求路径
+		//登陆失败还到login页面
 		return json;
 	}
 	
