@@ -86,39 +86,39 @@ public class UserController extends BaseController{
 		}
 	}
 	
-//	/**
-//	 * 基于URL拦截的登录
-//	 * 登录
-//	 * @return
-//	 */
-//	@RequestMapping("/login.do")
-//	@ResponseBody
-//	public Json login(HttpSession session, User user){
-//		Json json = new Json();
-//		//查询出用户表
-//		user.setPwd(DigestUtils.md5Hex(user.getPwd()));
-//		User u = userService.selectEntity(user);
-//		if(u!=null){
-//			if(u.getUnit()!=null){
-//				//查询出所属单位
-//				Unit unit = unitService.selectById(u.getUnit().getId());
-//				if(unit!=null){
-//					//查询出所属机构
-//					MyGroup m = myGroupService.selectById(unit.getId());
-//					unit.setMyGroup(m);
-//				}
-//				u.setUnit(unit);
-//			}
-//			//session
-//			session.setAttribute("userSession", u);
-//			
-//			json.setSuccess(true);
-//			json.setMsg("登录成功！");
-//		}else{
-//			json.setMsg("登录失败，用户名或密码错误!");
-//		}
-//		return json;
-//	}
+	/**
+	 * 基于URL拦截的登录
+	 * 登录
+	 * @return
+	 */
+	@RequestMapping("/login.do")
+	@ResponseBody
+	public Json login(HttpSession session, User user){
+		Json json = new Json();
+		//查询出用户表
+		user.setPwd(DigestUtils.md5Hex(user.getPwd()));
+		User u = userService.selectEntity(user);
+		if(u!=null){
+			if(u.getUnit()!=null){
+				//查询出所属单位
+				Unit unit = unitService.selectById(u.getUnit().getId());
+				if(unit!=null){
+					//查询出所属机构
+					MyGroup m = myGroupService.selectById(unit.getId());
+					unit.setMyGroup(m);
+				}
+				u.setUnit(unit);
+			}
+			//session
+			session.setAttribute("userSession", u);
+			
+			json.setSuccess(true);
+			json.setMsg("登录成功！");
+		}else{
+			json.setMsg("登录失败，用户名或密码错误!");
+		}
+		return json;
+	}
 	
 	/**
 	 * 
@@ -126,9 +126,9 @@ public class UserController extends BaseController{
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping("/login.do")
+	@RequestMapping("/loginAuthenticationInfo.do")
 	@ResponseBody
-	public Json login(HttpSession session,HttpServletRequest request, User user) throws Exception{
+	public Json loginAuthenticationInfo(HttpServletRequest request) throws Exception{
 		Json json = new Json();
 		//如果登陆失败从request中获取认证异常信息，shiroLoginFailure就是shiro异常类的全限定名
 		String exceptionClassName = (String) request.getAttribute("shiroLoginFailure");
@@ -145,6 +145,8 @@ public class UserController extends BaseController{
 			}else {
 				throw new Exception();//最终在异常处理器生成未知错误
 			}
+		}else{
+			json.setMsg("您还没有登录，或者登录已经过期!!!");
 		}
 		//此方法不处理登陆成功（认证成功），shiro认证成功会自动跳转到上一个请求路径
 		//登陆失败还到login页面

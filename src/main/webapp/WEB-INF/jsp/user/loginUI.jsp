@@ -21,7 +21,7 @@
 				$('#loginBtn').linkbutton('disable');
 				$('#regBtn').linkbutton('disable');
 				//$('#home_login_loginForm').submit();
-				$.post('${pageContext.request.contextPath}/user/login.do',$('#user_loginUI_form').serialize(),function(r) {
+				$.post('${pageContext.request.contextPath}/user/loginAuthenticationInfo.do',$('#user_loginUI_form').serialize(),function(r) {
 					if (r.success) {
 						$.messager.show({
 							title : '提示',
