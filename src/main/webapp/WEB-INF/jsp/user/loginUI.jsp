@@ -14,13 +14,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <title>登录页面</title>
+	
+</head>
+
+<body style="width:100%;height: 100%;margin:0px;padding: 0px;overflow: hidden;"><!-- style里的属性解决在火狐浏览器窗口显示不完整的问题 -->
+	
 	<script type="text/javascript">
 		var submitForm = function(){
 			$('#user_loginUI_form').form('enableValidation');
 			if ($('#user_loginUI_form').form('validate')) {
 				$('#loginBtn').linkbutton('disable');
 				$('#regBtn').linkbutton('disable');
-				//$('#home_login_loginForm').submit();
+// 				$('#user_loginUI_form').submit();
 				$.post('${pageContext.request.contextPath}/user/loginAuthenticationInfo.do',$('#user_loginUI_form').serialize(),function(r) {
 					if (r.success) {
 						$.messager.show({
@@ -145,10 +150,9 @@
 			$('#user_loginUI_loginName').textbox('textbox').focus();//登录名文本框获得焦点
 		})
 	</script>
-</head>
-<body style="width:100%;height: 100%;margin:0px;padding: 0px;overflow: hidden;"><!-- style里的属性解决在火狐浏览器窗口显示不完整的问题 -->
+
 	<div id="win" class="easyui-window" title="系统登陆"  style="width:340px;height:200px;text-align:center;"  data-options="border:false,modal:true,collapsible:false,minimizable:false,maximizable:false,closable:false,draggable:false,resizable:false">   
-    	<form id="user_loginUI_form" method="post"  class="easyui-form" data-options="novalidate:true">
+    	<form id="user_loginUI_form" method="post" action="${pageContext.request.contextPath}/user/loginAuthenticationInfo.do" class="easyui-form" data-options="novalidate:true">
     		<table cellpadding="10">
     			<tr>
     				<td>

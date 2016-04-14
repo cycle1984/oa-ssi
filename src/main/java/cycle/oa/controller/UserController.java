@@ -9,8 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -128,29 +133,26 @@ public class UserController extends BaseController{
 	 */
 	@RequestMapping("/loginAuthenticationInfo.do")
 	@ResponseBody
-	public Json loginAuthenticationInfo(HttpServletRequest request) throws Exception{
+	public Json loginAuthenticationInfo(HttpServletRequest request,HttpSession session,User user) throws Exception{
 		Json json = new Json();
-		//如果登陆失败从request中获取认证异常信息，shiroLoginFailure就是shiro异常类的全限定名
-		String exceptionClassName = (String) request.getAttribute("shiroLoginFailure");
-		//根据shiro返回的异常类路径判断，抛出指定异常信息
-		if(exceptionClassName!=null){
-			if (UnknownAccountException.class.getName().equals(exceptionClassName)) {
-				//最终会抛给异常处理器
-				json.setMsg("账号不存在");
-			} else if (IncorrectCredentialsException.class.getName().equals(
-					exceptionClassName)) {
-				json.setMsg("用户名/密码错误");
-			} else if("randomCodeError".equals(exceptionClassName)){
-				json.setMsg("验证码错误");
-			}else {
-				throw new Exception();//最终在异常处理器生成未知错误
-			}
-		}else{
-			json.setMsg("您还没有登录，或者登录已经过期!!!");
+		Subject subject = SecurityUtils.getSubject();
+        // 已登陆则 跳到首页
+        if (subject.isAuthenticated()) {
+        	System.out.println("----------用户已经登录-------");
+        }
+        System.out.println(user.getLoginName()+","+user.getPwd());
+        // 身份验证
+        try {
+			subject.login(new UsernamePasswordToken(user.getLoginName(), DigestUtils.md5Hex(user.getPwd())));
+			json.setSuccess(true);
+			json.setMsg("登录成功！");
+			System.out.println("----------用户已经登录-------");
+		} catch (AuthenticationException ae) {
+			String exceptionClassName = (String) request.getAttribute("shiroLoginFailure");
+			System.out.println("----------用户已经登录失败-------"+exceptionClassName);
+			json.setMsg("登录失败，用户名或密码错误!");
 		}
-		//此方法不处理登陆成功（认证成功），shiro认证成功会自动跳转到上一个请求路径
-		//登陆失败还到login页面
-		return json;
+        return json;
 	}
 	
 	/**

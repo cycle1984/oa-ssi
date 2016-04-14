@@ -1,4 +1,4 @@
 	
 	<%
-	response.sendRedirect(request.getContextPath() + "/user/goURL/user/loginUI.do");
+	response.sendRedirect(request.getContextPath() + "/home/index.do");
 	 %>

@@ -27,7 +27,7 @@
     </bean>
 	
 	 <!-- 配置C3P0连接池,目的：管理数据库连接 -->
-	<bean id="c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	<bean id="c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClass}"></property>
 		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
 		<property name="user" value="${jdbc.user}"></property>
