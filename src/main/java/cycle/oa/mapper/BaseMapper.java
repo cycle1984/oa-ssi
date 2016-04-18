@@ -19,8 +19,11 @@ public interface BaseMapper<T> {
 	//修改
 	public void update(T t) throws Exception;
 	
-	//按ID查找
+	//按Id查找
 	public T selectById(Integer id);
+	
+	//按Ids查找
+	public List<T> selectByIds(Integer[] ids);
 	
 	//查询单个对象
 	public T selectEntity(T entity);
@@ -29,7 +32,7 @@ public interface BaseMapper<T> {
 	public List<T> selectListByEntity(T entity);
 	
 	//按条件查询全部
-	public List<T> selectAll(Map<String, Object> map) throws Exception;
+	public List<T> selectAll(Map<String, Object> map);
 	
 	
 	public Long selectCount() throws Exception;

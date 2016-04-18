@@ -17,9 +17,10 @@
 	
 	//注销、退出
 	var logoutFun = function() {
-		$.post('${pageContext.request.contextPath}/user/logout.do', function(result) {
-			location.replace('${pageContext.request.contextPath}/index.jsp');
-		}, 'json');
+// 		$.post('${pageContext.request.contextPath}/user/logout.do', function(result) {
+// 			location.replace('${pageContext.request.contextPath}/index.jsp');
+// 		}, 'json');
+		location.replace('${pageContext.request.contextPath}/user/logout.do');
 	};
 	//显示个人信息
 	var showMyInfoFun = function() {
@@ -122,9 +123,9 @@
 		<span > </span>
 		<div style="position: absolute; right: 0px; bottom: 0px;">
 			
-			<span style="color: white;">当前用户:<% if(user!=null){out.print(user.getName());} %>&nbsp; &nbsp; </span>
-			<c:if test="${sessionScope.userSession.loginName!='admin'}">
-				<span style="color: white;">单位:<% if(user!=null){ if(user.getUnit()!=null){out.print(user.getUnit().getName());} } %>&nbsp; &nbsp; </span>
+			<span style="color: white;">当前用户:${userModel.name } &nbsp; &nbsp; </span>
+			<c:if test="${userModel.loginName!='admin'}">
+				<span style="color: white;">单位:${userModel.unit.name} &nbsp; &nbsp; </span>
 			</c:if>
 			<!-- <a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#layout_north_pfMenu',iconCls:'ext-icon-rainbow'">更换皮肤</a>  -->
 			<a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#layout_north_kzmbMenu',iconCls:'ext-icon-cog'"><span style="color: white;">控制面板</span></a> <a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#layout_north_zxMenu',iconCls:'ext-icon-disconnect'"><span style="color: white;">注销</span></a>

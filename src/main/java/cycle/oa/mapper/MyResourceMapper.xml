@@ -5,9 +5,10 @@
   	<id column="id" property="id"/>
   	<result column="name" property="name"/>
   	<result column="url" property="url"/>
+  	<result column="percode" property="percode"/>
   	<result column="type" property="type"/>
-  	<association  column="parent_id" property="myResource" select="seleteById"></association>
-  	<collection column="id"  property="myResources" select="getChildren"></collection>
+  	<association  column="parent_id" property="paretResource" select="seleteById"></association>
+<!--   	<collection column="id"  property="myResources" select="getChildren"></collection> -->
   </resultMap>
   
   <!-- sql片段对应字段名,id属性值任意 -->
@@ -66,9 +67,54 @@
   	</foreach>
   </delete>
   
+  <!-- 通过roleId查询所拥有的资源 -->
+  <select id="selectMyResourceByRoleId" parameterType="int" resultMap="myResourceResultMap">
+  	SELECT id,name,url,target,percode,parent_id 
+  	FROM 
+  	myresource m LEFT JOIN role_myresource r 
+  	ON 
+  	m.ID=r.MYRESOURCE_ID 
+  	WHERE 
+  	r.ROLE_ID=#{roleId}
+  </select>
+  
+  <!-- 通过roleId查询所拥有的权限资源 -->
+  <select id="selectPermissionByRoleId" parameterType="int" resultMap="myResourceResultMap">
+  	SELECT id,name,url,target,percode,parent_id 
+  	FROM 
+  	myresource m LEFT JOIN role_myresource r 
+  	ON 
+  	m.ID=r.MYRESOURCE_ID 
+  	WHERE 
+  	m.type=1 and r.ROLE_ID=#{roleId}
+  </select>
+  
+  <!-- 通过roleId查询所拥有的菜单资源 -->
+  <select id="selectMenuByRoleId" parameterType="int" resultMap="myResourceResultMap">
+  	SELECT id,name,url,target,percode,parent_id 
+  	FROM 
+  	myresource m LEFT JOIN role_myresource r 
+  	ON 
+  	m.ID=r.MYRESOURCE_ID 
+  	WHERE 
+  	m.type=0 and r.ROLE_ID=#{roleId}
+  </select>
   
   <select id="selectAll" parameterType="map" resultMap="myResourceResultMap">
-  	select id,name,url,type,parent_id from myResource
+  	select id,name,url,percode,type,parent_id from myResource
+  	<where>
+  		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
+  		<if test="name!=null">
+  			and name like #{name}
+  		</if>
+  		<if test="type!=null">
+  			and type = #{type}
+  		</if>
+  	</where> 
+  </select>
+  
+  <select id="selectListByEntity" parameterType="cycle.oa.po.MyResource" resultMap="myResourceResultMap">
+  	select id,name,url,percode,type,parent_id from myResource
   	<where>
   		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
   		<if test="name!=null">
@@ -81,11 +127,22 @@
   </select>
   
   <select id="seleteById" parameterType="int" resultMap="myResourceResultMap">
-  	select id,name,url,type,parent_id from myResource
+  	select id,name,url,percode,type,parent_id from myResource
   	where id = #{id}
   </select>
   
+  <!-- 根据id数组查询 -->
+	<select id="selectByIds" resultMap="myResourceResultMap">
+		SELECT id,name,url,target,percode,parent_id 
+	  	FROM 
+	  	myresource
+	  	where id in 
+	  	<foreach collection="array" open="(" close=")" separator="," item="ids">
+  			#{ids}
+  		</foreach>
+	</select>
+  
   <select id="getChildren" parameterType="int" resultMap="myResourceResultMap">  
-        select * from myResource where parent_id = #{id}  
-    </select> 
+      select * from myResource where parent_id = #{id}  
+  </select> 
 </mapper>

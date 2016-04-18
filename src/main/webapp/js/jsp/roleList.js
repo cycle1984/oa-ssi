@@ -2,7 +2,7 @@ var roleGrid = $('#role_list_grid');
 $(function(){
 	roleGrid.datagrid({
 		idField:'id',//指定标识字段
-		url:'${pageContext.request.contextPath}/role_grid.action',//URL从远程站点请求数据
+		url:contextPath+'/role/grid.do',//URL从远程站点请求数据
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		striped : true,//是否显示斑马线
@@ -23,27 +23,26 @@ $(function(){
 			width : 100,
 			sortable : true
 		}, {
-			field : 'description',
+			field : 'remark',
 			title : '描述',
 			width : 100,
 			sortable : true
 		}]],
 		onLoadError:function(){
-			 $.messager.alert('信息提示','登录超时请重新登录!','error');
 		},
 		toolbar:'#role_list_toolbar'//工具面板
 	});
 });
 
 /**
- * 添加角色
+ * 添加角色\权限组
  */
 var addFunRole = function(){
 	var dialog = sy.modalDialog({//创建一个模式化的dialog
 		title:'添加角色',
 		width : 400,//dialog宽度
 		top:'10%',//dialog离页面顶部的距离
-		href:'role_saveUI.action',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+		href:contextPath+'/role/goURL/role/saveUI.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 		buttons: [ {
 			id:'roleSaveUI_OKbtn',
 			text : '确定',
@@ -70,7 +69,7 @@ var editFunRole = function(){
 			title:'编辑角色信息',
 			width : 400,
 			top:'10%',
-			href:'role_saveUI.action?id='+arr[0].id,
+			href:contextPath+'/role/goURL/role/saveUI.do?id='+arr[0].id,
 			buttons : [ {
 				id:'roleSaveUI_OKbtn',
 				text : '确定',
@@ -94,17 +93,16 @@ var editFunRole = function(){
  */
 var deleteFunRole = function(){
 	var rows = roleGrid.datagrid('getChecked');//在复选框被选中的时候返回所有行
-	var ids ="";
+	var ids =new Array();
 	if (rows.length > 0) {
 		$.messager.confirm('提示信息', '即将删除' + rows.length + '条数据,确认删除？',function(r) {
 			if(r){//点击确认进入
-				// 将id拼成字符串
+				//给数组ids赋值
 				for (var i = 0; i < rows.length; i++) {
-					ids += rows[i].id + ',';
+					ids[i]= rows[i].id;
 				}
-				ids = ids.substring(0, ids.length - 1);
 				$.ajax({
-					url : 'role_delete.action',
+					url : contextPath+'/role/delete.do',
 					data : {
 						ids : ids
 					},
@@ -141,12 +139,12 @@ var setFunMyResource = function(){
 	}else{
 		var roleId = arr[0].id;
 		$('#role_setMyResource_tree').tree({
-			url : 'role_setMyResourceUI.action',//准备回显到前台没有勾选之前的权限树
+			url : contextPath+'/role/setMyResourceUI.do',//准备回显到前台没有勾选之前的权限树
 			parentField : 'pid',//父节点id
 			checkbox:true,//显示节点前面的复选框
 			//cascadeCheck:false
 			onLoadSuccess : function(node, data) {//树加载成功后把拥有的权限勾选
-				$.post('role_getRoleMyResource.action', {
+				$.post(contextPath+'/role/getRoleMyResource.do', {
 					roleId : roleId
 				}, function(result) {
 					if (result) {
@@ -174,15 +172,14 @@ var setFunMyResource = function(){
 				text : '确定',
 				handler : function() {
 					//var checkeds =$('#role_setMyResource_tree').tree('getChecked');
-					var checkeds =$('#role_setMyResource_tree').tree('getChecked',[ 'checked', 'indeterminate' ]);//获取已选择和未确定的节点
+					var rows =$('#role_setMyResource_tree').tree('getChecked',[ 'checked', 'indeterminate' ]);//获取已选择和未确定的节点
 					
-					var ids = "";
-					for (var i = 0; i < checkeds.length; i++) {
-						console.info(checkeds[i].text);
-						ids += checkeds[i].id + ',';
+					var ids =new Array();
+					//给数组ids赋值
+					for (var i = 0; i < rows.length; i++) {
+						ids[i]= rows[i].id;
 					}
-					ids = ids.substring(0, ids.length - 1);
-					$.post('${pageContext.request.contextPath}/role_setMyResource.action',{ids : ids,roleId:roleId},function(r){
+					$.post(contextPath+'/role/setMyResource.do',{ids : ids,roleId:roleId},function(r){
 						if(r.success){
 							$('#role_setMyResource_dialog').dialog('close');
 							roleGrid.datagrid('load');

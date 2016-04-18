@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
+
 /**
  * 用户表
  * @author jyj
@@ -31,6 +32,7 @@ public class User implements Serializable {
 	private String dep;//所属科室
 	
 	private Unit unit;//所属单位
+	private Role role;//角色
 	
 	public Integer getId() {
 		return id;
@@ -111,23 +113,12 @@ public class User implements Serializable {
 		this.unit = unit;
 	}
 	
-	//根据struts<s:a>标签的title值判断是否拥有该权限
-	/**
-	 * 
-	 * 判断本用户是否有显示<a>超链接的的权限
-	 * 用<a>标签的title和权限里的name对比
-	 * @param title
-	 * @return
-	 */
-	public boolean hasMyResourceByTitle(String title) {
-		if(isAdmin()){
-			return true;
-		}
-		
-		//非超级管理员判断是否拥有此权限
-		return false;
+	public Role getRole() {
+		return role;
 	}
-	
+	public void setRole(Role role) {
+		this.role = role;
+	}
 	
 	/**
 	 * 判断本用户是否是超级管理员
@@ -137,5 +128,13 @@ public class User implements Serializable {
 	public boolean isAdmin() {
 		return "admin".equals(loginName);
 	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", createdateTime=" + createdateTime + ", updatedateTime=" + updatedateTime
+				+ ", loginName=" + loginName + ", pwd=" + pwd + ", name=" + name + ", phone=" + phone + ", tel=" + tel
+				+ ", gender=" + gender + ", photo=" + photo + ", remark=" + remark + ", dep=" + dep + ", unit=" + unit
+				+ ", role=" + role + "]";
+	}
+	
 	
 }

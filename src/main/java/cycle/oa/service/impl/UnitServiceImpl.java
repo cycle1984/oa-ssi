@@ -13,7 +13,7 @@ import cycle.oa.po.Unit;
 import cycle.oa.service.UnitService;
 
 @Service("unitService")
-public class UnitServiceImpl implements UnitService {
+public class UnitServiceImpl extends BaseServiceImpl<Unit> implements UnitService {
 
 	@Autowired
 	private UnitMapper unitMapper;

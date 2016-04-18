@@ -126,8 +126,7 @@
   	select id,name,owner_unit,remark from myGroup
   	<where>
   		<if test="paramEntity.name!=null">
-<!--   			and name like #{paramEntity.name} -->
-			and CONCAT(name) like #{paramEntity.name}<!-- mysql用于多列模糊查询的函数 -->
+  			and name like #{paramEntity.name}
   		</if>
   	</where>
   	<if test="sort!=null">

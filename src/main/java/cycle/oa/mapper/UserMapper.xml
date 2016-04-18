@@ -24,6 +24,11 @@
 		  	<result column="group_remark" property="remark"/>
 	  	</association>
   	</association>
+  	<association property="role" javaType="cycle.oa.po.Role">
+  		<id column="role_id" property="id"/>
+  		<result column="role_name" property="name"/> 
+  		<result column="role_remark" property="remark"/> 	
+	</association>
   </resultMap>
   
   <!-- sql片段对应字段名,id属性值任意 -->
@@ -196,7 +201,7 @@
   <!-- 查单一对象 -->
   <select id="selectEntity" parameterType="cycle.oa.po.User" resultMap="userResultMap">
   	select 
-  		id,createdate_Time,updatedate_Time,login_Name,pwd,name,phone,tel,gender,remark,unit_id 
+  		id,createdate_Time,updatedate_Time,login_Name,pwd,name,phone,tel,gender,remark,unit_id,role_id 
   	from user
   	<where>
   		<if test="loginName!=null">

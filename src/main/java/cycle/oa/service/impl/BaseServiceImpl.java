@@ -3,6 +3,7 @@ package cycle.oa.service.impl;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -10,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cycle.oa.mapper.BaseMapper;
 import cycle.oa.mapper.MyGroupMapper;
+import cycle.oa.mapper.MyResourceMapper;
+import cycle.oa.mapper.RoleMapper;
+import cycle.oa.mapper.UnitMapper;
+import cycle.oa.mapper.UserMapper;
 import cycle.oa.po.Page;
 import cycle.oa.service.BaseService;
 
@@ -19,6 +24,18 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	
 	@Autowired
 	protected MyGroupMapper myGroupMapper;
+	
+	@Autowired
+	protected UnitMapper unitMapper;
+	
+	@Autowired
+	protected UserMapper userMapper;
+	
+	@Autowired
+	protected MyResourceMapper myResourceMapper;
+	
+	@Autowired
+	protected RoleMapper roleMapper;
 	
 	@PostConstruct//在构造方法后，初化前执行
 	private void initBaseMapper() throws Exception{
@@ -92,6 +109,18 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 		page.setList(baseMapper.selectPageListDyc(page));
 		page.setTotalRecord(baseMapper.selectPageCountDyc(page));
 		return page;
+	}
+
+
+	@Override
+	public List<T> selectAll(Map<String,Object> map) {
+		return baseMapper.selectAll(map);
+	}
+
+
+	@Override
+	public List<T> selectByIds(Integer[] ids) {
+		return baseMapper.selectByIds(ids);
 	}
 
 }

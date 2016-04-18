@@ -1,13 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/common/common.jspf"%>
 <%@ page import="cycle.oa.po.User"%>
-<%
-	User user = (User) session.getAttribute("userSession");
-	if (user != null) {
-		response.sendRedirect(request.getContextPath()
-				+ "/home/index.do");
-	}
-%>
 <!DOCTYPE html>
 <html>
 <head>

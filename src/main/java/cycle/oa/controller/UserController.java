@@ -11,10 +11,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -53,6 +51,13 @@ public class UserController extends BaseController{
 	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));//true:允许输入空值，false:不能为空值
 	}
 	
+	@RequestMapping("/gridJsp.do")
+	@RequiresPermissions("user:grid")
+	public String gridJsp(){
+		
+		return "/user/list";
+	}
+	
 	/**
 	 * //通过关键字分页查询
 	 * 返回群组json数据
@@ -61,6 +66,7 @@ public class UserController extends BaseController{
 	 */
 	@RequestMapping("/grid.do")
 	@ResponseBody
+	@RequiresPermissions("user:grid")
 	public Object grid(Page<User> page,User user) throws Exception{
 		if(user.getName()!=null){//如果name属性不为空， 模糊查询
 			user.setName("%"+user.getName()+"%");
@@ -172,6 +178,7 @@ public class UserController extends BaseController{
 	
 	@RequestMapping("/save.do")
 	@ResponseBody
+	@RequiresPermissions("user:save")
 	public Json save(User user){
 		Json json = new Json();
 		user.setCreatedateTime(new Date());

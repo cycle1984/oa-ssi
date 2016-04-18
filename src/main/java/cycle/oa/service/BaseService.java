@@ -2,6 +2,7 @@ package cycle.oa.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import cycle.oa.po.Page;
 
@@ -15,8 +16,12 @@ public interface BaseService<T> {
 	
 	public T selectById (Integer id);
 	
+	public List<T> selectByIds(Integer[] ids);
+	
 	//查询单个对象
 	public T selectEntity(T entity);
+	
+	public List<T> selectAll(Map<String,Object> map);
 	
 	//查询多个对象
 	public List<T> selectListByEntity(T entity);

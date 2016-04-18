@@ -21,17 +21,6 @@ public class MyGroupController extends BaseController{
 	@Resource(name="myGroupService")
 	private MyGroupService myGroupService;
 	
-	
-	/**
-	 * 跳转到群组列表页面
-	 * @return
-	 */
-	@RequestMapping("/gridJsp.do")
-	public String gridJsp(){
-		
-		return "/myGroup/list";
-	}
-	
 	/**
 	 * //通过关键字分页查询
 	 * 返回群组json数据
@@ -109,5 +98,5 @@ public class MyGroupController extends BaseController{
 			e.printStackTrace();
 		}
 		return json;
-	} 
+	}
 }

@@ -1,8 +1,8 @@
 package cycle.oa.po;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyResource implements Serializable {
 
@@ -11,14 +11,18 @@ public class MyResource implements Serializable {
 	private Integer id;
 	private String name;//名称
 	private String url;//链接
-	private String description;//描述 
+	private String percode;//权限
+	private String remark;//描述 
 	private String iconCls;//图标
 	private Integer seq;//顺序
 	private String target;//目标
-	private Integer type = 0;//0表示只在左侧菜单显示，1表示功能
+	private Integer type = 0;//0表示只在左侧菜单显示，1表示功能、权限资源
 	
-	private MyResource myResource;//上级权限
-	private Set<MyResource> myResources = new HashSet<MyResource>();//拥有的下级权限
+	
+	private MyResource paretResource;//上级权限
+	private List<MyResource> myResources = new ArrayList<MyResource>();//拥有的下级权限
+	private List<Role> roles = new ArrayList<Role>();//拥有此权限的角色
+	
 	public Integer getId() {
 		return id;
 	}
@@ -37,11 +41,12 @@ public class MyResource implements Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getDescription() {
-		return description;
+	
+	public String getRemark() {
+		return remark;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	public String getIconCls() {
 		return iconCls;
@@ -67,18 +72,29 @@ public class MyResource implements Serializable {
 	public void setType(Integer type) {
 		this.type = type;
 	}
-	public MyResource getMyResource() {
-		return myResource;
+	
+	public String getPercode() {
+		return percode;
 	}
-	public void setMyResource(MyResource myResource) {
-		this.myResource = myResource;
+	public void setPercode(String percode) {
+		this.percode = percode;
 	}
-	public Set<MyResource> getMyResources() {
+	public MyResource getParetResource() {
+		return paretResource;
+	}
+	public void setParetResource(MyResource paretResource) {
+		this.paretResource = paretResource;
+	}
+	public List<MyResource> getMyResources() {
 		return myResources;
 	}
-	public void setMyResources(Set<MyResource> myResources) {
+	public void setMyResources(List<MyResource> myResources) {
 		this.myResources = myResources;
 	}
-	
-	
+	public List<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
 }

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cycle.oa.mapper.RoleMapper" >
+  <resultMap id="roleResultMap" type="cycle.oa.po.Role" >
+  	<id column="id" property="id"/>
+  	<result column="name" property="name"/>
+  	<result column="remark" property="remark"/>
+  	<collection property="myResources" ofType="cycle.oa.po.MyResource">
+  		<id column="res_id" property="id"/>
+  		<result column="res_name" property="name"/>
+  		<result column="res_url" property="url"/>
+  		<result column="res_percode" property="percode"/>
+  		<result column="res_remark" property="remark"/>
+  	</collection>
+  </resultMap>
+	
+	<!-- sql片段对应字段名,id属性值任意 -->
+	<sql id="key">
+		<!-- 去掉最后一个, -->
+		<trim suffixOverrides=",">
+			<if test="name!=null">
+				name,
+			</if>
+			<if test="remark!=null">
+				remark,
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="value">
+		<!-- 去掉最后一个, -->
+		<trim suffixOverrides=",">
+			<if test="name!=null">
+				#{name},
+			</if>
+			<if test="remark!=null">
+				#{remark},
+			</if>
+		</trim>
+	</sql>
+	
+	<insert id="insert" parameterType="cycle.oa.po.Role">
+		<!-- 在使用MyBatis做持久层时，insert语句默认是不返回记录的主键值，而是返回插入的记录条数；如果业务层需要得到记录的主键时，可以通过配置的方式来完成这个功能 -->
+	  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		insert into role(<include refid="key"/>) values(<include refid="value"/>)
+	</insert>
+	
+	<!-- 传进数组,批量删除 -->
+	<delete id="deleteByArray">
+		delete from role where id in 
+		<!-- foreach用于迭代数组元素
+		 open表示开始符号
+		 close表示结束符合
+		 separator表示元素间的分隔符
+		 item表示迭代的数组，属性值可以任意，但提倡与方法的数组名相同
+		 #{ids}表示数组中的每个元素值
+		-->
+		<foreach collection="array" open="(" close=")" separator="," item="ids">
+			#{ids}
+		</foreach>
+	</delete>
+	
+	<!-- 根据roleId删除角色和权限关系表 -->
+	<delete id="deleleteRoleMyResourceByRoleId" parameterType="int">
+		delete from Role_MyResource where ROLE_ID = #{id}
+	</delete>
+	
+	<!-- 新建Role_MyResource关系表关联数据 -->
+	<insert id="insertRoleMyResource" parameterType="map">
+		insert into Role_MyResource(MYRESOURCE_ID,ROLE_ID) values(#{myResourceId},#{roleId})
+	</insert>
+	
+	<update id="update" parameterType="cycle.oa.po.Role">
+		update role 
+		<set>
+			<if test="name!=null">
+				name = #{name},
+			</if>
+			<if test="remark!=null">
+				remark = #{remark},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="selectById" parameterType="int" resultMap="roleResultMap">
+		select id,name,remark from role where id=#{id}
+	</select>
+	<select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="roleResultMap">
+		SELECT id,NAME,remark FROM role
+		<where>
+			<if test="paramEntity.name!=null">
+				and name like #{paramEntity.name}
+  			</if>
+		</where>
+		<if test="sort!=null">
+  			ORDER BY ${sort} ${order}
+  		</if>
+  		limit #{start},#{rows}
+	</select>
+	<!-- 通过多条件分页查询，返回总记录数 -->
+  	<select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
+  		select count(id) from role
+  		<where>
+  			<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
+  		</where>
+  	</select>
+</mapper>
