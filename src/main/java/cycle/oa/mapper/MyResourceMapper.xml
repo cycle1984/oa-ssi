@@ -11,6 +11,16 @@
 <!--   	<collection column="id"  property="myResources" select="getChildren"></collection> -->
   </resultMap>
   
+  <resultMap type="cycle.oa.po.MyResource" id="myResourceResultMapALL">
+  	<id column="id" property="id"/>
+  	<result column="name" property="name"/>
+  	<result column="url" property="url"/>
+  	<result column="percode" property="percode"/>
+  	<result column="type" property="type"/>
+  	<association  column="parent_id" property="paretResource" select="seleteById"></association>
+  	<collection column="id"  property="myResources" select="getChildren"></collection>
+  </resultMap>
+  
   <!-- sql片段对应字段名,id属性值任意 -->
   <sql id="key">
   	<!-- 去掉最后一个, -->
@@ -132,7 +142,7 @@
   </select>
   
   <!-- 根据id数组查询 -->
-	<select id="selectByIds" resultMap="myResourceResultMap">
+	<select id="selectByIds" resultMap="myResourceResultMapALL">
 		SELECT id,name,url,target,percode,parent_id 
 	  	FROM 
 	  	myresource

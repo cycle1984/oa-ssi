@@ -30,12 +30,6 @@ public class SysController {
 	@RequestMapping("/findAllMenu.do")
 	@ResponseBody
 	public List<Tree> findAllMenu() {
-//		List<Tree> tree = new ArrayList<Tree>();
-//		try {
-//			tree = myResourceService.findMenuTree();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 		Subject subject = SecurityUtils.getSubject();
 		
 		User user = (User) subject.getPrincipal();

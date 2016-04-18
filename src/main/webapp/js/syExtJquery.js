@@ -222,11 +222,20 @@ $.ajaxSetup({
 	}
 });
 
-//$.ajaxSetup({
-//	cache: false, //close AJAX cache
-//    contentType:"application/x-www-form-urlencoded;charset=utf-8", 
-//    complete:function(XHR,textStatus){   
-//	    var resText = XHR.responseText;
+$.ajaxSetup({
+	cache: false, //close AJAX cache
+    contentType:"application/x-www-form-urlencoded;charset=utf-8", 
+    complete:function(XHR,textStatus){   
+	    console.info(XHR);
+	    console.info(textStatus);
+	    var sessionStatus = XHR.getResponseHeader('sessionstatus');
+        if(sessionStatus == 'timeout') {
+            var top = getTopWinow();
+            var yes = confirm('由于您长时间没有操作, session已过期, 请重新登录.');
+            if (yes) {
+                top.location.href = '${pageContext.request.contextPath}/index.do';            
+            }
+        }
 //	    if(resText=='ajaxSessionTimeOut'){   
 //	    	$.messager.alert('操作提示','用户登录会话已过期，请重新登录！','warning',function(){
 //	    		window.location.href='index.jsp';
@@ -234,8 +243,8 @@ $.ajaxSetup({
 //	    }else if(resText=='ajaxNoLimit'){   
 //	    	$.messager.alert('操作提示','无相应操作权限，请联系系统管理员！','warning');
 //	    }
-//    }
-//});
+    }
+});
 
 /**
  * 解决class="iconImg"的img标记，没有src的时候，会出现边框问题
