@@ -181,7 +181,7 @@ public class UserController extends BaseController{
 	@RequiresPermissions("user:save")
 	public Json save(User user){
 		Json json = new Json();
-		user.setCreatedateTime(new Date());
+		user.setCreateDatetime(new Date());
 		try {
 			userService.save(user);
 			user.setUnit(unitService.selectById(user.getUnit().getId()));
@@ -201,7 +201,7 @@ public class UserController extends BaseController{
 		
 		Json json = new Json();
 		try {
-			user.setUpdatedateTime(new Date());
+			user.setUpdateDatetime(new Date());
 			userService.update(user);
 			json.setSuccess(true);
 			json.setMsg("修改用户信息【"+user.getName()+"】成功");

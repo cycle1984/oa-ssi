@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cycle.oa.mapper.BaseMapper;
+import cycle.oa.mapper.DocumentMapper;
 import cycle.oa.mapper.MyGroupMapper;
 import cycle.oa.mapper.MyResourceMapper;
 import cycle.oa.mapper.RoleMapper;
@@ -36,6 +37,9 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	
 	@Autowired
 	protected RoleMapper roleMapper;
+	
+	@Autowired
+	protected DocumentMapper documentMapper;
 	
 	@PostConstruct//在构造方法后，初化前执行
 	private void initBaseMapper() throws Exception{

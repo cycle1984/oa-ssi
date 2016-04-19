@@ -60,7 +60,7 @@ public class UnitController extends BaseController{
 	public Json save(Unit unit){
 		System.out.println(unit);
 		Json json = new Json();
-		unit.setCreatedateTime(new Date());
+		unit.setCreateDatetime(new Date());
 		try {
 			unitService.save(unit);
 			unit.setMyGroup(myGroupService.selectById(unit.getMyGroup().getId()));
@@ -80,7 +80,7 @@ public class UnitController extends BaseController{
 		
 		Json json = new Json();
 		try {
-			unit.setUpdatedateTime(new Date());
+			unit.setUpdateDatetime(new Date());
 			unitService.update(unit);
 			json.setSuccess(true);
 			json.setMsg("修改单位信息【"+unit.getName()+"】成功");

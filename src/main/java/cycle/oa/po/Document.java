@@ -22,7 +22,7 @@ public class Document implements Serializable {
 	private String docNum;//发文字号
 	private String documentTitle;
 	private String level;//公文紧急等级
-	private Date createdatetime;//创建日期
+	private Date createDatetime;//创建日期
 	private String publishUserName;//发布人姓名
 	private String remark;//描述、备注
 	private String signInfoString;//用来显示已签收多少单位，未签收多少单位
@@ -55,11 +55,11 @@ public class Document implements Serializable {
 	public void setLevel(String level) {
 		this.level = level;
 	}
-	public Date getCreatedatetime() {
-		return createdatetime;
+	public Date getCreateDatetime() {
+		return createDatetime;
 	}
-	public void setCreatedatetime(Date createdatetime) {
-		this.createdatetime = createdatetime;
+	public void setCreateDatetime(Date createDatetime) {
+		this.createDatetime = createDatetime;
 	}
 	public String getPublishUserName() {
 		return publishUserName;

@@ -3,13 +3,17 @@
 <mapper namespace="cycle.oa.mapper.DocumentMapper" >
   <resultMap id="documentResultMap" type="cycle.oa.po.Document" >
   	<id column="id" property="id"/>
-  	<result column="docNum" property="docNum"/>
-  	<result column="documentTitle" property="documentTitle"/>
+  	<result column="doc_Num" property="docNum"/>
+  	<result column="document_Title" property="documentTitle"/>
   	<result column="level" property="level"/>
-  	<result column="createdatetime" property="createdatetime"/>
+  	<result column="create_datetime" property="createDatetime"/>
   	<result column="publishUserName" property="publishUserName"/>
   	<result column="remark" property="remark"/>
-  	<result column="signInfoString" property="signInfoString"/>
+  	<association column="PUBLISH_UNIT_ID" property="publishUnit">
+  		<id column="unit_id" property="id"/>
+  		<result column="unit_name" property="name"/>
+  		
+  	</association>
   </resultMap>
   
   <!-- sql片段对应字段名,id属性值任意 -->
@@ -19,11 +23,26 @@
   		<if test="name!=null">
   			name,
   		</if>
-  		<if test="ownerUnit!=null">
-  			owner_unit,
+  		<if test="docNum!=null">
+  			doc_Num,
+  		</if>
+  		<if test="documentTitle!=null">
+  			document_Title,
+  		</if>
+  		<if test="level!=null">
+  			level,
+  		</if>
+  		<if test="createDatetime!=null">
+  			create_datetime,
+  		</if>
+  		<if test="publishUserName!=null">
+  			publishUserName,
   		</if>
   		<if test="remark!=null">
   			remark,
+  		</if>
+  		<if test="signInfoString!=null">
+  			signInfoString,
   		</if>
   	</trim>
   </sql>
@@ -34,26 +53,41 @@
   		<if test="name!=null">
   			#{name},
   		</if>
-  		<if test="ownerUnit!=null">
-  			#{ownerUnit},
+  		<if test="docNum!=null">
+  			#{docNum},
+  		</if>
+  		<if test="documentTitle!=null">
+  			#{documentTitle},
+  		</if>
+  		<if test="level!=null">
+  			#{level},
+  		</if>
+  		<if test="createDatetime!=null">
+  			#{createDatetime},
+  		</if>
+  		<if test="publishUserName!=null">
+  			#{publishUserName},
   		</if>
   		<if test="remark!=null">
   			#{remark},
   		</if>
+  		<if test="signInfoString!=null">
+  			#{signInfoString},
+  		</if>
   	</trim>
   </sql>
   
-  <insert id="insert" parameterType="cycle.oa.po.MyGroup">
+  <insert id="insert" parameterType="cycle.oa.po.Document">
   	<!-- 在使用MyBatis做持久层时，insert语句默认是不返回记录的主键值，而是返回插入的记录条数；如果业务层需要得到记录的主键时，可以通过配置的方式来完成这个功能 -->
   	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 		SELECT LAST_INSERT_ID() AS id
 	</selectKey>
-  	insert into myGroup(<include refid="key"/>) values(<include refid="value"/>)
+  	insert into document(<include refid="key"/>) values(<include refid="value"/>)
   </insert>
   
   <!-- 传进数组,批量删除 -->
   <delete id="deleteByArray">
-  	delete from myGroup where id in 
+  	delete from document where id in 
   	<!-- foreach用于迭代数组元素
 		 open表示开始符号
 		 close表示结束符合
@@ -67,7 +101,7 @@
   </delete>
   
   <delete id="deleteByList">
-  	delete from myGroup where id in 
+  	delete from document where id in 
   	<!-- foreach用于迭代数组元素
 		 open表示开始符号
 		 close表示结束符合
@@ -80,47 +114,52 @@
   	</foreach>
   </delete>
   
-  <update id="update" parameterType="cycle.oa.po.MyGroup">
-  	update myGroup 
+  <update id="update" parameterType="cycle.oa.po.Document">
+  	update document 
   	<set>
   		<if test="name!=null">
   			name = #{name},
   		</if>
-  		<if test="ownerUnit!=null">
-  			owner_unit = #{ownerUnit},
+  		<if test="docNum!=null">
+  			doc_Num = #{docNum},
+  		</if>
+  		<if test="documentTitle!=null">
+  			document_Title = #{documentTitle},
+  		</if>
+  		<if test="level!=null">
+  			level = #{level},
+  		</if>
+  		<if test="createdatetime!=null">
+  			create_datetime = #{createdatetime},
+  		</if>
+  		<if test="publishUserName!=null">
+  			publishUserName = #{publishUserName},
   		</if>
   		<if test="remark!=null">
   			remark = #{remark},
+  		</if>
+  		<if test="signInfoString!=null">
+  			signInfoString = #{signInfoString},
   		</if>
   	</set>
   	where id = #{id}
   </update>
   
   <select id="selectCount" resultType="long">
-  	select count(id) from myGroup
+  	select count(id) from document
   </select>
   
-  <select id="selectAll" parameterType="map" resultMap="myGroupResultMap">
-  	select id,name,owner_unit,remark from myGroup
-  	<where>
-  		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
-  		<if test="name!=null">
-  			and name like #{name}
-  		</if>
-  	</where> 
-  </select>
-  
-  <select id="selectById" parameterType="int" resultMap="myGroupResultMap">
-  	select id,name,owner_unit,remark from myGroup
+  <select id="selectById" parameterType="int" resultMap="documentResultMap">
+  	select id,document_title,level,CREATE_DATETIME,PUBLISHUSERNAME,remark,PUBLISH_UNIT_ID from document
   	where id = #{id}
   </select>
   
   <!-- 通过多条件分页查询，返回数据集 -->
-  <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="myGroupResultMap">
-  	select id,name,owner_unit,remark from myGroup
+  <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="documentResultMap">
+  	id,document_title,level,CREATE_DATETIME,PUBLISHUSERNAME,remark,PUBLISH_UNIT_ID from document
   	<where>
-  		<if test="paramEntity.name!=null">
-  			and name like #{paramEntity.name}
+  		<if test="paramEntity.documentTitle!=null">
+  			and document_Title like #{paramEntity.documentTitle}
   		</if>
   	</where>
   	<if test="sort!=null">
@@ -131,9 +170,11 @@
   
    <!-- 通过多条件分页查询，返回总记录数 -->
   <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
-  	select count(id) from myGroup
+  	select count(id) from document
   	<where>
-  		<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
+  		<if test="paramEntity.documentTitle!=null">
+  			and document_Title like #{paramEntity.documentTitle}
+  		</if>
   	</where>
   </select>
 </mapper>

@@ -3,8 +3,8 @@
 <mapper namespace="cycle.oa.mapper.UserMapper" >
   <resultMap id="userResultMap" type="cycle.oa.po.User" >
   	<id column="id" property="id"/>
-  	<result column="createdate_time" property="createdateTime"/>
-  	<result column="updatedate_time" property="updatedateTime"/>
+  	<result column="create_datetime" property="createDatetime"/>
+  	<result column="update_datetime" property="updateDatetime"/>
   	<result column="login_name" property="loginName"/>
   	<result column="pwd" property="pwd"/>
   	<result column="name" property="name"/>
@@ -35,11 +35,11 @@
   <sql id="key">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="createdateTime!=null">
-  			createdate_time,
+  		<if test="createDatetime!=null">
+  			create_datetime,
   		</if>
-  		<if test="updatedateTime!=null">
-  			updatedate_time,
+  		<if test="updateDatetime!=null">
+  			update_datetime,
   		</if>
   		<if test="loginName!=null">
   			login_name,
@@ -74,11 +74,11 @@
   <sql id="value">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="createdateTime!=null">
-  			#{createdateTime},
+  		<if test="createDatetime!=null">
+  			#{createDatetime},
   		</if>
-  		<if test="updatedateTime!=null">
-  			#{updatedateTime},
+  		<if test="updateDatetime!=null">
+  			#{updateDatetime},
   		</if>
   		<if test="loginName!=null">
   			#{loginName},
@@ -136,11 +136,11 @@
   <update id="update" parameterType="cycle.oa.po.User">
   	update user 
   	<set>
-  		<if test="createdateTime!=null">
-  			createdate_Time = #{createdateTime},
+  		<if test="createDatetime!=null">
+  			create_Datetime = #{createDatetime},
   		</if>
-  		<if test="updatedateTime!=null">
-  			updatedate_Time = #{updatedateTime},
+  		<if test="updateDatetime!=null">
+  			update_Datetime = #{updateDatetime},
   		</if>
   		<if test="loginName!=null">
   			login_Name = #{loginName},
@@ -181,7 +181,7 @@
   
   <select id="selectAll" parameterType="map" resultMap="userResultMap">
   	select 
-  		id,createdate_Time,updatedate_Time,login_Name,pwd,name,phone,tel,gender,remark,unit_id 
+  		id,create_Datetime,update_Datetime,login_Name,pwd,name,phone,tel,gender,remark,unit_id 
   	FROM user
   	<where>
   		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
@@ -193,7 +193,7 @@
   
   <select id="selectById" parameterType="int" resultMap="userResultMap">
   	select 
-  		id,createdate_Time,updatedate_Time,login_Name,pwd,name,phone,tel,gender,remark,unit_id 
+  		id,create_Datetime,update_Datetime,login_Name,pwd,name,phone,tel,gender,remark,unit_id 
   	from user
   	where id = #{id}
   </select>
@@ -201,7 +201,7 @@
   <!-- 查单一对象 -->
   <select id="selectEntity" parameterType="cycle.oa.po.User" resultMap="userResultMap">
   	select 
-  		id,createdate_Time,updatedate_Time,login_Name,pwd,name,phone,tel,gender,remark,unit_id,role_id 
+  		id,create_Datetime,update_Datetime,login_Name,pwd,name,phone,tel,gender,remark,unit_id,role_id 
   	from user
   	<where>
   		<if test="loginName!=null">
@@ -216,11 +216,14 @@
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="userResultMap">
   	select 
-  		user.id,user.createdate_Time,user.updatedate_Time,user.login_Name,user.pwd,user.name,user.phone,user.tel,user.gender,user.dep,user.remark,
+  		user.id,user.create_Datetime,user.update_Datetime,user.login_Name,user.pwd,user.name,user.phone,user.tel,user.gender,user.dep,user.remark,
   		unit.id unit_id,unit.name unit_name,
   		myGroup.id group_id,myGroup.name group_name
   	from user left join (unit left join myGroup on unit.myGroup_id = myGroup.id) on user.unit_id=unit.id
   	<where>
+  		<if test="1==1">
+  			and user.login_name !="admin"
+  		</if>
   		<if test="paramEntity.name!=null">
   			and user.name like #{paramEntity.name}
   		</if>
@@ -235,18 +238,18 @@
   				and user.unit_id = #{paramEntity.unit.id}
   			</if>
   		</if>
-  		<if test="createdateTime_start!=null">
-  			and user.createdate_Time <![CDATA[ >= ]]>#{createdateTime_start}
+  		<if test="createDatetime_start!=null">
+  			and user.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}
   		</if>
-  		<if test="createdateTime_end!=null">
-  			and user.createdate_Time <![CDATA[ <= ]]> #{createdateTime_end}
+  		<if test="createDatetime_end!=null">
+  			and user.create_Datetime <![CDATA[ <= ]]> #{createDatetime_end}
   		</if>
   	</where>
 	
   	<if test="sort!=null">
   		<choose>
   			<when test="sort=='loginName'">ORDER BY login_name ${order}</when>
-  			<when test="sort=='createdateTime'">ORDER BY createdate_Time ${order}</when>
+  			<when test="sort=='createDatetime'">ORDER BY create_Datetime ${order}</when>
   			<when test="sort=='unit.myGroup.name'">ORDER BY group_id ${order}</when>
   			<otherwise>ORDER BY ${sort} ${order}</otherwise>
   		</choose>
@@ -260,6 +263,9 @@
   		count(user.id)
   	from user left join (unit left join myGroup on unit.myGroup_id = myGroup.id) on user.unit_id=unit.id
   	<where>
+  		<if test="1==1">
+  			and user.login_name !="admin"
+  		</if>
   		<if test="paramEntity.name!=null">
   			and user.name like #{paramEntity.name}
   		</if>
@@ -273,6 +279,12 @@
   			<if test="paramEntity.unit.id!=null">
   				and user.unit_id = #{paramEntity.unit.id}
   			</if>
+  		</if>
+  		<if test="createDatetime_start!=null">
+  			and user.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}
+  		</if>
+  		<if test="createDatetime_end!=null">
+  			and user.create_Datetime <![CDATA[ <= ]]> #{createDatetime_end}
   		</if>
   	</where>
   </select>

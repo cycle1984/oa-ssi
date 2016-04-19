@@ -4,8 +4,8 @@
   <resultMap id="unitResultMap" type="cycle.oa.po.Unit" >
   	<id column="id" property="id"/>
   	<result column="name" property="name"/>
-  	<result column="createdate_time" property="createdateTime"/>
-  	<result column="updatedate_time" property="updatedateTime"/>
+  	<result column="create_datetime" property="createDatetime"/>
+  	<result column="update_datetime" property="updateDatetime"/>
   	<result column="full_name" property="fullName"/>
   	<result column="tel" property="tel"/>
   	<result column="state" property="state"/>
@@ -22,11 +22,11 @@
   <sql id="key">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="createdateTime!=null">
-  			createdate_time,
+  		<if test="createDatetime!=null">
+  			create_datetime,
   		</if>
-  		<if test="updatedateTime!=null">
-  			updatedate_time,
+  		<if test="updateDatetime!=null">
+  			update_datetime,
   		</if>
   		<if test="name!=null">
   			name,
@@ -52,11 +52,11 @@
   <sql id="value">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="createdateTime!=null">
-  			#{createdateTime},
+  		<if test="createDatetime!=null">
+  			#{createDatetime},
   		</if>
-  		<if test="updatedateTime!=null">
-  			#{updatedateTime},
+  		<if test="updateDatetime!=null">
+  			#{updateDatetime},
   		</if>
   		<if test="name!=null">
   			#{name},
@@ -106,11 +106,11 @@
   <update id="update" parameterType="cycle.oa.po.Unit">
   	update unit 
   	<set>
-  		<if test="createdateTime!=null">
-  			createdate_time = #{createdateTime},
+  		<if test="createDatetime!=null">
+  			create_datetime = #{createDatetime},
   		</if>
-  		<if test="updatedateTime!=null">
-  			updatedate_time = #{updatedateTime},
+  		<if test="updateDatetime!=null">
+  			update_datetime = #{updateDatetime},
   		</if>
   		<if test="name!=null">
   			name = #{name},
@@ -149,7 +149,7 @@
   </select>
   
   <select id="selectAll" parameterType="map" resultMap="unitResultMap">
-  	select id,createdate_time,name,full_Name,tel,state,remark FROM unit
+  	select id,create_datetime,name,full_Name,tel,state,remark FROM unit
   	<where>
   		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
   		<if test="name!=null">
@@ -159,14 +159,14 @@
   </select>
   
   <select id="selectById" parameterType="int" resultMap="unitResultMap">
-  	select id,createdate_time,name,full_Name,tel,state,remark from unit
+  	select id,create_datetime,name,full_Name,tel,state,remark from unit
   	where id = #{id}
   </select>
   
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="unitResultMap">
   	select 
-  	unit.id,unit.createdate_time,unit.name,unit.full_Name,unit.tel,unit.state,unit.remark,
+  	unit.id,unit.create_datetime,unit.name,unit.full_Name,unit.tel,unit.state,unit.remark,
   	myGroup.id group_id,myGroup.name group_name,myGroup.owner_unit group_owner_unit 
   	from unit left join myGroup on unit.MyGROUP_ID=mygroup.id
   	<where>

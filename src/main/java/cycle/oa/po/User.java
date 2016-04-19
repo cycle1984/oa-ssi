@@ -18,9 +18,9 @@ public class User implements Serializable {
 
 	private Integer id;//主键
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
-	private Date createdateTime;// 创建日期
+	private Date createDatetime;// 创建日期
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
-	private Date updatedateTime;// 最后修改时间
+	private Date updateDatetime;// 最后修改时间
 	private String loginName;// 登陆名
 	private String pwd;// 密码
 	private String name;// 真实姓名
@@ -40,17 +40,17 @@ public class User implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Date getCreatedateTime() {
-		return createdateTime;
+	public Date getCreateDatetime() {
+		return createDatetime;
 	}
-	public void setCreatedateTime(Date createdateTime) {
-		this.createdateTime = createdateTime;
+	public void setCreateDatetime(Date createDatetime) {
+		this.createDatetime = createDatetime;
 	}
-	public Date getUpdatedateTime() {
-		return updatedateTime;
+	public Date getUpdateDatetime() {
+		return updateDatetime;
 	}
-	public void setUpdatedateTime(Date updatedateTime) {
-		this.updatedateTime = updatedateTime;
+	public void setUpdateDatetime(Date updateDatetime) {
+		this.updateDatetime = updateDatetime;
 	}
 	public String getLoginName() {
 		return loginName;
@@ -130,7 +130,7 @@ public class User implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", createdateTime=" + createdateTime + ", updatedateTime=" + updatedateTime
+		return "User [id=" + id + ", createdateTime=" + createDatetime + ", updatedateTime=" + updateDatetime
 				+ ", loginName=" + loginName + ", pwd=" + pwd + ", name=" + name + ", phone=" + phone + ", tel=" + tel
 				+ ", gender=" + gender + ", photo=" + photo + ", remark=" + remark + ", dep=" + dep + ", unit=" + unit
 				+ ", role=" + role + "]";

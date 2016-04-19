@@ -27,8 +27,8 @@ public class Page<T> implements Serializable {
 	private Map<String, Object> pageMap = new HashMap<String, Object>() ;//可用于向后台传json数据的map
 	
 	//用于工具栏查询的起始和结束时间的参数传递
-	private Date createdateTime_start;
-	private Date createdateTime_end = new Date();
+	private Date createDatetime_start;
+	private Date createDatetime_end = new Date();
 	
 	public Integer getPage() {
 		return page;
@@ -88,17 +88,17 @@ public class Page<T> implements Serializable {
 		this.order = order;
 	}
 	
-	public Date getCreatedateTime_start() {
-		return createdateTime_start;
+	public Date getCreateDatetime_start() {
+		return createDatetime_start;
 	}
-	public void setCreatedateTime_start(Date createdateTime_start) {
-		this.createdateTime_start = createdateTime_start;
+	public void setCreateDatetime_start(Date createDatetime_start) {
+		this.createDatetime_start = createDatetime_start;
 	}
-	public Date getCreatedateTime_end() {
-		return createdateTime_end;
+	public Date getCreateDatetime_end() {
+		return createDatetime_end;
 	}
-	public void setCreatedateTime_end(Date createdateTime_end) {
-		this.createdateTime_end = createdateTime_end;
+	public void setCreateDatetime_end(Date createDatetime_end) {
+		this.createDatetime_end = createDatetime_end;
 	}
 	@Override
 	public String toString() {

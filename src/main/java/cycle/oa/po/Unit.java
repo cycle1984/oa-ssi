@@ -13,8 +13,8 @@ public class Unit implements Serializable {
 	private static final long serialVersionUID = -5979357220444776982L;
 
 	private Integer id;//主键
-	private Date createdateTime;//创建时间
-	private Date updatedateTime;//最后更新时间
+	private Date createDatetime;//创建时间
+	private Date updateDatetime;//最后更新时间
 	private String name;//单位名称
 	private String fullName;//单位全称
 	private String tel;//办公室电话
@@ -29,17 +29,17 @@ public class Unit implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Date getCreatedateTime() {
-		return createdateTime;
+	public Date getCreateDatetime() {
+		return createDatetime;
 	}
-	public void setCreatedateTime(Date createdateTime) {
-		this.createdateTime = createdateTime;
+	public void setCreateDatetime(Date createDatetime) {
+		this.createDatetime = createDatetime;
 	}
-	public Date getUpdatedateTime() {
-		return updatedateTime;
+	public Date getUpdateDatetime() {
+		return updateDatetime;
 	}
-	public void setUpdatedateTime(Date updatedateTime) {
-		this.updatedateTime = updatedateTime;
+	public void setUpdateDatetime(Date updateDatetime) {
+		this.updateDatetime = updateDatetime;
 	}
 	public String getName() {
 		return name;
@@ -80,7 +80,7 @@ public class Unit implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Unit [id=" + id + ", createdateTime=" + createdateTime + ", updatedateTime=" + updatedateTime
+		return "Unit [id=" + id + ", createdateTime=" + createDatetime + ", updatedateTime=" + updateDatetime
 				+ ", name=" + name + ", fullName=" + fullName + ", tel=" + tel + ", remark=" + remark + ", state="
 				+ state + ", myGroup=" + myGroup + "]";
 	}
