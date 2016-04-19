@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,19 +16,11 @@ import cycle.oa.easyui.Tree;
 import cycle.oa.po.MyResource;
 import cycle.oa.po.Page;
 import cycle.oa.po.Role;
-import cycle.oa.service.MyResourceService;
-import cycle.oa.service.RoleService;
 
 @Controller
 @RequestMapping("/role")
 public class RoleController extends BaseController {
 
-	@Autowired
-	protected RoleService roleService;
-	
-	@Autowired
-	protected MyResourceService myResourceService;
-	
 	@RequestMapping("/grid.do")
 	@ResponseBody
 	public Object grid(Page<Role> page,Role role){

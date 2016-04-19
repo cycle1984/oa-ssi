@@ -3,8 +3,6 @@ package cycle.oa.controller;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,19 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cycle.oa.easyui.Json;
 import cycle.oa.po.Page;
 import cycle.oa.po.Unit;
-import cycle.oa.service.MyGroupService;
-import cycle.oa.service.UnitService;
 
 @Controller
 @RequestMapping("/unit")
 public class UnitController extends BaseController{
 
-	@Resource
-	private UnitService unitService;
-	
-	@Resource
-	private MyGroupService myGroupService;
-	
 	/**
 	 * //通过关键字分页查询
 	 * 返回群组json数据

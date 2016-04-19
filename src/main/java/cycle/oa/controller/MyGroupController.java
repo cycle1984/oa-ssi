@@ -2,8 +2,6 @@ package cycle.oa.controller;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,14 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cycle.oa.easyui.Json;
 import cycle.oa.po.MyGroup;
 import cycle.oa.po.Page;
-import cycle.oa.service.MyGroupService;
 
 @Controller
 @RequestMapping("/myGroup")
 public class MyGroupController extends BaseController{
-	
-	@Resource(name="myGroupService")
-	private MyGroupService myGroupService;
 	
 	/**
 	 * //通过关键字分页查询

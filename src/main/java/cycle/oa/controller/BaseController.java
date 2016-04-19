@@ -1,16 +1,38 @@
 package cycle.oa.controller;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cycle.oa.service.DocumentService;
+import cycle.oa.service.MyGroupService;
+import cycle.oa.service.MyResourceService;
+import cycle.oa.service.RoleService;
 import cycle.oa.service.UnitService;
+import cycle.oa.service.UserService;
 
 @Controller
 @RequestMapping("/base")
 public class BaseController {
+	
+	@Autowired
+	protected MyGroupService myGroupService;
+	
+	@Autowired
+	protected UnitService unitService;
+	
+	@Autowired
+	protected UserService userService;
+	
+	@Autowired
+	protected RoleService roleService;
+	
+	@Autowired
+	protected MyResourceService myResourceService;
+	
+	@Autowired
+	protected DocumentService documentService;
 	
 	//跳到指定页面
 	@RequestMapping("/goURL/{folder}/{file}")

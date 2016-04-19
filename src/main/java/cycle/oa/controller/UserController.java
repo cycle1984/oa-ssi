@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -27,35 +26,17 @@ import cycle.oa.po.MyGroup;
 import cycle.oa.po.Page;
 import cycle.oa.po.Unit;
 import cycle.oa.po.User;
-import cycle.oa.service.MyGroupService;
-import cycle.oa.service.UnitService;
-import cycle.oa.service.UserService;
 
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController{
 	
-	@Resource
-	private MyGroupService myGroupService;
-	
-	@Resource
-	private UnitService unitService;
-	
-	@Resource
-	private UserService userService;
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	    dateFormat.setLenient(false);
 	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));//true:允许输入空值，false:不能为空值
-	}
-	
-	@RequestMapping("/gridJsp.do")
-	@RequiresPermissions("user:grid")
-	public String gridJsp(){
-		
-		return "/user/list";
 	}
 	
 	/**
