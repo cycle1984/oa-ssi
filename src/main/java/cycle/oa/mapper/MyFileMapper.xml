@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cycle.oa.mapper.MyFileMapper" >
+  <resultMap id="myFileResultMap" type="cycle.oa.po.MyFile" >
+  	<id column="id" property="id"/>
+  	<result column="fileName" property="fileName"/>
+  	<association property="document" javaType="cycle.oa.po.Document">
+  		<id column="document_id" property="id"/>
+  		<result column="document_Title" property="documentTitle"/>
+  	</association>
+  </resultMap>
+  
+  <!-- sql片段对应字段名,id属性值任意 -->
+  <sql id="key">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="fileName!=null">
+  			fileName,
+  		</if>
+  		<if test="document!=null">
+  			DOCUMENT_ID,
+  		</if>
+  	</trim>
+  </sql>
+  
+  <sql id="value">
+  	<!-- 去掉最后一个, -->
+  	<trim suffixOverrides=",">
+  		<if test="fileName!=null">
+  			fileName = #{fileName},
+  		</if>
+  		<if test="document!=null">
+  			DOCUMENT_ID = #{DOCUMENT_ID},
+  		</if>
+  	</trim>
+  </sql>
+  
+  <insert id="insert" parameterType="cycle.oa.po.MyFile">
+  	<!-- 在使用MyBatis做持久层时，insert语句默认是不返回记录的主键值，而是返回插入的记录条数；如果业务层需要得到记录的主键时，可以通过配置的方式来完成这个功能 -->
+  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+  	insert into myFile(<include refid="key"/>) values(<include refid="value"/>)
+  </insert>
+  
+  <!-- 传进数组,批量删除 -->
+  <delete id="deleteByArray">
+  	delete from myFile where id in 
+  	<!-- foreach用于迭代数组元素
+		 open表示开始符号
+		 close表示结束符合
+		 separator表示元素间的分隔符
+		 item表示迭代的数组，属性值可以任意，但提倡与方法的数组名相同
+		 #{ids}表示数组中的每个元素值
+	 -->
+  	<foreach collection="array" open="(" close=")" separator="," item="ids">
+  		#{ids}
+  	</foreach>
+  </delete>
+  
+  <delete id="deleteByList">
+  	delete from myFile where id in 
+  	<!-- foreach用于迭代数组元素
+		 open表示开始符号
+		 close表示结束符合
+		 separator表示元素间的分隔符
+		 item表示迭代的数组，属性值可以任意，但提倡与方法的数组名相同
+		 #{ids}表示数组中的每个元素值
+	 -->
+  	<foreach collection="list" open="(" close=")" separator="," item="ids">
+  		#{ids}
+  	</foreach>
+  </delete>
+  
+  <update id="update" parameterType="cycle.oa.po.MyFile">
+  	update myFile 
+  	<set>
+  		<if test="fileName!=null">
+  			fileName = #{fileName},
+  		</if>
+  		<if test="document!=null">
+  			document_id = #{document_id},
+  		</if>
+  	</set>
+  	where id = #{id}
+  </update>
+  
+  <select id="selectCount" resultType="long">
+  	select count(id) from myFile
+  </select>
+  
+  <select id="selectById" parameterType="int" resultMap="myFileResultMap">
+  	select id,fileName
+  	where id = #{id}
+  </select>
+  
+  <!-- 根据docId查询所以文件 -->
+  <select id="selectByDocId" parameterType="int" resultMap="myFileResultMap">
+  	select id,fileName
+  	from 
+  	myFile 
+  	where DOCUMENT_ID = #{docId}
+  	
+  </select>
+</mapper>
