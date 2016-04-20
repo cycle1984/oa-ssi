@@ -9,11 +9,11 @@
   	<result column="create_datetime" property="createDatetime"/>
   	<result column="publishUserName" property="publishUserName"/>
   	<result column="remark" property="remark"/>
-<!--   	<association column="PUBLISH_UNIT_ID" property="publishUnit"> -->
-<!--   		<id column="unit_id" property="id"/> -->
-<!--   		<result column="unit_name" property="name"/> -->
+  	<association property="publishUnit" javaType="cycle.oa.po.Unit">
+  		<id column="unit_id" property="id"/>
+  		<result column="unit_name" property="name"/>
   		
-<!--   	</association> -->
+  	</association>
   </resultMap>
   
   <!-- sql片段对应字段名,id属性值任意 -->
@@ -156,26 +156,32 @@
   
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="documentResultMap">
-  	select id,document_title,level,CREATE_DATETIME,PUBLISHUSERNAME,remark from document
-<!--   	<where> -->
-<!--   		<if test="paramEntity.documentTitle!=null"> -->
-<!--   			and document_Title like #{paramEntity.documentTitle} -->
-<!--   		</if> -->
-<!--   	</where> -->
-<!-- 	<choose> -->
-<!-- 		<when test="sort=='createDatetime'">ORDER BY create_Datetime ${order}</when> -->
-<!-- 		<otherwise>ORDER BY ${sort} ${order}</otherwise> -->
-<!-- 	</choose> -->
-<!--   	limit #{start},#{rows} -->
+  	select d.id,d.doc_Num,d.document_title,d.level,d.CREATE_DATETIME,d.PUBLISHUSERNAME,d.remark,
+  	u.id unit_id,u.name unit_name
+  	from 
+  	document d left join unit u on d.PUBLISH_UNIT_ID = u.id
+  	<where>
+  		<if test="paramEntity.documentTitle!=null">
+  			and document_Title like #{paramEntity.documentTitle}
+  		</if>
+  	</where>
+	<choose>
+		<when test="sort=='createDatetime'">ORDER BY create_Datetime ${order}</when>
+		<when test="sort=='docNum'">ORDER BY doc_Num ${order}</when>
+		<when test="sort=='documentTitle'">ORDER BY document_Title ${order}</when>
+		<when test="sort=='publishUnit'">ORDER BY PUBLISH_UNIT_ID ${order}</when>
+		<otherwise>ORDER BY ${sort} ${order}</otherwise>
+	</choose>
+  	limit #{start},#{rows}
   </select>
   
    <!-- 通过多条件分页查询，返回总记录数 -->
   <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
   	select count(id) from document
-<!--   	<where> -->
-<!--   		<if test="paramEntity.documentTitle!=null"> -->
-<!--   			and document_Title like #{paramEntity.documentTitle} -->
-<!--   		</if> -->
-<!--   	</where> -->
+  	<where>
+  		<if test="paramEntity.documentTitle!=null">
+  			and document_Title like #{paramEntity.documentTitle}
+  		</if>
+  	</where>
   </select>
 </mapper>

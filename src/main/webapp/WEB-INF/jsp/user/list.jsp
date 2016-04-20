@@ -26,7 +26,7 @@
 <!-- 								<td>权限级别</td> -->
 <!-- 								<td><select class="easyui-combobox" name="role.id" style="width: 100px" data-options="valueField:'id',textField:'name',editable:false,url:'role_findAll.action'"></select></td> -->
 								<td>创建时间</td>
-								<td><input type="text" name="createdateTime_start" class="easyui-datetimebox" data-options="showSeconds:false,editable:false" style="width: 120px;"/>-<input name="createdateTime_end" type="text" class="easyui-datetimebox"  data-options="showSeconds:false,editable:false" style="width: 120px;"/></td>
+								<td><input type="text" name="createDatetime_start" class="easyui-datetimebox" data-options="showSeconds:false,editable:false" style="width: 120px;"/>-<input name="createDatetime_end" type="text" class="easyui-datetimebox"  data-options="showSeconds:false,editable:false" style="width: 120px;"/></td>
 								<td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom',plain:true" onclick="userGrid.datagrid('load',sy.serializeObject($('#user_list_toolbar_form')));">过滤</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom_out',plain:true" onclick="$('#user_list_toolbar_form').form('clear');userGrid.datagrid('load',{});">重置过滤</a></td>
 							</tr>
 						</table>

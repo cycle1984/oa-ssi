@@ -1,6 +1,7 @@
 package cycle.oa.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Page<T> implements Serializable {
 	private Integer rows;//页大小，每页显示几条数据
 	private Integer start;//数据起始下标序号，需要这里处理
 	private Long totalRecord = 0L;//总记录 数
-	private List<T> list;//页面数据列表
+	private List<T> list = new ArrayList<T>();//页面数据列表
 	private T paramEntity;//多条件查询
 	private String sort;// 排序字段
 	private String order = "asc";// asc/desc

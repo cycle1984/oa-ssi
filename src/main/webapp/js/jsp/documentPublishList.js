@@ -33,8 +33,15 @@ $(function(){
 			field : 'createDatetime',
 			title : '发布时间',
 			width : 60,
-			align:'center',
-			sortable : true
+			align:'left',
+			sortable : true,
+			formatter: function(value,row,index){
+				if (value){
+					return getFormatDate(new Date(value));
+				} else {
+					return value;
+				}
+			}
 		},{
 			field : 'docNum',
 			title : '发文字号',
@@ -168,9 +175,9 @@ var delFunDocumentPublish = function(){
  * 查看签收信息列表
  */
 var viewSignInfos = function(docId,index){
-	var dialog = sy.modalDialog({
+	var dialog = parent.sy.modalDialog({
 		title:'文件签收情况表',
-		href:'signInfo_toViewInfoJsp.action?docId='+docId,
+		href:contextPath+'/signInfo/signInfoList.do?docId='+docId,
 		width:700,
 		height:'70%',
 		border:true,

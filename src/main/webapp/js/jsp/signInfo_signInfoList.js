@@ -2,7 +2,7 @@ $(function(){
 	var docId = $('#signInfo_signInfoList_id').val();
 	$('#signInfo_signInfoList_grid').datagrid({
 		idField : 'id',
-		url:'signInfo_signInfoGrid.action?docId='+docId,
+		url:contextPath+'/signInfo/gridBydocId.do?docId='+docId,
 		fit : true,
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		striped : true,//是否显示斑马线
@@ -53,7 +53,6 @@ $(function(){
 			width : 100,
 			sortable : true
 		}]],
-		toolbar : '#',
 		onLoadSuccess:function(data){
 		}
 	});

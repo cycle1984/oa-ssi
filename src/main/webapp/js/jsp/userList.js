@@ -77,7 +77,7 @@ $(function(){
 				}
 			}
 		}, {
-			field : 'createdateTime',
+			field : 'createDatetime',
 			title : '创建时间',
 			width : 150,
 			align : 'center',

@@ -18,6 +18,11 @@ public class DocumentController extends BaseController {
 	@RequestMapping("/publishGrid.do")
 	@ResponseBody
 	public Object publishGrid(Page<Document> page,Document document){
+		String documentTitle = document.getDocumentTitle();
+		if(documentTitle!=null){
+			document.setDocumentTitle("%"+documentTitle+"%");
+		}
+		
 		page.setParamEntity(document);
 		Page<Document> p = documentService.selectPageDyc(page);
 		

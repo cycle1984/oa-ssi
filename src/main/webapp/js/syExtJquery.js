@@ -200,41 +200,34 @@ sy.cookie = function(key, value, options) {
  * @requires jQuery
  * 
  */
-/**
- * 改变jQuery的AJAX默认属性和方法
- * 
- * @author 孙宇
- * 
- * @requires jQuery
- * 
- */
-$.ajaxSetup({
-	type : 'POST',
-	error : function(XMLHttpRequest, textStatus, errorThrown) {
-		try {
-			parent.$.messager.progress('close');
-			
-			//parent.$.messager.alert('错误', XMLHttpRequest.responseText);
-			parent.$.messager.alert('错误5', "未知错误，请关闭整个网页后重新登录，或联系管理员");
-		} catch (e) {
-			alert(XMLHttpRequest.responseText);
-		}
-	}
-});
+//$.ajaxSetup({
+//	type : 'POST',
+//	error : function(XMLHttpRequest, textStatus, errorThrown) {
+//		try {
+//			parent.$.messager.progress('close');
+//			
+//			//parent.$.messager.alert('错误', XMLHttpRequest.responseText);
+//			parent.$.messager.alert('错误5', "未知错误，请关闭整个网页后重新登录，或联系管理员");
+//		} catch (e) {
+//			alert(XMLHttpRequest.responseText);
+//		}
+//	}
+//});
 
 $.ajaxSetup({
 	cache: false, //close AJAX cache
     contentType:"application/x-www-form-urlencoded;charset=utf-8", 
+    error: function (xhr, status, e) { show.append('error invoke! status:' + status+'<br/>'); },
     complete:function(XHR,textStatus){   
-	    console.info(XHR);
-	    console.info(textStatus);
-	    var sessionStatus = XHR.getResponseHeader('sessionstatus');
-        if(sessionStatus == 'timeout') {
-            var top = getTopWinow();
-            var yes = confirm('由于您长时间没有操作, session已过期, 请重新登录.');
-            if (yes) {
-                top.location.href = '${pageContext.request.contextPath}/index.do';            
-            }
+//        if(sessionStatus == 'timeout') {
+//            var top = getTopWinow();
+//            var yes = confirm('由于您长时间没有操作, session已过期, 请重新登录.');
+//            if (yes) {
+//                top.location.href = '${pageContext.request.contextPath}/index.do';            
+//            }
+//        }
+        if(textStatus=="parsererror"){
+            location.href = contextPath+'/index.jsp';            
         }
 //	    if(resText=='ajaxSessionTimeOut'){   
 //	    	$.messager.alert('操作提示','用户登录会话已过期，请重新登录！','warning',function(){
