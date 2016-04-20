@@ -41,7 +41,14 @@ $(function(){
 			title : '签收时间',
 			width : 100,
 			align : 'center',
-			sortable : true
+			sortable : true,
+			formatter: function(value,row,index){
+				if (value){
+					return getFormatDate(new Date(value));
+				} else {
+					return value;
+				}
+			}
 		},{
 			field : 'signUserName',
 			title : '签收人',

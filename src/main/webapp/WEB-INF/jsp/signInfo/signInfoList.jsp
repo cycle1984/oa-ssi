@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="/WEB-INF/jsp/common/common.jspf"%>
 <!DOCTYPE html>
 <html>
@@ -11,7 +13,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jsp/signInfo_signInfoList.js"></script>
 	<div class="easyui-layout" style="width: 100%;height:100%;overflow: hidden;">
 		<div data-options="region:'north',border:false" >
-			<input id="signInfo_signInfoList_id" name="id" type="hidden" value="${id}">
+			<input id="signInfo_signInfoList_id" name="id" type="hidden" value="${document.id}">
 			<table class="table" style="width: 100%">
 				<tr>
 					<td colspan="2" style="text-align: center;">文件签收情况</td>
@@ -22,7 +24,7 @@
 				</tr>
 				<tr>
 					<th style="width: 100px;">发布时间:</th>
-					<td >${document.createDatetime }</td>
+					<td><fmt:formatDate value="${document.createDatetime }" pattern="yyyy-MM-dd HH:mm"/> </td>
 				</tr>
 				<tr>
 					<th style="width: 100px;">备注:</th>

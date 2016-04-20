@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ include file="/WEB-INF/jsp/common/common.jspf"%>
 <%@ page import="cycle.oa.po.User"%>
 <!DOCTYPE html>
@@ -11,7 +12,12 @@
 </head>
 
 <body style="width:100%;height: 100%;margin:0px;padding: 0px;overflow: hidden;"><!-- style里的属性解决在火狐浏览器窗口显示不完整的问题 -->
-	
+	<!-- 用户已登录时，跳转到主页面-->
+	<shiro:user>
+		<script type="text/javascript">
+			location.replace('${pageContext.request.contextPath}/home/index.do');
+		</script>
+	</shiro:user>
 	<script type="text/javascript">
 		var submitForm = function(){
 			$('#user_loginUI_form').form('enableValidation');

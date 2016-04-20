@@ -8,5 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
+sessionShiro:${sessionScope.uuu }
 </body>
 </html>

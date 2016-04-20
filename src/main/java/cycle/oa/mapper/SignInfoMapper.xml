@@ -32,9 +32,6 @@
   		<if test="state!=null">
   			state,
   		</if>
-  		<if test="level!=null">
-  			level,
-  		</if>
   		<if test="signDate!=null">
   			signDate,
   		</if>
@@ -58,9 +55,6 @@
   		</if>
   		<if test="state!=null">
   			#{state},
-  		</if>
-  		<if test="level!=null">
-  			#{level},
   		</if>
   		<if test="signDate!=null">
   			#{signDate},
@@ -123,9 +117,6 @@
   		<if test="state!=null">
   			state = #{state},
   		</if>
-  		<if test="level!=null">
-  			level = #{level},
-  		</if>
   		<if test="signDate!=null">
   			signDate = #{signDate},
   		</if>
@@ -144,36 +135,26 @@
   </select>
   
   <select id="selectById" parameterType="int" resultMap="signInfoResultMap">
-  	select id,publishUserName,publishUnitName,state,level,signDate,ip,signUserName from signInfo
+  	select id,publishUserName,publishUnitName,state,signDate,ip,signUserName 
+  	from 
+  	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
   	where id = #{id}
   </select>
   
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="signInfoResultMap">
-  	select id,publishUserName,publishUnitName,state,level,signDate,ip,signUserName
+  	select si.id,si.publishUserName,si.publishUnitName,si.state,si.signDate,si.ip,si.signUserName,u.name unit_name
   	from 
-  	signInfo
+  	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
   	where DOCUMENT_ID = #{docId}
-<!--   	<where> -->
-<!--   		<if test="paramEntity.signInfoTitle!=null"> -->
-<!--   			and signInfo_Title like #{paramEntity.signInfoTitle} -->
-<!--   		</if> -->
-<!--   	</where> -->
-<!-- 	<choose> -->
-<!-- 		<when test="sort=='createDatetime'">ORDER BY create_Datetime ${order}</when> -->
-<!-- 		<otherwise>ORDER BY ${sort} ${order}</otherwise> -->
-<!-- 	</choose> -->
-<!--   	limit #{start},#{rows} -->
+  	limit #{start},#{rows}
   </select>
   
    <!-- 通过多条件分页查询，返回总记录数 -->
   <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
-  	select count(id) from signInfo
+  	select count(si.id) 
+  	from
+  	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
   	where DOCUMENT_ID = #{docId}
-<!--   	<where> -->
-<!--   		<if test="paramEntity.signInfoTitle!=null"> -->
-<!--   			and signInfo_Title like #{paramEntity.signInfoTitle} -->
-<!--   		</if> -->
-<!--   	</where> -->
   </select>
 </mapper>

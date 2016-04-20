@@ -27,10 +27,19 @@ public class Page<T> implements Serializable {
 	private String order = "asc";// asc/desc
 	private Map<String, Object> pageMap = new HashMap<String, Object>() ;//可用于向后台传json数据的map
 	
+	private Integer docId;//公文id
+	
 	//用于工具栏查询的起始和结束时间的参数传递
 	private Date createDatetime_start;
 	private Date createDatetime_end = new Date();
 	
+	
+	public Integer getDocId() {
+		return docId;
+	}
+	public void setDocId(Integer docId) {
+		this.docId = docId;
+	}
 	public Integer getPage() {
 		return page;
 	}

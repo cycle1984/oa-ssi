@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cycle.oa.po.Document;
-import cycle.oa.po.MyGroup;
 import cycle.oa.po.Page;
 import cycle.oa.po.SignInfo;
 
@@ -38,8 +37,9 @@ public class SignInfoController extends BaseController{
 	@RequestMapping("/gridBydocId.do")
 	@ResponseBody
 	public Object gridBydocId(Page<SignInfo> page,SignInfo signInfo){
+		Page<SignInfo> p = signInfoService.selectPageDyc(page);
 		
-		return null;
+		return p.getPageMap();
 	}
 	
 }

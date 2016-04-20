@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,10 +21,15 @@
 	    }
 	    
 	</script>
+	
 	<div id="home_main_tabs" class="easyui-tabs" data-options="fit:true,plain:false">
-		<div title="Tab1" style="padding:20px;">   
-        tab1   
-    	</div> 
+		<!-- 管理员默认显示 -->
+		<c:if test="${userModel.loginName=='admin'}">
+		 	<div title="发文管理">
+		    	<jsp:include page="../document/publishList.jsp"></jsp:include>
+			</div>
+		</c:if>
+		
 	</div>
 </body>
 </html>
