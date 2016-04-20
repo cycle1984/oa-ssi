@@ -113,11 +113,11 @@ $(function(){
  * 发布公文
  */
 var addFunDocumentPublish = function(){
-	var dialog = sy.modalDialog({
+	var dialog = parent.sy.modalDialog({
 		title:'发布公文',
 		width : 640,
 		top:'10%',
-		href:'${pageContext.request.contextPath}/document_saveUI.action',
+		href:contextPath+'/document/goURL/document/saveUI.do',
 		buttons : [ {
 			id:'document_saveUI_OKbtn',
 			text : '发布',
@@ -146,7 +146,7 @@ var delFunDocumentPublish = function(){
 					ids += rows[i].id + ',';
 				}
 				ids = ids.substring(0, ids.length - 1);
-				$.post('document_delete.action',{ids : ids},function(r){
+				$.post(contextPath+'/document/delete.action',{ids : ids},function(r){
 					if(r.success){
 						$('#document_publishList_grid').datagrid('load');
 						$('#document_publishList_grid').datagrid('uncheckAll');

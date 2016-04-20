@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cycle.oa.easyui.Tree;
+import cycle.oa.easyui.TreeNode;
 import cycle.oa.mapper.MyResourceMapper;
 import cycle.oa.po.MyResource;
 import cycle.oa.service.MyResourceService;
@@ -26,12 +26,12 @@ public class MyResourceServiceImpl extends BaseServiceImpl<MyResource> implement
 	}
 
 	@Override
-	public List<Tree> findMenuTree() {
-		List<Tree> tree = new ArrayList<Tree>();//准备菜单树
+	public List<TreeNode> findMenuTree() {
+		List<TreeNode> tree = new ArrayList<TreeNode>();//准备菜单树
 		//获取数据库里的所以菜单资源
 		List<MyResource> myResources = findAllMenu();
 		for (MyResource myResource : myResources) {
-			Tree node = new Tree();//树节点
+			TreeNode node = new TreeNode();//树节点
 			BeanUtils.copyProperties(myResource, node);//将菜单项复制到树节点
 			node.setText(myResource.getName());//设置树节点的名称
 			Map<String,String> attributes = new HashMap<String,String>();

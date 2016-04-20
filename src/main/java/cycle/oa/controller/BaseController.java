@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cycle.oa.service.DocumentService;
+import cycle.oa.service.MyFileService;
 import cycle.oa.service.MyGroupService;
 import cycle.oa.service.MyResourceService;
 import cycle.oa.service.RoleService;
@@ -37,6 +38,9 @@ public class BaseController {
 	
 	@Autowired
 	protected SignInfoService signInfoService;
+	
+	@Autowired
+	protected MyFileService myFileService;
 	
 	//跳到指定页面
 	@RequestMapping("/goURL/{folder}/{file}")

@@ -1,11 +1,14 @@
 package cycle.oa.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cycle.oa.po.Document;
+import cycle.oa.po.MyFile;
 import cycle.oa.po.Page;
 import cycle.oa.po.SignInfo;
 
@@ -22,8 +25,14 @@ public class SignInfoController extends BaseController{
 	 */
 	@RequestMapping("/signInfoList.do")
 	public String signInfoList(Integer docId,Model model){
-		
+		//根据公文id获得document信息
 		Document document = documentService.selectById(docId);
+		
+		//根据公文id获得所属的附件
+		List<MyFile> myFiles = myFileService.selectByDocId(docId);
+		
+		document.setMyFiles(myFiles);
+		
 		model.addAttribute("document", document);
 		
 		return "/signInfo/signInfoList";

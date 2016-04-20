@@ -1,9 +1,9 @@
 package cycle.oa.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -28,8 +28,8 @@ public class Document implements Serializable {
 	private String signInfoString;//用来显示已签收多少单位，未签收多少单位
 	
 	private Unit publishUnit;//发布人的单位
-	private Set<SignInfo> signInfos = new HashSet<SignInfo>(); //签收信息列表
-	private Set<MyFile> myFiles = new HashSet<MyFile>();//附件信息(下载所需)
+	private List<SignInfo> signInfos = new ArrayList<SignInfo>(); //签收信息列表
+	private List<MyFile> myFiles = new ArrayList<MyFile>();//附件信息(下载所需)
 	
 	public Integer getId() {
 		return id;
@@ -79,16 +79,16 @@ public class Document implements Serializable {
 	public void setPublishUnit(Unit publishUnit) {
 		this.publishUnit = publishUnit;
 	}
-	public Set<SignInfo> getSignInfos() {
+	public List<SignInfo> getSignInfos() {
 		return signInfos;
 	}
-	public void setSignInfos(Set<SignInfo> signInfos) {
+	public void setSignInfos(List<SignInfo> signInfos) {
 		this.signInfos = signInfos;
 	}
-	public Set<MyFile> getMyFiles() {
+	public List<MyFile> getMyFiles() {
 		return myFiles;
 	}
-	public void setMyFiles(Set<MyFile> myFiles) {
+	public void setMyFiles(List<MyFile> myFiles) {
 		this.myFiles = myFiles;
 	}
 	public String getSignInfoString() {

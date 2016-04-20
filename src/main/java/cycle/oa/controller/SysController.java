@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cycle.oa.easyui.Tree;
+import cycle.oa.easyui.TreeNode;
 import cycle.oa.po.MyResource;
 import cycle.oa.po.User;
 import cycle.oa.service.MyResourceService;
@@ -29,11 +29,11 @@ public class SysController {
 	
 	@RequestMapping("/findAllMenu.do")
 	@ResponseBody
-	public List<Tree> findAllMenu() {
+	public List<TreeNode> findAllMenu() {
 		Subject subject = SecurityUtils.getSubject();
 		
 		User user = (User) subject.getPrincipal();
-		List<Tree> tree = new ArrayList<Tree>();//准备菜单树
+		List<TreeNode> tree = new ArrayList<TreeNode>();//准备菜单树
 		List<MyResource> myResources = new ArrayList<MyResource>();
 		if(user.isAdmin()){
 			myResources = myResourceService.findAllMenu();
@@ -43,7 +43,7 @@ public class SysController {
 			}
 		}
 		for (MyResource myResource : myResources) {
-			Tree node = new Tree();//树节点
+			TreeNode node = new TreeNode();//树节点
 			BeanUtils.copyProperties(myResource, node);//将菜单项复制到树节点
 			node.setText(myResource.getName());//设置树节点的名称
 			Map<String,String> attributes = new HashMap<String,String>();

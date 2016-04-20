@@ -3,7 +3,7 @@ package cycle.oa.easyui;
 import java.io.Serializable;
 import java.util.List;
 
-public class Tree implements Serializable {
+public class TreeNode implements Serializable {
 
 	private static final long serialVersionUID = 574991689532749410L;
 	private Integer id;
@@ -11,7 +11,7 @@ public class Tree implements Serializable {
 	private String state = "open";// open,closed
 	private boolean checked = false;
 	private Object attributes;
-	private List<Tree> children;
+	private List<TreeNode> children;
 	private String iconCls;
 	private Integer pid;
 	public Integer getId() {
@@ -29,7 +29,7 @@ public class Tree implements Serializable {
 	public Object getAttributes() {
 		return attributes;
 	}
-	public List<Tree> getChildren() {
+	public List<TreeNode> getChildren() {
 		return children;
 	}
 	public String getIconCls() {
@@ -53,7 +53,7 @@ public class Tree implements Serializable {
 	public void setAttributes(Object attributes) {
 		this.attributes = attributes;
 	}
-	public void setChildren(List<Tree> children) {
+	public void setChildren(List<TreeNode> children) {
 		this.children = children;
 	}
 	public void setIconCls(String iconCls) {

@@ -74,7 +74,7 @@ $(function(){
 	
 	//初始化收文单位树形菜单
 	$('#document_saveUI_unitCombotree').combotree({
-		url: '${pageContext.request.contextPath}/unit_getUnitTree.action',
+		url: contextPath+'/unit/getUnitTree.do',
 		multiple:true,//是否允许多选
 		multiline:true,//定义是否是多行文本框
 		checkbox:true,//定义是否在每一个借点之前都显示复选框。

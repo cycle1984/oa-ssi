@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cycle.oa.easyui.Json;
-import cycle.oa.easyui.Tree;
+import cycle.oa.easyui.TreeNode;
 import cycle.oa.po.MyResource;
 import cycle.oa.po.Page;
 import cycle.oa.po.Role;
@@ -89,9 +89,9 @@ public class RoleController extends BaseController {
 	public Object setMyResourceUI() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<MyResource> myResources = myResourceService.selectAll(map);//获得所有的权限（资源）
-		List<Tree> tree = new ArrayList<Tree>();//创建一棵树
+		List<TreeNode> tree = new ArrayList<TreeNode>();//创建一棵树
 		for (MyResource resource : myResources) {
-			Tree node = new Tree();//节点
+			TreeNode node = new TreeNode();//节点
 			BeanUtils.copyProperties(resource, node);//将权限（资源）赋值到树节点中
 			node.setText(resource.getName());//设置树节点显示名称
 			Map<String, String> attributes = new HashMap<String, String>();

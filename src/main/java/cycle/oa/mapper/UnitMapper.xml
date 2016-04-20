@@ -140,7 +140,7 @@
   
   <!-- 通过传进来的实体对象查询List -->
   <select id="selectListByEntity" parameterType="cycle.oa.po.Unit" resultMap="unitResultMap">
-  	select * from unit
+  	select id,create_datetime,name,full_Name,tel,state,remark from unit
   	<where>
   		<if test="myGroup!=null">
   			myGroup_id = #{myGroup.id}

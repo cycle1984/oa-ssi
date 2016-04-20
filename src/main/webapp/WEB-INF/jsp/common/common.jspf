@@ -79,6 +79,6 @@
 <script type="text/javascript">
       function fileDown(fileId){
       
-    	  window.location.href="${pageContext.request.contextPath}/document_fileDown.action?fileId="+fileId;
+    	  window.location.href="${pageContext.request.contextPath}/document/fileDown.do?fileId="+fileId;
       }
 </script>
