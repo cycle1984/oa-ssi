@@ -217,7 +217,6 @@ sy.cookie = function(key, value, options) {
 $.ajaxSetup({
 	cache: false, //close AJAX cache
     contentType:"application/x-www-form-urlencoded;charset=utf-8", 
-    error: function (xhr, status, e) { show.append('error invoke! status:' + status+'<br/>'); },
     complete:function(XHR,textStatus){   
 //        if(sessionStatus == 'timeout') {
 //            var top = getTopWinow();

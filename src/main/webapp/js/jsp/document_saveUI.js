@@ -8,7 +8,7 @@ $(function(){
 		browse_button : 'pickfiles',//选择文件的按钮,触发文件选择对话框的DOM元素，当点击该元素后便后弹出文件选择对话框。该值可以是DOM元素对象本身，也可以是该DOM元素的id
 		container : 'container',//文件上传容器
 		//flash_swf_url : sy.contextPath + '/jslib/plupload_1_5_7/plupload/js/plupload.flash.swf',// Flash环境路径设置
-		url : 'document_uploadFile.action',//服务器端接收和处理上传文件的脚本地址
+		url : contextPath+'/document/uploadFile.do',//服务器端接收和处理上传文件的脚本地址
 		filters:{//可以使用该参数来限制上传文件的类型，大小等，该参数以对象的形式传入
 			max_file_size : '20mb',//用来限定上传文件的大小，如果文件体积超过了该值，则不能被选取
 			prevent_duplicates : true //不允许选取重复文件
@@ -165,7 +165,7 @@ $(function(){
  * 发布按钮定义 
  */
 var document_saveUI_submit =function($dialog){
-	console.info($('#document_saveUI_docNum').textbox().textbox('getValue'));
+	$('#document_saveUI_form').form('enableValidation');//开启easyui表单验证功能
 	if($('#document_saveUI_form').form('validate')){//验证表单
 		if (uploader.files.length > 0) {//>0则有附件
 			$.messager.progress({
@@ -173,11 +173,12 @@ var document_saveUI_submit =function($dialog){
 			});
 			$('#document_saveUI_OKbtn').linkbutton('disable');//发布按钮变灰，防止重复提交
 			uploader.start();//开始上传附件
-			var fileNewNames="";//上传后的所有附件名称
+			var fileNewNames=new Array();//上传后的所有附件名称
+			var j=0;
 			uploader.bind('FileUploaded', function(up, file, responseObject) {//每个上传完毕
-				fileNewNames+=responseObject.response+',,,';//拼接每个上传附件的文件名称，用,,,分割
+				fileNewNames[j]=responseObject.response;//获得每个上传附件的文件名称
+				j++;
 			});
-			fileNewNames = fileNewNames.substring(0, fileNewNames.length-3);//去掉最后的,,,
 			uploader.bind('StateChanged',function(uploader){//当上传队列中所有文件都上传完成后触发
 				if(uploader.files.length === (uploader.total.uploaded + uploader.total.failed)){
 					
@@ -185,29 +186,31 @@ var document_saveUI_submit =function($dialog){
 				/**
 				 * 获得所选单位id(只获得叶子节点)
 				 */
-				var ids = '';
+				var ids = new Array();
 				var t = $('#document_saveUI_unitCombotree').combotree('tree');//获得树对象
 				var check = t.tree('getChecked');
 				for (var i = 0; i < check.length; i++) {
 					var isLeaf = t.tree('isLeaf',check[i].target);
+					var j = 0
 					if(isLeaf){
-						ids += check[i].id + ',';
+						ids[j]= check[i].id;
+						j++;
 					}
 				}
-				ids = ids.substring(0, ids.length - 1);
-				var url = 'document_save.action?ids='+ids+'&fileNewNames='+fileNewNames;
-				console.info(fileNewNames);
-//				var url = 'document_save.action?ids='+ids+'&fileNewNames='+encodeURI(fileNewNames);
-				var url = 'document_save.action';
+				var url = contextPath+'/document/save.do';
+				for (var ig = 0; ig < fileNewNames.length; ig++) {
+					var f = fileNewNames[ig];
+					console.info(f);
+					
+				}
 				$.post(url,
-//						sy.serializeObject($('#document_saveUI_form'))
 						{
 							ids:ids,//所选单位id字符串
 							fileNewNames:fileNewNames,//上传的文件名字符串
 							docNum:$('#document_saveUI_docNum').val(),
 							documentTitle:$('#document_saveUI_documentTitle').val(),
 							level:$('#document_saveUI_level').val(),
-							description:$('#document_saveUI_description').val()
+							remark:$('#document_saveUI_remark').val()
 							}
 						,function(result){
 								if(result.success){

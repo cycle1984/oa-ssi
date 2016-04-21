@@ -12,6 +12,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cycle.oa.easyui.Json;
 import cycle.oa.po.MyGroup;
 import cycle.oa.po.Page;
+import cycle.oa.po.Role;
 import cycle.oa.po.Unit;
 import cycle.oa.po.User;
 
@@ -142,20 +144,51 @@ public class UserController extends BaseController{
         return json;
 	}
 	
-	/**
-	 * 
-	 * 登出
-	 * @return
-	 */
-	@RequestMapping("/logout.do")
+	@RequestMapping("/initPassword.do")
 	@ResponseBody
-	public Json logout(HttpSession session, User user){
-		session.removeAttribute("userSession");
-		Json j = new Json();
-		j.setSuccess(true);
-		return j;
+	public Object initPassword(@RequestParam (value="ids[]",required=true) Integer[] ids){
+		Json json = new Json();
+		try {
+			for (Integer integer : ids) {
+				User user = new User();
+				user.setId(integer);
+				user.setPwd(DigestUtils.md5Hex("jyj123456"));//重置密码
+				
+				userService.update(user);
+			}
+			json.setSuccess(true);
+			json.setMsg("成功重置【"+ids.length+"】条数据");
+		} catch (Exception e) {
+			json.setMsg("重置失败");
+			e.printStackTrace();
+		}
+		return json;
 	}
 	
+	//批量审批设置角色
+	@RequestMapping("/setRole.do")
+	@ResponseBody
+	public Object setRole(@RequestParam (value="ids[]",required=true) Integer[] ids,Integer roleId){
+		Json json = new Json();
+		try {
+			for (Integer integer : ids) {
+				User user = new User();
+				user.setId(integer);
+				Role role = new Role();
+				role.setId(roleId);
+				user.setRole(role);
+				
+				userService.update(user);
+				
+			}
+			json.setSuccess(true);
+			json.setMsg("审批成功");
+		} catch (Exception e) {
+			json.setMsg("审批失败");
+			e.printStackTrace();
+		}
+		return json;
+	}
 	
 	@RequestMapping("/save.do")
 	@ResponseBody

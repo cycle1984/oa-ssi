@@ -8,7 +8,7 @@
 <body>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jsp/document_saveUI.js"></script>
 	<div>
-		<form id="document_saveUI_form" method="post">
+		<form id="document_saveUI_form" method="post" class="easyui-form" data-options="novalidate:true">
 			<table>
 				<tr>
 					<th style="width: 100;font-size: 13px;">接收单位</th>
@@ -44,7 +44,7 @@
                </tr>
                <tr>
                    <th style="width: 100;font-size: 13px;">备注</th>
-                   <td ><input id="document_saveUI_description" class="easyui-textbox" data-options="multiline:true,height:40"  style="width:100%;" name="description"> </td>
+                   <td ><input id="document_saveUI_remark" class="easyui-textbox" data-options="multiline:true,height:40"  style="width:100%;" name="remark"> </td>
                </tr>
                <tr>
                    <th style="width: 100;font-size: 13px;">文件上传</th>

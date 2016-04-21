@@ -85,6 +85,10 @@
 		where id = #{id}
 	</update>
 	
+	<select id="selectAll" parameterType="map" resultMap="roleResultMap">
+		select id,name,remark from role
+	</select>
+	
 	<select id="selectById" parameterType="int" resultMap="roleResultMap">
 		select id,name,remark from role where id=#{id}
 	</select>

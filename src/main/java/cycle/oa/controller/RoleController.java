@@ -165,4 +165,13 @@ public class RoleController extends BaseController {
 		}
 		return json;
 	}
+	
+	
+	@RequestMapping("/findAll")
+	@ResponseBody
+	public Object findAll(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Role> roles = roleService.selectAll(map);
+		return roles;
+	}
 }

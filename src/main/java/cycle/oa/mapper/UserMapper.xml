@@ -171,6 +171,11 @@
 	  			unit_id = #{unit.id},
 	  		</if>
   		</if>
+  		<if test="role!=null">
+  			<if test="role.id!=null">
+	  			role_id = #{role.id},
+	  		</if>
+  		</if>
   	</set>
   	where id = #{id}
   </update>

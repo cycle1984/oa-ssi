@@ -240,16 +240,14 @@ var deleteFunUser = function(){
  */
 var resetPwdFun = function(){
 	var rows = userGrid.datagrid("getChecked");//获取已经选择的用户数据
-	var ids = "";//用于传递用户id的字符串
+	var ids =new Array();
 	if(rows.length>0){
 		$.messager.confirm('提示信息', '即将重置' + rows.length + '条密码,确认重置？',
 		function(r){
 			if(r){
-				// 将id拼成字符串
 				for (var i = 0; i < rows.length; i++) {
-					ids += rows[i].id + ',';
+					ids[i]= rows[i].id;
 				}
-				ids = ids.substring(0, ids.length - 1);//去掉字符串最后的字符（逗号）
 				$.post(contextPath+'/user/initPassword.do',{ids : ids},function(r){
 					if(r.success){
 						userGrid.datagrid('reload');
@@ -277,24 +275,22 @@ var resetPwdFun = function(){
  */
 var checkUserFun = function(){
 	var rows = userGrid.datagrid("getChecked");//获取已经选择的用户数据
-	var ids = "";//用于传递用户id的字符串
+	var ids =new Array();
 	if(rows.length>0){
-		// 将id拼成字符串
 		for (var i = 0; i < rows.length; i++) {
-			ids += rows[i].id + ',';
+			ids[i]= rows[i].id;
 		}
-		ids = ids.substring(0, ids.length - 1);//去掉字符串最后的字符（逗号）
 		var dialog = sy.modalDialog({//创建一个模式化的dialog
 			title:'批量审批',
 			width : 200,//dialog宽度
 //			top:'10%',//dialog离页面顶部的距离
-			href:contextPath+'/user/goURL/user/checkUserJsp.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+			href:contextPath+'/user/goURL/user/setRoleJsp.do',//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 			buttons: [ {
-				id:'user_checkUser_OKbtn',
+				id:'user_setRole_OKbtn',
 				text : '确定',
 				iconCls:'icon-ok',
 				handler : function() {
-					user_checkUser_submitForm(dialog,userGrid,ids);
+					user_setRole_submitForm(dialog,userGrid,ids);
 				}
 			} ]
 		});
