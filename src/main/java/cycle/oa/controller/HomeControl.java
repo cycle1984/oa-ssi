@@ -28,7 +28,6 @@ public class HomeControl {
 	
 	@RequestMapping("/index.do")
 	public String index(Model model){
-		//从shiro的session中取activeUser
 		Subject subject = SecurityUtils.getSubject();
 		//取身份信息
 		User userModel = (User) subject.getPrincipal();

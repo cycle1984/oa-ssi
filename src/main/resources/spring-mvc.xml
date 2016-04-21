@@ -69,5 +69,6 @@
         <property name="defaultEncoding" value="utf-8" />    
         <!-- 文件大小最大值 -->  
         <property name="maxUploadSize" value="10485760000" />    
-    </bean>  
+    </bean>
+     
 </beans>

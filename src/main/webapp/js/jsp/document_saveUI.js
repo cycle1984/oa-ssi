@@ -188,21 +188,16 @@ var document_saveUI_submit =function($dialog){
 				 */
 				var ids = new Array();
 				var t = $('#document_saveUI_unitCombotree').combotree('tree');//获得树对象
+				var j = 0;//ids下标
 				var check = t.tree('getChecked');
 				for (var i = 0; i < check.length; i++) {
 					var isLeaf = t.tree('isLeaf',check[i].target);
-					var j = 0
 					if(isLeaf){
 						ids[j]= check[i].id;
 						j++;
 					}
 				}
 				var url = contextPath+'/document/save.do';
-				for (var ig = 0; ig < fileNewNames.length; ig++) {
-					var f = fileNewNames[ig];
-					console.info(f);
-					
-				}
 				$.post(url,
 						{
 							ids:ids,//所选单位id字符串

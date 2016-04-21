@@ -3,8 +3,6 @@
 <mapper namespace="cycle.oa.mapper.SignInfoMapper" >
   <resultMap id="signInfoResultMap" type="cycle.oa.po.SignInfo" >
   	<id column="id" property="id"/>
-  	<result column="PUBLISHUSERNAME" property="publishUserName"/>
-  	<result column="publishUnitName" property="publishUnitName"/>
   	<result column="state" property="state"/>
   	<result column="signDate" property="signDate"/>
   	<result column="ip" property="ip"/>
@@ -23,12 +21,6 @@
   <sql id="key">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="publishUserName!=null">
-  			publishUserName,
-  		</if>
-  		<if test="publishUnitName!=null">
-  			publishUnitName,
-  		</if>
   		<if test="state!=null">
   			state,
   		</if>
@@ -41,18 +33,18 @@
   		<if test="signUserName!=null">
   			signUserName,
   		</if>
+  		<if test="document!=null">
+  			document_id,
+  		</if>
+  		<if test="signUnit!=null">
+  			SIGN_UNIT_ID,
+  		</if>
   	</trim>
   </sql>
   
   <sql id="value">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="publishUserName!=null">
-  			#{publishUserName},
-  		</if>
-  		<if test="publishUnitName!=null">
-  			#{publishUnitName},
-  		</if>
   		<if test="state!=null">
   			#{state},
   		</if>
@@ -64,6 +56,12 @@
   		</if>
   		<if test="signUserName!=null">
   			#{signUserName},
+  		</if>
+  		<if test="document!=null">
+  			#{document.id},
+  		</if>
+  		<if test="signUnit!=null">
+  			#{signUnit.id},
   		</if>
   	</trim>
   </sql>
@@ -108,12 +106,6 @@
   <update id="update" parameterType="cycle.oa.po.SignInfo">
   	update signInfo 
   	<set>
-  		<if test="publishUserName!=null">
-  			publishUserName = #{publishUserName},
-  		</if>
-  		<if test="publishUnitName!=null">
-  			publishUnitName = #{publishUnitName},
-  		</if>
   		<if test="state!=null">
   			state = #{state},
   		</if>
@@ -126,6 +118,12 @@
   		<if test="signUserName!=null">
   			signUserName = #{signUserName},
   		</if>
+  		<if test="document!=null">
+  			document_id = #{document.id},
+  		</if>
+  		<if test="signUnit!=null">
+  			SIGN_UNIT_ID = #{signUnit.id},
+  		</if>
   	</set>
   	where id = #{id}
   </update>
@@ -135,7 +133,7 @@
   </select>
   
   <select id="selectById" parameterType="int" resultMap="signInfoResultMap">
-  	select id,publishUserName,publishUnitName,state,signDate,ip,signUserName 
+  	select id,state,signDate,ip,signUserName 
   	from 
   	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
   	where id = #{id}
@@ -143,7 +141,7 @@
   
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="signInfoResultMap">
-  	select si.id,si.publishUserName,si.publishUnitName,si.state,si.signDate,si.ip,si.signUserName,u.name unit_name
+  	select si.id,si.state,si.signDate,si.ip,si.signUserName,u.name unit_name
   	from 
   	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
   	where DOCUMENT_ID = #{docId}

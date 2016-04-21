@@ -27,10 +27,10 @@
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
   		<if test="fileName!=null">
-  			fileName = #{fileName},
+  			#{fileName},
   		</if>
   		<if test="document!=null">
-  			DOCUMENT_ID = #{DOCUMENT_ID},
+  			#{document.id},
   		</if>
   	</trim>
   </sql>
@@ -91,6 +91,8 @@
   
   <select id="selectById" parameterType="int" resultMap="myFileResultMap">
   	select id,fileName
+  	from 
+  	myFile
   	where id = #{id}
   </select>
   

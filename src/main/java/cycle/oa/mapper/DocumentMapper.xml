@@ -20,9 +20,6 @@
   <sql id="key">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="name!=null">
-  			name,
-  		</if>
   		<if test="docNum!=null">
   			doc_Num,
   		</if>
@@ -44,15 +41,15 @@
   		<if test="signInfoString!=null">
   			signInfoString,
   		</if>
+  		<if test="publishUnit!=null">
+  			PUBLISH_UNIT_ID
+  		</if>
   	</trim>
   </sql>
   
   <sql id="value">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="name!=null">
-  			#{name},
-  		</if>
   		<if test="docNum!=null">
   			#{docNum},
   		</if>
@@ -73,6 +70,9 @@
   		</if>
   		<if test="signInfoString!=null">
   			#{signInfoString},
+  		</if>
+  		<if test="publishUnit!=null">
+  			#{publishUnit.id}
   		</if>
   	</trim>
   </sql>
@@ -117,9 +117,6 @@
   <update id="update" parameterType="cycle.oa.po.Document">
   	update document 
   	<set>
-  		<if test="name!=null">
-  			name = #{name},
-  		</if>
   		<if test="docNum!=null">
   			doc_Num = #{docNum},
   		</if>
@@ -140,6 +137,9 @@
   		</if>
   		<if test="signInfoString!=null">
   			signInfoString = #{signInfoString},
+  		</if>
+  		<if test="publishUnit!=null">
+  			PUBLISH_UNIT_ID = #{publishUnit.id}
   		</if>
   	</set>
   	where id = #{id}
