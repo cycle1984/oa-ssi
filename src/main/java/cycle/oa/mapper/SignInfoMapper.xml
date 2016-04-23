@@ -135,8 +135,17 @@
   <select id="selectById" parameterType="int" resultMap="signInfoResultMap">
   	select id,state,signDate,ip,signUserName 
   	from 
-  	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
+  	signInfo
   	where id = #{id}
+  </select>
+  
+  <!-- 根据docId查询 -->
+  <select id="selectByDocId" parameterType="int" resultMap="signInfoResultMap">
+  	select id,state,signDate,ip,signUserName 
+  	from 
+  	signInfo
+  	where DOCUMENT_ID = #{docId}
+  	
   </select>
   
   <!-- 通过多条件分页查询，返回数据集 -->

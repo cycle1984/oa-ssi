@@ -96,7 +96,7 @@
   	where id = #{id}
   </select>
   
-  <!-- 根据docId查询所以文件 -->
+  <!-- 根据docId查询所有附件 -->
   <select id="selectByDocId" parameterType="int" resultMap="myFileResultMap">
   	select id,fileName
   	from 

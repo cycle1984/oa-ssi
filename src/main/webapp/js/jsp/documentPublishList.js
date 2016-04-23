@@ -134,19 +134,17 @@ var addFunDocumentPublish = function(){
  */
 var delFunDocumentPublish = function(){
 	var rows = $('#document_publishList_grid').datagrid('getChecked');//获得已选择的数据
-	var ids = "";
+	var ids = new Array();
 	if(rows.length>0){
 		$.messager.confirm('提示信息', '即将删除' + rows.length + '条数据,确认删除？',function(r){
 			if(r){
 				$.messager.progress({
 					text : '数据删除中....'
 				});
-				// 将id拼成字符串
 				for (var i = 0; i < rows.length; i++) {
-					ids += rows[i].id + ',';
+					ids[i]= rows[i].id ;
 				}
-				ids = ids.substring(0, ids.length - 1);
-				$.post(contextPath+'/document/delete.action',{ids : ids},function(r){
+				$.post(contextPath+'/document/delete.do',{ids : ids},function(r){
 					if(r.success){
 						$('#document_publishList_grid').datagrid('load');
 						$('#document_publishList_grid').datagrid('uncheckAll');

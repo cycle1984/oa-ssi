@@ -154,6 +154,21 @@
   	where id = #{id}
   </select>
   
+  <select id="selectByIds" resultMap="documentResultMap">
+  	select id,document_title,level,CREATE_DATETIME,PUBLISHUSERNAME,remark,PUBLISH_UNIT_ID from document
+  	where id in 
+  	<!-- foreach用于迭代数组元素
+		 open表示开始符号
+		 close表示结束符合
+		 separator表示元素间的分隔符
+		 item表示迭代的数组，属性值可以任意，但提倡与方法的数组名相同
+		 #{ids}表示数组中的每个元素值
+	 -->
+  	<foreach collection="array" open="(" close=")" separator="," item="ids">
+  		#{ids}
+  	</foreach>
+  </select>
+  
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="documentResultMap">
   	select d.id,d.doc_Num,d.document_title,d.level,d.CREATE_DATETIME,d.PUBLISHUSERNAME,d.remark,

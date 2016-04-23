@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,6 +98,61 @@ public class DocumentController extends BaseController {
 		return json;
 	}
 	
+	@RequestMapping("/delete")
+	@ResponseBody
+	public Object delete(@RequestParam(value="ids[]",required=true) Integer[] ids){
+		Json json = new Json();
+		//附件存储的基路径
+		String fileBasePath = "D:/upload/";
+		List<Document> documents = documentService.selectByIds(ids);
+		try {
+			for (Document document : documents) {
+				Integer docId = document.getId();
+				List<MyFile> myFiles = myFileService.selectByDocId(docId);
+				
+				Integer[] fileIds = new Integer[myFiles.size()];
+				for (MyFile myFile : myFiles) {//删除硬盘里的附件
+					File file = new File((fileBasePath)+myFile.getFileName());
+					if(file.exists()){
+						file.delete();//删除文件
+					}
+					
+					
+					for (int i = 0; i < fileIds.length; i++) {
+						fileIds[i]=myFile.getId();
+					}
+				}
+				//删除数据库里的myFile数据
+				if(fileIds!=null){
+					myFileService.deleteByArray(fileIds);
+				}
+				
+				//删除签收表
+				List<SignInfo> signInfos = signInfoService.selectByDocId(docId);
+				Integer[] signInfoIds = new Integer[signInfos.size()];
+				for (SignInfo signInfo : signInfos) {
+					for (int k = 0; k < signInfos.size(); k++) {
+						signInfoIds[k] = signInfo.getId();
+						
+					}
+				}
+				//删除
+				if(signInfoIds!=null){
+					signInfoService.deleteByArray(signInfoIds);
+				}
+				
+				//删除数据库document
+				
+			}
+			
+			documentService.deleteByArray(ids);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
+	}
+	
 	/**
 	 * 附件上传
 	 * produces="text/html;charset=UTF-8"，解决返回的json数据中文乱码问题
@@ -126,6 +182,13 @@ public class DocumentController extends BaseController {
 		return fileName;
 	}
 	
+	/**
+	 * 附件下载功能
+	 * @param fileId
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping("/fileDown.do")
 	public String fileDown(Integer fileId,HttpServletRequest request,
             HttpServletResponse response){
