@@ -10,6 +10,14 @@
   	<association property="document" javaType="cycle.oa.po.Document">
   		<id column="document_id" property="id"/>
   		<result column="document_Title" property="documentTitle"/>
+  		<result column="CREATE_DATETIME" property="createDatetime"/>
+  		<result column="doc_num" property="docNum"/>
+  		<result column="level" property="level"/>
+  		<result column="PUBLISHUSERNAME" property="publishUserName"/>
+  		<association property="publishUnit" javaType="cycle.oa.po.Unit">
+  			<id column="publishUnit_id" property="id"/>
+  			<result column="publishUnit_name" property="name"/>
+  		</association>
   	</association>
   	<association property="signUnit" javaType="cycle.oa.po.Unit">
   		<id column="unit_id" property="id"/>
@@ -150,10 +158,32 @@
   
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="signInfoResultMap">
-  	select si.id,si.state,si.signDate,si.ip,si.signUserName,u.name unit_name
+  	select si.id,si.state,si.signDate,si.ip,si.signUserName,u.name unit_name,
+  	doc.CREATE_DATETIME,
+  	doc.DOCUMENT_TITLE,doc.doc_num,doc.LEVEL,
+  	doc.PUBLISHUSERNAME,
+  	publishU.name publishUnit_name
   	from 
   	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
-  	where DOCUMENT_ID = #{docId}
+  	left join (document doc left join unit publishU on doc.PUBLISH_UNIT_ID = publishU.id ) on si.DOCUMENT_ID = doc.id
+  	<where>
+  		<if test="paramEntity.document!=null">
+  			<if test="paramEntity.document.id!=null">
+  				<!-- 只查询属于指定公文id的签收表 -->
+  				and si.DOCUMENT_ID = #{paramEntity.document.id}
+  			</if>
+  		</if>
+  		<if test="paramEntity.signUnit!=null">
+			<if test="paramEntity.signUnit.id!=null">
+				<!-- 查询指定签收单位的签收表 -->
+				and si.SIGN_UNIT_ID = #{paramEntity.signUnit.id}
+			</if>
+		</if>
+		<if test="paramEntity.state!=null">
+			<!-- 查询指定签收状态 -->
+			and si.state = #{paramEntity.state}
+		</if>
+  	</where>
   	limit #{start},#{rows}
   </select>
   
@@ -162,6 +192,23 @@
   	select count(si.id) 
   	from
   	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
-  	where DOCUMENT_ID = #{docId}
+  	<where>
+  		<if test="paramEntity.document!=null">
+  			<if test="paramEntity.document.id!=null">
+  				<!-- 只查询属于指定公文id的签收表 -->
+  				and si.DOCUMENT_ID = #{paramEntity.document.id}
+  			</if>
+  		</if>
+  		<if test="paramEntity.signUnit!=null">
+			<if test="paramEntity.signUnit.id!=null">
+				<!-- 查询指定签收单位的签收表 -->
+				and si.SIGN_UNIT_ID = #{paramEntity.signUnit.id}
+			</if>
+		</if>
+		<if test="paramEntity.state!=null">
+			<!-- 查询指定签收状态 -->
+			and si.state = #{paramEntity.state}
+		</if>
+  	</where>
   </select>
 </mapper>

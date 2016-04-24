@@ -223,8 +223,10 @@
   	select 
   		user.id,user.create_Datetime,user.update_Datetime,user.login_Name,user.pwd,user.name,user.phone,user.tel,user.gender,user.dep,user.remark,
   		unit.id unit_id,unit.name unit_name,
-  		myGroup.id group_id,myGroup.name group_name
+  		myGroup.id group_id,myGroup.name group_name,
+  		role.id role_id,role.NAME role_name
   	from user left join (unit left join myGroup on unit.myGroup_id = myGroup.id) on user.unit_id=unit.id
+  	LEFT JOIN  role ON user.ROLE_ID=role.ID
   	<where>
   		<if test="1==1">
   			and user.login_name !="admin"
@@ -266,7 +268,9 @@
   <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
   	select 
   		count(user.id)
-  	from user left join (unit left join myGroup on unit.myGroup_id = myGroup.id) on user.unit_id=unit.id
+  	from user 
+  	left join (unit left join myGroup on unit.myGroup_id = myGroup.id) on user.unit_id=unit.id
+  	LEFT JOIN  role ON user.ROLE_ID=role.ID
   	<where>
   		<if test="1==1">
   			and user.login_name !="admin"

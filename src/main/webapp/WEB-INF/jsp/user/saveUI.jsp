@@ -49,13 +49,13 @@
 			/**
 			 * role下来菜单初始化
 			 */
-// 			$('#user_saveUI_roleCombobox').combobox({
-// 				url : 'role_findAll.action',
-// 				valueField : 'id',
-// 				textField : 'name',
-// 				editable : false,
-// 				required : true
-// 			});
+			$('#user_saveUI_roleCombobox').combobox({
+				url : '${pageContext.request.contextPath}/role/findAll.do',
+				valueField : 'id',
+				textField : 'name',
+				editable : false,
+				required : true
+			});
 		});
 	
 		/**

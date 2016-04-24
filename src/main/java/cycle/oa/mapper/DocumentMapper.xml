@@ -179,6 +179,10 @@
   		<if test="paramEntity.documentTitle!=null">
   			and document_Title like #{paramEntity.documentTitle}
   		</if>
+  		<if test="paramEntity.publishUnit!=null">
+  			and unit_id = #{paramEntity.publishUnit.id}
+  		</if>
+  		
   	</where>
 	<choose>
 		<when test="sort=='createDatetime'">ORDER BY create_Datetime ${order}</when>

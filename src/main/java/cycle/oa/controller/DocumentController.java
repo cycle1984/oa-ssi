@@ -40,11 +40,19 @@ public class DocumentController extends BaseController {
 	@RequestMapping("/publishGrid.do")
 	@ResponseBody
 	public Object publishGrid(Page<Document> page,Document document){
+		Subject subject = SecurityUtils.getSubject();
+		//取登录用户身份信息
+		User user = (User) subject.getPrincipal();
 		String documentTitle = document.getDocumentTitle();
 		if(documentTitle!=null){
 			document.setDocumentTitle("%"+documentTitle+"%");
 		}
-		
+		if(!user.isAdmin()){//如果不是管理员
+			if(user.getUnit()!=null){
+				//设置查询条件，只查询属于本部门发布的公文
+				document.setPublishUnit(user.getUnit());
+			}
+		}
 		page.setParamEntity(document);
 		Page<Document> p = documentService.selectPageDyc(page);
 		
@@ -104,52 +112,48 @@ public class DocumentController extends BaseController {
 		Json json = new Json();
 		//附件存储的基路径
 		String fileBasePath = "D:/upload/";
-		List<Document> documents = documentService.selectByIds(ids);
 		try {
-			for (Document document : documents) {
-				Integer docId = document.getId();
+			for (Integer docId : ids) {
 				List<MyFile> myFiles = myFileService.selectByDocId(docId);
-				
 				Integer[] fileIds = new Integer[myFiles.size()];
-				for (MyFile myFile : myFiles) {//删除硬盘里的附件
+				int i=0;
+				//删除硬盘里的附件
+				for (MyFile myFile : myFiles) {
 					File file = new File((fileBasePath)+myFile.getFileName());
 					if(file.exists()){
 						file.delete();//删除文件
 					}
-					
-					
-					for (int i = 0; i < fileIds.length; i++) {
-						fileIds[i]=myFile.getId();
-					}
+					fileIds[i]=myFile.getId();
+					i++;
 				}
 				//删除数据库里的myFile数据
-				if(fileIds!=null){
+				if(fileIds.length>0){
 					myFileService.deleteByArray(fileIds);
 				}
 				
 				//删除签收表
 				List<SignInfo> signInfos = signInfoService.selectByDocId(docId);
 				Integer[] signInfoIds = new Integer[signInfos.size()];
+				int k = 0;
 				for (SignInfo signInfo : signInfos) {
-					for (int k = 0; k < signInfos.size(); k++) {
-						signInfoIds[k] = signInfo.getId();
-						
-					}
+					signInfoIds[k] = signInfo.getId();
+					k++;
 				}
 				//删除
-				if(signInfoIds!=null){
+				if(signInfoIds.length>0){
 					signInfoService.deleteByArray(signInfoIds);
 				}
-				
-				//删除数据库document
-				
 			}
-			
+			//删除数据库document
 			documentService.deleteByArray(ids);
+			json.setSuccess(true);
+			json.setMsg("删除成功！");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			json.setMsg("删除失败！");
 			e.printStackTrace();
 		}
+		
 		return json;
 	}
 	

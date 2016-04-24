@@ -1,4 +1,4 @@
-var refleshtime ;//定时的时间
+var refleshtime =1000*60*10 ;//定时的时间
 var ref;//定时器
 /**
  * 定时刷新
@@ -19,7 +19,7 @@ var setreflesh = function(){
 var signInfo_nDocumentAcceptList_acceptDialog_submit = function(rowData){
 	if($('#signInfo_nDocumentAcceptList_acceptDialog_form').form('validate')){
 		$('#signInfo_nDocumentAcceptList_accept_OKbnt').linkbutton('disable');
-		$.post('user_searchByLoginNameAndPwd.action',{
+		$.post('${pageContext.request.contextPath}/signInfo/signDocument.do',{
 			pwd:$('#accept_pwd').val(),
 			id:rowData.id
 		},function(r){
@@ -49,7 +49,7 @@ var signInfo_nDocumentAcceptList_acceptDialog_submit = function(rowData){
 var downDocumentDialog = function(row){
 	var dialog = sy.modalDialog({
 		title:'公文详情',
-		href:'signInfo_getByID.action?id='+row.id,
+		href:'${pageContext.request.contextPath}/signInfo/getByID.do?id='+row.id,
 		width:600,
 		top:40
 	});
@@ -128,7 +128,7 @@ $(function(){
 	
 	$('#signInfo_nDocumentAcceptList_grid').datagrid({
 		idField:'id',//指定标识字段
-		url:'${pageContext.request.contextPath}/signInfo_receiveListGrid.action?state=false',//URL从远程站点请求数据
+		url:contextPath+'/signInfo/receiveListGrid.do?state=false',//URL从远程站点请求数据
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		striped : true,//是否显示斑马线
@@ -137,7 +137,7 @@ $(function(){
 		singleSelect : true,//如果为true，则只允许选择一行
 		border:false,//是否显示面板边框
 		pageSize : 20,//每页显示记录数
-		sortName : 'document.createdatetime',
+		sortName : 'document.createDatetime',
 		sortOrder : 'desc',
 		pageList : [10, 20, 30, 40, 50, 100, 500],//在设置分页属性的时候 初始化页面大小选择列表
 		rowStyler:function(index,row){
@@ -152,13 +152,13 @@ $(function(){
 			
 		},
 		columns:[[{
-			field : 'document.createdatetime',
+			field : 'document.createDatetime',
 			title : '发布时间',
 			width : 80,
 			sortable : true,
 			formatter:function(value,row,index){
 				if(row.document){
-					return row.document.createdatetime;
+					return getFormatDate(new Date(row.document.createDatetime));
 				}else {
 					return value;
 				}
@@ -221,10 +221,18 @@ $(function(){
 
 			}
 		}, {
-			field : 'publishUserName',
+			field : 'document.publishUserName',
 			title : '发布人',
 			width : 100,
-			sortable : true
+			sortable : true,
+			formatter:function(value,row,index){
+				if(row.document){
+					return row.document.publishUserName;
+				}else {
+					return value;
+				}
+
+			}
 		},{
 			field : 'signUserName',
 			title : '签收情况',
@@ -239,6 +247,7 @@ $(function(){
 		}]],
 		toolbar : '#signInfo_nDocumentAcceptList_toolbar',
 		onLoadSuccess:function(data){//数据加载成功后执行的代码,检测是否有未签收的公文，有则弹出提示窗，循环播放提示音
+			
 			var num=0;
 			for(var i=0;i<data.rows.length;i++){//遍历当前页数据，
 				if(!data.rows[i].state){//签收状态，false进入

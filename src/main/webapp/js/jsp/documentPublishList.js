@@ -156,6 +156,7 @@ var delFunDocumentPublish = function(){
 					}else{
 	    				$.messager.alert('提示', r.msg,'error');
 	    				$.messager.progress('close');
+	    				$('#document_publishList_grid').datagrid('load');
 	    			}
 				},'json');
 				

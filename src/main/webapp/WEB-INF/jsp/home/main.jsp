@@ -30,6 +30,16 @@
 			</div>
 		</c:if>
 		
+		<c:if test="${userModel.loginName!='admin'}">
+		 	<div title="待办公文列表">
+		        <jsp:include page="../signInfo/nDocumentAcceptList.jsp" ></jsp:include>
+		    </div>
+<!-- 		    <div title="已办公文列表"> -->
+<%-- 		        <jsp:include page="../signInfo/yDocumentAcceptList.jsp" ></jsp:include> --%>
+<!-- 		    </div> -->
+		</c:if>
+		
+		
 	</div>
 </body>
 </html>

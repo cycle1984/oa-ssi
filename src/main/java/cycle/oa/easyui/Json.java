@@ -15,7 +15,7 @@ public class Json implements java.io.Serializable {
 
 	private boolean success = false;
 
-	private String msg = "";
+	private String msg = "操作失败！！！";
 
 	private Object obj = null;
 

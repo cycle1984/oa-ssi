@@ -16,7 +16,7 @@ public class SignInfo implements Serializable {
 	private static final long serialVersionUID = -885687709088660376L;
 
 	private Integer id ;
-	private Boolean state = false;//签收状态,true表示已签收
+	private Boolean state;//签收状态,true表示已签收
 	private Date signDate;//签收时间
 	private String ip = null;//签收IP地址
 	private String signUserName;//签收人姓名
