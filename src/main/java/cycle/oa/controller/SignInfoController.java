@@ -98,7 +98,7 @@ public class SignInfoController extends BaseController{
 		Subject subject = SecurityUtils.getSubject();
 		//取身份信息
 		User user = (User) subject.getPrincipal();
-		String pwdMD5 = DigestUtils.md5Hex("pwd");
+		String pwdMD5 = DigestUtils.md5Hex(pwd);
 		if(pwdMD5.equals(user.getPwd())){
 			return true;
 		}else{
@@ -121,7 +121,7 @@ public class SignInfoController extends BaseController{
 		if(checkPassword(pwd)){
 			//根据签收信息的id查出签收表
 			SignInfo signInfo = signInfoService.selectById(id);
-			if(user.getUnit()!=null&&user.getUnit().equals(signInfo.getSignUnit().getId())){//只能签收属于本单位的公文
+			if(user.getUnit()!=null&&user.getUnit().getId().equals(signInfo.getSignUnit().getId())){//只能签收属于本单位的公文
 				//设置为已签收
 				signInfo.setState(true);
 				//签收人姓名
@@ -143,6 +143,8 @@ public class SignInfoController extends BaseController{
 				json.setMsg("您只能签收本单位的公文！！！");
 			}
 			
+		}else{
+			json.setMsg("您输入的密码错误！！！");
 		}
 		return json;
 	}
@@ -197,8 +199,11 @@ public class SignInfoController extends BaseController{
 		return json;
 	}
 	
-	public String getByID(Integer id){
-		
+	//已签收的公文详情页
+	@RequestMapping("/getByID")
+	public String getByID(Integer id,Model model){
+		SignInfo info = signInfoService.selectById(id);
+		model.addAttribute("info", info);
 		return "/signInfo/signInfoDetails";
 	}
 }

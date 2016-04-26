@@ -36,6 +36,7 @@
 					
 						<c:forEach items="${document.myFiles }" var="myFile">
 							<a onclick="fileDown(${myFile.id});" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'ext-icon-arrow_down'">${myFile.fileName }</a>
+							<br>
 						</c:forEach>
 <!-- 					<s:iterator value="myFiles"> -->
 <%-- 	                <a onclick="fileDown(<s:property value="id" />);" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'ext-icon-arrow_down'"><s:text name="fileName"></s:text></a> --%>

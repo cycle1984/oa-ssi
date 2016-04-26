@@ -177,10 +177,10 @@
   	document d left join unit u on d.PUBLISH_UNIT_ID = u.id
   	<where>
   		<if test="paramEntity.documentTitle!=null">
-  			and document_Title like #{paramEntity.documentTitle}
+  			and d.document_Title like #{paramEntity.documentTitle}
   		</if>
   		<if test="paramEntity.publishUnit!=null">
-  			and unit_id = #{paramEntity.publishUnit.id}
+  			and d.PUBLISH_UNIT_ID = #{paramEntity.publishUnit.id}
   		</if>
   		
   	</where>
@@ -196,11 +196,17 @@
   
    <!-- 通过多条件分页查询，返回总记录数 -->
   <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
-  	select count(id) from document
+  	select count(d.id)
+  	from 
+  	document d left join unit u on d.PUBLISH_UNIT_ID = u.id
   	<where>
   		<if test="paramEntity.documentTitle!=null">
-  			and document_Title like #{paramEntity.documentTitle}
+  			and d.document_Title like #{paramEntity.documentTitle}
   		</if>
+  		<if test="paramEntity.publishUnit!=null">
+  			and d.PUBLISH_UNIT_ID = #{paramEntity.publishUnit.id}
+  		</if>
+  		
   	</where>
   </select>
 </mapper>

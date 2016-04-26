@@ -27,6 +27,7 @@ import cycle.oa.po.Document;
 import cycle.oa.po.MyFile;
 import cycle.oa.po.Page;
 import cycle.oa.po.SignInfo;
+import cycle.oa.po.Unit;
 import cycle.oa.po.User;
 
 @Controller
@@ -69,8 +70,9 @@ public class DocumentController extends BaseController {
 		User user = (User) subject.getPrincipal();
 		//设置发布人姓名
 		document.setPublishUserName(user.getName());
-		if(user.getUnit()!=null){//设置发布单位
-			document.setPublishUnit(user.getUnit());
+		Unit unit = user.getUnit();
+		if(unit!=null){//设置发布单位
+			document.setPublishUnit(unit);
 		}
 		try {
 			//将document信息保存到数据库
@@ -92,6 +94,15 @@ public class DocumentController extends BaseController {
 				signInfo.setDocument(document);
 				//设置收文的单位
 				signInfo.setSignUnit(unitService.selectById(id));
+				
+				if(unit!=null){
+					if(id==unit.getId()){
+						signInfo.setState(true);//如果收文单位是发文单位，则设置为已经签收
+						signInfo.setSignUserName(user.getName());
+					}
+				}else{
+					signInfo.setState(false);
+				}
 				
 				signInfoService.save(signInfo);
 			}

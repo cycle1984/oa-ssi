@@ -118,7 +118,7 @@ var signAll = function(){
 var downDocumentDialog = function(row){
 	var dialog = sy.modalDialog({
 		title:'公文详情',
-		href:'${pageContext.request.contextPath}/signInfo/getByID.do?id='+row.id,
+		href:contextPath+'/signInfo/getByID.do?id='+row.id,
 		width:600,
 		top:40
 	});
