@@ -20,10 +20,8 @@
 							<tr>
 								<td>公文标题(可模糊查询)</td>
 								<td><input name="QUERY_t#document.documentTitle_S_LK" style="width: 120px; " class="easyui-textbox"/></td>
-								<s:if test="%{#session.userSession.loginName!='admin'}">
-									<td>发文单位</td>
-									<td id="signInfo_yDocumentAcceptList_searchForm_unit_td"><input id="signInfo_yDocumentAcceptList_searchForm_unit" name="QUERY_t#document.publishUnit.name_S_EQ" style="width: 80px" class="easyui-textbox"></input></td>
-								</s:if>
+								<td>发文单位</td>
+								<td id="signInfo_yDocumentAcceptList_searchForm_unit_td"><input id="signInfo_yDocumentAcceptList_searchForm_unit" name="QUERY_t#document.publishUnit.name_S_EQ" style="width: 80px" class="easyui-textbox"></input></td>
 								<td>发布时间</td>
 								<td><input type="text" name="QUERY_t#document.createdatetime_D_GE" class="easyui-datetimebox" data-options="showSeconds:false,editable:false" style="width: 120px;"/>-<input name="QUERY_t#document.createdatetime_D_LK" type="text" class="easyui-datetimebox"  data-options="showSeconds:false,editable:false" style="width: 120px;"/></td>
 								<td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom',plain:true" onclick="$('#signInfo_yDocumentAcceptList_grid').datagrid('load',sy.serializeObject($('#signInfo_yDocumentAcceptList_searchForm')));">过滤</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom_out',plain:true" onclick="$('#signInfo_yDocumentAcceptList_searchForm input').val('');$('#signInfo_yDocumentAcceptList_grid').datagrid('load',{});">重置过滤</a></td>

@@ -156,6 +156,20 @@
   	
   </select>
   
+  <select id="selectListByEntity" parameterType="cycle.oa.po.SignInfo" resultMap="signInfoResultMap">
+  	select id,state,signDate,ip,signUserName 
+  	from 
+  	signInfo
+  	<where>
+  		<if test="state!=null">
+  			and state = #{state}
+  		</if>
+  		<if test="signUnit!=null">
+  			and SIGN_UNIT_ID = #{signUnit.id}
+  		</if>
+  	</where>
+  </select>
+  
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="signInfoResultMap">
   	select si.id,si.state,si.signDate,si.ip,si.signUserName,u.name unit_name,
@@ -190,8 +204,9 @@
    <!-- 通过多条件分页查询，返回总记录数 -->
   <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
   	select count(si.id) 
-  	from
+  	from 
   	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
+  	left join (document doc left join unit publishU on doc.PUBLISH_UNIT_ID = publishU.id ) on si.DOCUMENT_ID = doc.id
   	<where>
   		<if test="paramEntity.document!=null">
   			<if test="paramEntity.document.id!=null">

@@ -6,12 +6,12 @@ var ref;//定时器
 var rf = function (){
 	$('#signInfo_nDocumentAcceptList_grid').datagrid('load');
 };
-//var setreflesh = function(){
-//	setTimeout(rf,refleshtime);//定时（refleshtime），执行一次rf方法
-//};
-var setreflesh = function(){
-	ref = setInterval(rf,refleshtime);//定时（refleshtime），执行一次rf方法 
+var setreflesh = function(rf,refleshtime){
+	ref = setTimeout(rf,refleshtime);//定时（refleshtime），执行一次rf方法
 };
+//var setreflesh = function(){
+//	ref = setInterval(rf,refleshtime);//定时（refleshtime），执行一次rf方法 
+//};
 
 /**
  * 确定签收
@@ -19,7 +19,7 @@ var setreflesh = function(){
 var signInfo_nDocumentAcceptList_acceptDialog_submit = function(rowData){
 	if($('#signInfo_nDocumentAcceptList_acceptDialog_form').form('validate')){
 		$('#signInfo_nDocumentAcceptList_accept_OKbnt').linkbutton('disable');
-		$.post('${pageContext.request.contextPath}/signInfo/signDocument.do',{
+		$.post(contextPath+'/signInfo/signDocument.do',{
 			pwd:$('#accept_pwd').val(),
 			id:rowData.id
 		},function(r){
@@ -44,18 +44,6 @@ var signInfo_nDocumentAcceptList_acceptDialog_submit = function(rowData){
 }
 
 /**
- * 公文详情(下载)窗口
- */
-var downDocumentDialog = function(row){
-	var dialog = sy.modalDialog({
-		title:'公文详情',
-		href:'${pageContext.request.contextPath}/signInfo/getByID.do?id='+row.id,
-		width:600,
-		top:40
-	});
-}
-
-/**
  * 签收所有
  */
 var signAll = function(){
@@ -71,7 +59,7 @@ var signAll = function(){
 			iconCls:'icon-ok',
 			handler:function(){
 				
-				$.post("${pageContext.request.contextPath}/user_signAll.action",{
+				$.post(contextPath+"/signInfo/signAllDocument.do",{
 					pwd:$('#accept_pwd').val()
 				},function(result){
 					if(result.success){
@@ -98,7 +86,7 @@ var signAll = function(){
 			$('form :input').keyup(function(event) {
 				if (event.keyCode == 13) {//按下键盘上的enter执行
 					
-					$.post("${pageContext.request.contextPath}/user_signAll.action",{
+					$.post(contextPath+"/signInfo/signAllDocument.do",{
 						pwd:$('#accept_pwd').val()
 					},function(result){
 						if(result.success){
@@ -123,6 +111,19 @@ var signAll = function(){
 	
 	
 }
+
+/**
+ * 公文详情(下载)窗口
+ */
+var downDocumentDialog = function(row){
+	var dialog = sy.modalDialog({
+		title:'公文详情',
+		href:'${pageContext.request.contextPath}/signInfo/getByID.do?id='+row.id,
+		width:600,
+		top:40
+	});
+}
+
 
 $(function(){
 	
@@ -254,7 +255,11 @@ $(function(){
 					num++;
 				}
 			}
-			clearInterval(ref);//销毁前一个定时器，防止重复
+			if(ref!=undefined){
+				clearTimeout(ref);
+			}
+			
+			//clearInterval(ref);//销毁前一个定时器，防止重复
 			if(num>0){
 				//获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp  
 			    var curWwwPath=window.document.location.href;  
@@ -273,14 +278,14 @@ $(function(){
 					showType:'slide'
 				});
 				refleshtime = 1000*60*5;//文件都未签收的情况5分钟刷新一次
-				setreflesh();
+				setreflesh(rf,refleshtime);
 			}else{//文件都签收的情况
 				var i = $('#signInfo_nDocumentAcceptList_refleshtime').val();
 				refleshtime=1000*60*10;//默认10分钟刷新一次
-				if(i!=undefined){
+				if(i!=undefined&&i!=""){
 					refleshtime=1000*60*i;
 				}
-				setreflesh();
+				setreflesh(rf,refleshtime);
 			}
 		},
 		onClickRow:function(index, row){//点击数据行的时候执行

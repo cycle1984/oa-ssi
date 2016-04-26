@@ -121,24 +121,84 @@ public class SignInfoController extends BaseController{
 		if(checkPassword(pwd)){
 			//根据签收信息的id查出签收表
 			SignInfo signInfo = signInfoService.selectById(id);
-			//设置为已签收
-			signInfo.setState(true);
-			//签收人姓名
-			signInfo.setSignUserName(user.getName());
-			//签收日期
-			signInfo.setSignDate(new Date());
-			//签收IP
-			signInfo.setIp(IpUtil.getIpAddr(request));
-			try {
-				signInfoService.update(signInfo);
-				json.setSuccess(true);
-				json.setMsg("签收成功！！！");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				json.setMsg("签收失败！！！");
-				e.printStackTrace();
+			if(user.getUnit()!=null&&user.getUnit().equals(signInfo.getSignUnit().getId())){//只能签收属于本单位的公文
+				//设置为已签收
+				signInfo.setState(true);
+				//签收人姓名
+				signInfo.setSignUserName(user.getName());
+				//签收日期
+				signInfo.setSignDate(new Date());
+				//签收IP
+				signInfo.setIp(IpUtil.getIpAddr(request));
+				try {
+					signInfoService.update(signInfo);
+					json.setSuccess(true);
+					json.setMsg("签收成功！！！");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					json.setMsg("签收失败！！！");
+					e.printStackTrace();
+				}
+			}else {
+				json.setMsg("您只能签收本单位的公文！！！");
 			}
+			
 		}
 		return json;
+	}
+	
+	/**
+	 * 签收所有未签收的公文
+	 * @return
+	 */
+	@RequestMapping("/signAllDocument")
+	@ResponseBody
+	public Object signAllDocument(String pwd,HttpServletRequest request){
+		Json json = new Json();
+		
+		Subject subject = SecurityUtils.getSubject();
+		//取身份信息
+		User user = (User) subject.getPrincipal();
+		if(checkPassword(pwd)){
+			
+			
+			if(user.getUnit()!=null){//只能签收属于本单位的公文
+				//查询所有属于本单位未签收的公文
+				SignInfo entity = new SignInfo();
+				entity.setState(false);
+				entity.setSignUnit(user.getUnit());
+				List<SignInfo> signInfos = signInfoService.selectListByEntity(entity);
+				
+				for (SignInfo signInfo : signInfos) {
+					//设置为已签收
+					signInfo.setState(true);
+					//签收人姓名
+					signInfo.setSignUserName(user.getName());
+					//签收日期
+					signInfo.setSignDate(new Date());
+					//签收IP
+					signInfo.setIp(IpUtil.getIpAddr(request));
+					try {
+						signInfoService.update(signInfo);
+						json.setSuccess(true);
+						json.setMsg("签收成功！！！");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						json.setMsg("签收失败！！！");
+						e.printStackTrace();
+					}
+				}
+				
+			}else {
+				json.setMsg("您只能签收本单位的公文！！！");
+			}
+			
+		}
+		return json;
+	}
+	
+	public String getByID(Integer id){
+		
+		return "/signInfo/signInfoDetails";
 	}
 }
