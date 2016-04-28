@@ -14,10 +14,15 @@
   		<result column="doc_num" property="docNum"/>
   		<result column="level" property="level"/>
   		<result column="PUBLISHUSERNAME" property="publishUserName"/>
+  		<result column="remark" property="remark"/>
   		<association property="publishUnit" javaType="cycle.oa.po.Unit">
   			<id column="publishUnit_id" property="id"/>
   			<result column="publishUnit_name" property="name"/>
   		</association>
+  		<collection property="myFiles" javaType="cycle.oa.po.MyFile">
+  			<id column="myFile_id" property="id"/>
+  			<result column="fileName" property="fileName"/>
+  		</collection>
   	</association>
   	<association property="signUnit" javaType="cycle.oa.po.Unit">
   		<id column="unit_id" property="id"/>
@@ -141,10 +146,18 @@
   </select>
   
   <select id="selectById" parameterType="int" resultMap="signInfoResultMap">
-  	select id,state,signDate,ip,signUserName 
+  	select s.id,s.state,s.signDate,s.ip,s.signUserName,
+  	u.id unit_id,
+  	d.id document_id,d.DOCUMENT_TITLE, d.CREATE_DATETIME,d.publishUserName,d.remark,
+  	<!-- 发文单位名称 -->
+  	pu.id publishUnit_id,pu.name publishUnit_name,
+  	<!-- 附件列表 -->
+  	mf.id myFile_id,mf.fileName
   	from 
-  	signInfo
-  	where id = #{id}
+  	signInfo s 
+  	left join unit u on s.SIGN_UNIT_ID = u.id
+  	left join (document d left join unit pu on d.PUBLISH_UNIT_ID = pu.id left join myFile mf on d.id = mf.document_id ) on s.DOCUMENT_ID = d.id
+  	where s.id = #{id}
   </select>
   
   <!-- 根据docId查询 -->
@@ -157,7 +170,7 @@
   </select>
   
   <select id="selectListByEntity" parameterType="cycle.oa.po.SignInfo" resultMap="signInfoResultMap">
-  	select id,state,signDate,ip,signUserName 
+  	select id,state,signDate,ip,signUserName,DOCUMENT_ID,SIGN_UNIT_ID
   	from 
   	signInfo
   	<where>

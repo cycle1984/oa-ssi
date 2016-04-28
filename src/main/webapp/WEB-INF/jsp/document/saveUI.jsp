@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>发布公文</title>
 </head>
-<body>
+<body style="overflow:-moz-scrollbars-vertical;">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jsp/document_saveUI.js"></script>
 	<div>
 		<form id="document_saveUI_form" method="post" class="easyui-form" data-options="novalidate:true">

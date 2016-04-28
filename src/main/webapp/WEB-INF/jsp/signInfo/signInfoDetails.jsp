@@ -10,24 +10,24 @@
 	<table style="width: 100%;" class="table">
 	        <tr>
 	            <td style="width: 80px;">标题</td>
-	            <td>${document.documentTitle } </td>
+	            <td>${info.document.documentTitle } </td>
 	        </tr>
 	        <tr>
 	            <td style="width: 80px;">发布日期</td>
-	            <td></td>
+	              <td><fmt:formatDate value="${info.document.createDatetime }" type="both" dateStyle="full"/> </td>
 	        </tr>
 	        <tr>
 	            <td style="width: 80px;">发布单位</td>
 	            <!-- <td><s:text name="doucment.publishCyUnit.name"></s:text> </td> -->
-	            <td>${publishUnitName }</td>
+	            <td>${info.document.publishUnit.name }</td>
 	        </tr>
 	        <tr>
 	            <td style="width: 80px;">发布人</td>
-	            <td></td>
+	            <td>${info.document.publishUserName } </td>
 	        </tr>
 	        <tr>
 	            <td style="width: 80px;">签收时间</td>
-	            <td><fmt:formatDate value="info.signDate" pattern="yyyy年MM月mm日 HH:mm"/> </td>
+	            <td><fmt:formatDate value="${info.signDate }"  type="both" dateStyle="full"/> </td>
 	        </tr>
 	        <tr>
 	            <td style="width: 80px;">签收人</td>
@@ -39,11 +39,16 @@
 	        </tr>
 	        <tr>
 	            <td style="width: 80px;">备注</td>
-	            <td>${doucment.description }</td> 
+	            <td>${info.document.remark }</td> 
 	        </tr> 
 	        <tr>
 	            <td style="width: 80px;">附件列表</td>
 	            <td>
+	            	<c:forEach items="${info.document.myFiles }"  var="mf">
+	            		
+	            		<a onclick="fileDown(${mf.id });" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'ext-icon-arrow_down'">${mf.fileName }</a>
+	            		<br>
+	            	</c:forEach>
 <!-- 	            <s:iterator value="document.myFiles"> -->
 <!-- 	               <a href="cyFile_fileDown.action?fileID=<s:property value="fileID" />"></a>  -->
 <%-- 	                <a onclick="fileDown(<s:property value="id" />);" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'ext-icon-arrow_down'"><s:text name="fileName"></s:text></a> --%>

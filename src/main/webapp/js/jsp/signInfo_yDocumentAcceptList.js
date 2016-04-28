@@ -5,7 +5,7 @@
 var downDocumentDialog = function(row){
 	var dialog = sy.modalDialog({
 		title:'公文详情',
-		href:'signInfo_getByID.action?id='+row.id,
+		href:contextPath+'/signInfo/getByID.do?id='+row.id,
 		width:600,
 		top:40
 	});
@@ -39,13 +39,13 @@ $(function(){
 			
 		},
 		columns:[[{
-			field : 'document.createdatetime',
+			field : 'document.createDatetime',
 			title : '发布时间',
 			width : 80,
 			sortable : true,
 			formatter:function(value,row,index){
 				if(row.document){
-					return row.document.createdatetime;
+					return getFormatDate(new Date(row.document.createDatetime));
 				}else {
 					return value;
 				}
@@ -108,16 +108,27 @@ $(function(){
 
 			}
 		}, {
-			field : 'publishUserName',
+			field : 'document.publishUserName',
 			title : '发布人',
 			width : 100,
-			sortable : true
+			sortable : true,
+			formatter:function(value,row,index){
+				if(row.document){
+					return row.document.publishUserName;
+				}else {
+					return value;
+				}
+
+			}
 		},{
 			field : 'signUserName',
 			title : '签收情况',
 			width : 80,
 			formatter:function(value,row,index){
 				if(row.signUserName){
+					if(row.signUserName=="本单位发布"){
+						return value;
+					}
 					return '签收人:'+value;
 				}else{
 					return '<span style="color:red;">未签收</span>';

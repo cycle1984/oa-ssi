@@ -98,7 +98,7 @@ public class DocumentController extends BaseController {
 				if(unit!=null){
 					if(id==unit.getId()){
 						signInfo.setState(true);//如果收文单位是发文单位，则设置为已经签收
-						signInfo.setSignUserName(user.getName());
+						signInfo.setSignUserName("本单位发布");
 					}
 				}else{
 					signInfo.setState(false);

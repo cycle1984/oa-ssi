@@ -82,6 +82,7 @@ public class SignInfoController extends BaseController{
 		if(docId!=null){
 			document.setId(docId);
 			signInfo.setDocument(document);
+			signInfo.setState(null);//设置为null，已签收和未签收都查询
 		}
 		page.setParamEntity(signInfo);
 		Page<SignInfo> p = signInfoService.selectPageDyc(page);
@@ -200,9 +201,19 @@ public class SignInfoController extends BaseController{
 	}
 	
 	//已签收的公文详情页
-	@RequestMapping("/getByID")
+	@RequestMapping("/getByID.do")
 	public String getByID(Integer id,Model model){
 		SignInfo info = signInfoService.selectById(id);
+		Document document = info.getDocument();
+		if(document!=null){
+			List<MyFile> myFiles = document.getMyFiles();
+			for (MyFile myFile : myFiles) {
+				String myFileName = myFile.getFileName();
+				int i =myFileName.indexOf("-");
+				myFileName = myFileName.substring(i+1, myFileName.length());
+				myFile.setFileName(myFileName);
+			}
+		}
 		model.addAttribute("info", info);
 		return "/signInfo/signInfoDetails";
 	}
