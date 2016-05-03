@@ -186,13 +186,15 @@
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="signInfoResultMap">
   	select si.id,si.state,si.signDate,si.ip,si.signUserName,u.name unit_name,
-  	doc.CREATE_DATETIME,
-  	doc.DOCUMENT_TITLE,doc.doc_num,doc.LEVEL,
-  	doc.PUBLISHUSERNAME,
+  	d.CREATE_DATETIME,
+  	d.DOCUMENT_TITLE,
+  	d.doc_num,
+  	d.LEVEL,
+  	d.PUBLISHUSERNAME,
   	publishU.name publishUnit_name
   	from 
   	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
-  	left join (document doc left join unit publishU on doc.PUBLISH_UNIT_ID = publishU.id ) on si.DOCUMENT_ID = doc.id
+  	left join (document d left join unit publishU on d.PUBLISH_UNIT_ID = publishU.id ) on si.DOCUMENT_ID = d.id
   	<where>
   		<if test="paramEntity.document!=null">
   			<if test="paramEntity.document.id!=null">
@@ -211,6 +213,15 @@
 			and si.state = #{paramEntity.state}
 		</if>
   	</where>
+  	<choose>
+		<when test="sort=='document.createDatetime'">ORDER BY d.create_Datetime ${order}</when>
+		<when test="sort=='document.docNum'">ORDER BY d.doc_Num ${order}</when>
+		<when test="sort=='document.level'">ORDER BY d.level ${order}</when>
+		<when test="sort=='document.documentTitle'">ORDER BY d.document_Title ${order}</when>
+		<when test="sort=='document.publishUnit.name'">ORDER BY publishU.name ${order}</when>
+		<when test="sort=='document.publishUserName'">ORDER BY d.publishUserName ${order}</when>
+		<otherwise></otherwise>
+	</choose>
   	limit #{start},#{rows}
   </select>
   
@@ -219,7 +230,7 @@
   	select count(si.id) 
   	from 
   	signInfo si left join unit u on si.SIGN_UNIT_ID = u.id
-  	left join (document doc left join unit publishU on doc.PUBLISH_UNIT_ID = publishU.id ) on si.DOCUMENT_ID = doc.id
+  	left join (document d left join unit publishU on d.PUBLISH_UNIT_ID = publishU.id ) on si.DOCUMENT_ID = d.id
   	<where>
   		<if test="paramEntity.document!=null">
   			<if test="paramEntity.document.id!=null">
@@ -237,6 +248,7 @@
 			<!-- 查询指定签收状态 -->
 			and si.state = #{paramEntity.state}
 		</if>
+		
   	</where>
   </select>
 </mapper>

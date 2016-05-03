@@ -134,26 +134,10 @@ $(function(){
 	    	}
 	    	$('#document_saveUI_unitCombotree').combotree('setText',text);//设置combotree文本框内容
 	    	
-//	    	var nodes = $('#document_saveUI_unitCombotree').combotree('tree').tree('getChecked');//勾选的节点数
-//	    	var num=0;//收文的单位数
-//	    	var text = '';
-//	    	
-//	    	for(var i =0;i<nodes.length;i++){
-//	    		var isLeaf = $('#document_saveUI_unitCombotree').combotree('tree').tree('isLeaf',nodes[i].target);
-//				if(isLeaf){
-//					num++;
-//					if(i!=nodes.length-1){
-//						text+=nodes[i].text+",";
-//					}else{
-//						text+=nodes[i].text;
-//					}
-//					
-//				}
-//	    	}
-//	    	if(num!=0){
-//	    		text="共"+num+"个单位:"+text;
-//	    	}
-//	    	$('#document_saveUI_unitCombotree').combotree('setText',text);
+	    },
+	    onLoadSuccess:function(node, data){
+	    	console.info(node);
+	    	console.info(data);
 	    }
 	});
 	

@@ -182,13 +182,19 @@
   		<if test="paramEntity.publishUnit!=null">
   			and d.PUBLISH_UNIT_ID = #{paramEntity.publishUnit.id}
   		</if>
+  		<if test="createDatetime_start!=null">
+  			and d.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}
+  		</if>
+  		<if test="createDatetime_end!=null">
+  			and d.create_Datetime <![CDATA[ < ]]> #{createDatetime_end}
+  		</if>
   		
   	</where>
 	<choose>
-		<when test="sort=='createDatetime'">ORDER BY create_Datetime ${order}</when>
-		<when test="sort=='docNum'">ORDER BY doc_Num ${order}</when>
-		<when test="sort=='documentTitle'">ORDER BY document_Title ${order}</when>
-		<when test="sort=='publishUnit'">ORDER BY PUBLISH_UNIT_ID ${order}</when>
+		<when test="sort=='createDatetime'">ORDER BY d.create_Datetime ${order}</when>
+		<when test="sort=='docNum'">ORDER BY d.doc_Num ${order}</when>
+		<when test="sort=='documentTitle'">ORDER BY d.document_Title ${order}</when>
+		<when test="sort=='publishUnit'">ORDER BY d.PUBLISH_UNIT_ID ${order}</when>
 		<otherwise>ORDER BY ${sort} ${order}</otherwise>
 	</choose>
   	limit #{start},#{rows}
@@ -204,9 +210,17 @@
   			and d.document_Title like #{paramEntity.documentTitle}
   		</if>
   		<if test="paramEntity.publishUnit!=null">
-  			and d.PUBLISH_UNIT_ID = #{paramEntity.publishUnit.id}
+  			<if test="paramEntity.publishUnit.id!=null">
+  				and d.PUBLISH_UNIT_ID = #{paramEntity.publishUnit.id}
+  			</if>
+  			
   		</if>
-  		
+  		<if test="createDatetime_start!=null">
+  			and d.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}
+  		</if>
+  		<if test="createDatetime_end!=null">
+  			and d.create_Datetime <![CDATA[ < ]]> #{createDatetime_end}
+  		</if>
   	</where>
   </select>
 </mapper>

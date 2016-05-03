@@ -24,7 +24,7 @@ $(function(){
 		singleSelect : true,//如果为true，则只允许选择一行
 		border:false,//是否显示面板边框
 		pageSize : 20,//每页显示记录数
-		sortName : 'document.createdatetime',
+		sortName : 'document.createDatetime',
 		sortOrder : 'desc',
 		pageList : [10, 20, 30, 40, 50, 100, 500],//在设置分页属性的时候 初始化页面大小选择列表
 		rowStyler:function(index,row){

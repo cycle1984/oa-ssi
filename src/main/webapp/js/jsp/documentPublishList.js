@@ -76,8 +76,7 @@ $(function(){
 		}, {
 			field : 'signInfoString',
 			title : '签收情况',
-			width : 100,
-			sortable : true
+			width : 100
 		}]],
 		onClickRow:function(index, row){
 			viewSignInfos(row.id,index);
@@ -94,7 +93,7 @@ $(function(){
 			title:'选择单位查询',
 			width : 350,
 			top:'10%',
-			href:'${pageContext.request.contextPath}/unit_searchByUnit.action',
+			href:contextPath+'/unit/goURL/unit/searchByUnit.do',
 			buttons : [ {
 				id:'document_publishList_searchForm_OKbtn',
 				text : '确定',

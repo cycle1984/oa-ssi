@@ -293,7 +293,7 @@
   			and user.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}
   		</if>
   		<if test="createDatetime_end!=null">
-  			and user.create_Datetime <![CDATA[ <= ]]> #{createDatetime_end}
+  			and user.create_Datetime <![CDATA[ < ]]> #{createDatetime_end}
   		</if>
   	</where>
   </select>

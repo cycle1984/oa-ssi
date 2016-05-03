@@ -2,6 +2,7 @@ package cycle.oa.po;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,7 @@ public class Page<T> implements Serializable {
 	
 	//用于工具栏查询的起始和结束时间的参数传递
 	private Date createDatetime_start;
-	private Date createDatetime_end = new Date();
+	private Date createDatetime_end =  new Date();
 	
 	
 	public Integer getDocId() {
@@ -108,7 +109,11 @@ public class Page<T> implements Serializable {
 		return createDatetime_end;
 	}
 	public void setCreateDatetime_end(Date createDatetime_end) {
-		this.createDatetime_end = createDatetime_end;
+		//因为传入的日期是当天的00:00:00.0，所以终止日期应该+1天
+		Calendar cal=Calendar.getInstance();
+		cal.setTime(createDatetime_end);
+		cal.add(Calendar.DATE, 1);
+		this.createDatetime_end = cal.getTime();
 	}
 	@Override
 	public String toString() {

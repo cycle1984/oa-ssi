@@ -22,7 +22,7 @@
 	
 	<script type="text/javascript">
 			$('#document_searchByUnit_tree').tree({
-				url : '${pageContext.request.contextPath}/unit_getUnitTree2.action',
+				url : '${pageContext.request.contextPath}/unit/findMyGroupAndUnitTree.do',
 				parentField : 'pid',
 				onClick:function(node){//因为onCheck和onClick捆绑在一起，所以2个需要一样的设置
 					
@@ -45,22 +45,6 @@
 				        node.state = node.state === 'closed' ? 'open' : 'closed';
 					}
 			    }
-			});
-			$(function(){
-				
-				$("#unit_searchByUnit_table").datalist({
-					url: '${pageContext.request.contextPath}/unit_listByInitial.action',
-					border:false,
-					columns:[[{
-						field : 'name'
-					}]],
-					onSelect:function(index, row){
-						$('#unit_searchByUnit_unit').textbox('setText',row.name).textbox('setValue',row.name);
-					},
-					onLoadSuccess:function(){
-						$('#unit_searchByUnit_unit').textbox('textbox').focus();
-					}
-				});
 			});
 	</script>
 	
