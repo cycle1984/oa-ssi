@@ -55,10 +55,17 @@ public class DocumentController extends BaseController {
 		Subject subject = SecurityUtils.getSubject();
 		//取登录用户身份信息
 		User user = (User) subject.getPrincipal();
+		//标题模糊查询
 		String documentTitle = document.getDocumentTitle();
 		if(documentTitle!=null){
 			document.setDocumentTitle("%"+documentTitle+"%");
 		}
+		//发文单位模糊查询
+		if(document.getPublishUnit()!=null&&document.getPublishUnit().getName()!=null){
+			String publisUnitName = document.getPublishUnit().getName();
+			document.getPublishUnit().setName("%"+publisUnitName+"%");
+		}
+		
 		if(!user.isAdmin()){//如果不是管理员
 			if(user.getUnit()!=null){
 				//设置查询条件，只查询属于本部门发布的公文

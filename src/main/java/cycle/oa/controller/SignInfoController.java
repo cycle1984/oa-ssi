@@ -1,5 +1,6 @@
 package cycle.oa.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -8,8 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,6 +31,13 @@ import cycle.oa.utils.IpUtil;
 public class SignInfoController extends BaseController{
 	
 	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    dateFormat.setLenient(false);
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));//true:允许输入空值，false:不能为空值
+	}
+	
 	/**
 	 * 收文列表，根据传过来的state参数，查询待办(false)和已办(true)公文列表
 	 * @param state
@@ -41,6 +52,18 @@ public class SignInfoController extends BaseController{
 		Unit unit =userModel.getUnit(); 
 		if(unit!=null){//如果单位不为空，查询所属签收单位的签收表
 			signInfo.setSignUnit(unit);
+		}
+		if(signInfo.getDocument()!=null){
+			//根据公文标题查询
+			if(signInfo.getDocument().getDocumentTitle()!=null){
+				signInfo.getDocument().setDocumentTitle("%"+signInfo.getDocument().getDocumentTitle()+"%");
+			}
+			//根据来文单位查询
+			if(signInfo.getDocument().getPublishUnit()!=null){
+				if(signInfo.getDocument().getPublishUnit().getName()!=null){
+					signInfo.getDocument().getPublishUnit().setName("%"+signInfo.getDocument().getPublishUnit().getName()+"%");
+				}
+			}
 		}
 		page.setParamEntity(signInfo);
 		Page<SignInfo> p = signInfoService.selectPageDyc(page);

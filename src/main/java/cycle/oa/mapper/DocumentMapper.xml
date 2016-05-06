@@ -180,7 +180,12 @@
   			and d.document_Title like #{paramEntity.documentTitle}
   		</if>
   		<if test="paramEntity.publishUnit!=null">
-  			and d.PUBLISH_UNIT_ID = #{paramEntity.publishUnit.id}
+  			<if test="paramEntity.publishUnit.id!=null">
+  				and d.PUBLISH_UNIT_ID = #{paramEntity.publishUnit.id}
+  			</if>
+  			<if test="paramEntity.publishUnit.name!=null">
+  				and u.name like #{paramEntity.publishUnit.name}
+  			</if>
   		</if>
   		<if test="createDatetime_start!=null">
   			and d.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}

@@ -187,7 +187,7 @@ $(function(){
 			title:'选择单位查询',
 			width : 350,
 			top:'10%',
-			href:'${pageContext.request.contextPath}/unit_searchByUnit.action',
+			href:contextPath+'/unit/goURL/unit/searchByUnit.do',
 			buttons : [ {
 				id:'signInfo_yDocumentAcceptList_searchForm_OKbtn',
 				text : '确定',

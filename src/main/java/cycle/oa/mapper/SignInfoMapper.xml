@@ -201,6 +201,14 @@
   				<!-- 只查询属于指定公文id的签收表 -->
   				and si.DOCUMENT_ID = #{paramEntity.document.id}
   			</if>
+  			<if test="paramEntity.document.documentTitle!=null">
+  				and d.DOCUMENT_TITLE like #{paramEntity.document.documentTitle}
+  			</if>
+  			<if test="paramEntity.document.publishUnit!=null">
+  				<if test="paramEntity.document.publishUnit.name!=null">
+  					and publishU.name like #{paramEntity.document.publishUnit.name}
+  				</if>
+  			</if>
   		</if>
   		<if test="paramEntity.signUnit!=null">
 			<if test="paramEntity.signUnit.id!=null">
@@ -212,6 +220,12 @@
 			<!-- 查询指定签收状态 -->
 			and si.state = #{paramEntity.state}
 		</if>
+		<if test="createDatetime_start!=null">
+  			and d.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}
+  		</if>
+  		<if test="createDatetime_end!=null">
+  			and d.create_Datetime <![CDATA[ < ]]> #{createDatetime_end}
+  		</if>
   	</where>
   	<choose>
 		<when test="sort=='document.createDatetime'">ORDER BY d.create_Datetime ${order}</when>
