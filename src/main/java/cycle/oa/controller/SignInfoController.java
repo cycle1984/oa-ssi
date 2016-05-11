@@ -84,7 +84,12 @@ public class SignInfoController extends BaseController{
 		
 		//根据公文id获得所属的附件
 		List<MyFile> myFiles = myFileService.selectByDocId(docId);
-		
+		for (MyFile myFile : myFiles) {
+			String fileName = myFile.getFileName();
+			int i =fileName.indexOf("-");
+			String fileFileName = fileName.substring(i+1, fileName.length());
+			myFile.setFileName(fileFileName);
+		}
 		document.setMyFiles(myFiles);
 		
 		model.addAttribute("document", document);

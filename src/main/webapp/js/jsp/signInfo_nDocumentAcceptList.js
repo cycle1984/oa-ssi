@@ -79,7 +79,7 @@ var signAll = function(){
 		},{
 			text:'关闭',
 			handler:function(){
-				$('#signInfo_documentAcceptList_acceptDialog').hide().dialog('close');
+				$('#signInfo_nDocumentAcceptList_acceptDialog').hide().dialog('close');
 			}
 		}],
 		onOpen : function() {
@@ -336,7 +336,7 @@ $(function(){
 			title:'选择单位查询',
 			width : 350,
 			top:'10%',
-			href:'${pageContext.request.contextPath}/unit_searchByUnit.action',
+			href:contextPath+'/unit/goURL/unit/searchByUnit.do',
 			buttons : [ {
 				id:'signInfo_nDocumentAcceptList_searchForm_OKbtn',
 				text : '确定',
