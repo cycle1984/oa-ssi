@@ -23,7 +23,7 @@
 									<td id="document_publishList_searchForm_unit_td"><input id="document_publishList_searchForm_unit" name="publishUnit.name" class="easyui-textbox" data-options="prompt:'支持模糊查询'" style="width:150px" ></input></td>
 								</c:if>
 								<td>发布时间</td>
-								<td><input type="text" name="createDatetime_start" class="easyui-datebox" data-options="showSeconds:false,editable:false" style="width: 135px;"/>-<input id="document_publishList_QUERY_tcreatedatetime_D_LE" name="createtime_end" type="text" class="easyui-datebox"  data-options="showSeconds:false,editable:false" style="width: 135px;"/></td>
+								<td><input type="text" name="createDatetime_start" class="easyui-datebox" data-options="showSeconds:false,editable:false" style="width: 135px;"/>-<input id="document_publishList_QUERY_tcreatedatetime_D_LE" name="createDatetime_end" type="text" class="easyui-datebox"  data-options="showSeconds:false,editable:false" style="width: 135px;"/></td>
 								<td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom',plain:true" onclick="filtersubmit()">过滤</a><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-icon-zoom_out',plain:true" onclick="$('#document_publishList_searchForm input').val('');$('#document_publishList_grid').datagrid('load',{});">重置过滤</a></td>
 							</tr>
 						</table>

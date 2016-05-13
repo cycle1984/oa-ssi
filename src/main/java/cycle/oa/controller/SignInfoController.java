@@ -199,7 +199,9 @@ public class SignInfoController extends BaseController{
 				entity.setState(false);
 				entity.setSignUnit(user.getUnit());
 				List<SignInfo> signInfos = signInfoService.selectListByEntity(entity);
-				
+				if(signInfos.isEmpty()){
+					json.setMsg("目前没有需要签收的公文！！！");
+				}
 				for (SignInfo signInfo : signInfos) {
 					//设置为已签收
 					signInfo.setState(true);

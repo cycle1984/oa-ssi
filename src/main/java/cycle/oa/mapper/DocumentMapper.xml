@@ -176,24 +176,35 @@
   	from 
   	document d left join unit u on d.PUBLISH_UNIT_ID = u.id
   	<where>
+  		<!-- 查询一年内的公文 -->
+  		<if test="history!=null and history==false">
+  			and d.create_Datetime <![CDATA[ >= ]]>#{oneYearAgo}
+  		</if>
+  		<!-- 查询一年前的公文 -->
+  		<if test="history!=null and history==true">
+  			and d.create_Datetime <![CDATA[ < ]]>#{oneYearAgo}
+  		</if>
+  		<!-- 公文标题模糊查询 -->
   		<if test="paramEntity.documentTitle!=null">
   			and d.document_Title like #{paramEntity.documentTitle}
   		</if>
   		<if test="paramEntity.publishUnit!=null">
+  			<!-- 发文单位id查询 -->
   			<if test="paramEntity.publishUnit.id!=null">
   				and d.PUBLISH_UNIT_ID = #{paramEntity.publishUnit.id}
   			</if>
+  			<!-- 发文单位名称模糊查询 -->
   			<if test="paramEntity.publishUnit.name!=null">
   				and u.name like #{paramEntity.publishUnit.name}
   			</if>
   		</if>
+  		<!-- 发文时间段查询 -->
   		<if test="createDatetime_start!=null">
   			and d.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}
   		</if>
   		<if test="createDatetime_end!=null">
   			and d.create_Datetime <![CDATA[ < ]]> #{createDatetime_end}
   		</if>
-  		
   	</where>
 	<choose>
 		<when test="sort=='createDatetime'">ORDER BY d.create_Datetime ${order}</when>
@@ -211,15 +222,29 @@
   	from 
   	document d left join unit u on d.PUBLISH_UNIT_ID = u.id
   	<where>
+  		<!-- 查询一年内的公文 -->
+  		<if test="history!=null and history==false">
+  			and d.create_Datetime <![CDATA[ >= ]]>#{oneYearAgo}
+  		</if>
+  		<!-- 查询一年前的公文 -->
+  		<if test="history!=null and history==true">
+  			and d.create_Datetime <![CDATA[ < ]]>#{oneYearAgo}
+  		</if>
+  		<!-- 公文标题模糊查询 -->
   		<if test="paramEntity.documentTitle!=null">
   			and d.document_Title like #{paramEntity.documentTitle}
   		</if>
   		<if test="paramEntity.publishUnit!=null">
+  			<!-- 发文单位id查询 -->
   			<if test="paramEntity.publishUnit.id!=null">
   				and d.PUBLISH_UNIT_ID = #{paramEntity.publishUnit.id}
   			</if>
-  			
+  			<!-- 发文单位名称模糊查询 -->
+  			<if test="paramEntity.publishUnit.name!=null">
+  				and u.name like #{paramEntity.publishUnit.name}
+  			</if>
   		</if>
+  		<!-- 发文时间段查询 -->
   		<if test="createDatetime_start!=null">
   			and d.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}
   		</if>

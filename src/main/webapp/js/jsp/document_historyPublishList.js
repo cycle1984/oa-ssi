@@ -4,7 +4,10 @@ $(function(){
 	
 	publishGrid.datagrid({
 		idField:'id',//指定标识字段
-		url:'${pageContext.request.contextPath}/document_historyPublishGrid.action',//URL从远程站点请求数据
+		url:contextPath+'/document/publishGrid.do',//URL从远程站点请求数据
+		queryParams:{//自定义的参数,在请求远程数据的时候发送额外的参数。 
+			history:true//查询的是否一年前历史公文
+		},
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		autoRowHeight:true,//定义设置行的高度，根据该行的内容。设置为false可以提高负载性能。
@@ -21,29 +24,36 @@ $(function(){
 				return 'color:red;';
 			}
 		},
-		sortName : 'createdatetime',
+		sortName : 'createDatetime',
 		sortOrder : 'desc',
 		columns:[[{
 			field : 'id',
 			title : '主键',
 			checkbox : true
 		},{
-			field : 'createdatetime',
+			field : 'createDatetime',
 			title : '发布时间',
 			width : 60,
-			align:'center',
-			sortable : true
+			halign:'center',//标题居中对齐
+			sortable : true,
+			formatter: function(value,row,index){
+				if (value){
+					return getFormatDate(new Date(value));
+				} else {
+					return value;
+				}
+			}
 		},{
 			field : 'docNum',
 			title : '发文字号',
 			width : 80,
-			align:'center',
+			halign:'center',
 			sortable : true
 		},{
 			field : 'level',
 			title : '等级',
 			width : 20,
-			align:'center',
+			halign:'center',
 			sortable : true
 		}, {
 			field : 'documentTitle',
@@ -64,11 +74,6 @@ $(function(){
 			title : '发布人',
 			width : 50,
 			sortable : true
-		}, {
-			field : 'signInfoString',
-			title : '签收情况',
-			width : 100,
-			sortable : true
 		}]],
 		onClickRow:function(index, row){
 			viewSignInfos(row.id,index);
@@ -83,7 +88,7 @@ $(function(){
 			title:'选择单位查询',
 			width : 640,
 			top:'10%',
-			href:'${pageContext.request.contextPath}/unit_searchByUnit.action',
+			href:contextPath+'/unit/goURL/unit/searchByUnit.do',
 			buttons : [ {
 				id:'document_historyPublishList_OKbtn',
 				text : '确定',
@@ -103,7 +108,7 @@ $(function(){
 var viewSignInfos = function(docId,index){
 	var dialog = sy.modalDialog({
 		title:'文件签收情况表',
-		href:'signInfo_toViewInfoJsp.action?docId='+docId,
+		href:contextPath+'/signInfo/signInfoList.do?docId='+docId,
 		width:700,
 		height:'70%',
 		border:true,

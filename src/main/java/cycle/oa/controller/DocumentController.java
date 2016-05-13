@@ -112,6 +112,7 @@ public class DocumentController extends BaseController {
 				signInfo.setDocument(document);
 				//设置收文的单位
 				signInfo.setSignUnit(unitService.selectById(id));
+				signInfo.setState(false);
 				
 				if(unit!=null){
 					if(id==unit.getId()){

@@ -34,7 +34,31 @@ public class Page<T> implements Serializable {
 	private Date createDatetime_start;
 	private Date createDatetime_end =  new Date();
 	
+	//当期日期的一年前的时间点，一年前的公文归到历史公文
+	private Date oneYearAgo;
+	//用于判断查询条件，true查询1年前的公文，false查询1年内的公文
+	private Boolean history;
 	
+	//构造函数，初始化
+	public Page() {
+		// TODO Auto-generated constructor stub
+		Calendar calendar = Calendar.getInstance();
+		//设置当期日期往前一年，时分秒为0
+		calendar.add(Calendar.YEAR, -1);
+		calendar.set(Calendar.HOUR_OF_DAY,0);
+		calendar.set(Calendar.MINUTE,0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		this.oneYearAgo = calendar.getTime();
+	}
+	
+	public Date getOneYearAgo() {
+		
+		return oneYearAgo;
+	}
+	public void setOneYearAgo(Date oneYearAgo) {
+		this.oneYearAgo = oneYearAgo;
+	}
 	public Integer getDocId() {
 		return docId;
 	}
@@ -114,6 +138,13 @@ public class Page<T> implements Serializable {
 		cal.setTime(createDatetime_end);
 		cal.add(Calendar.DATE, 1);
 		this.createDatetime_end = cal.getTime();
+	}
+	
+	public Boolean getHistory() {
+		return history;
+	}
+	public void setHistory(Boolean history) {
+		this.history = history;
 	}
 	@Override
 	public String toString() {
