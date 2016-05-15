@@ -59,9 +59,7 @@ public class HomeControl {
 			unit = unitService.selectById(userModel.getUnit().getId());
 		}
 		userModel.setUnit(unit);
-		System.out.println(userModel);
 		model.addAttribute("userModel", userModel);
-		System.out.println("main");		
 		return "/home/main";
 	}
 	

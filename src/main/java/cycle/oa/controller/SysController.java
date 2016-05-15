@@ -42,18 +42,24 @@ public class SysController {
 			}
 		}
 		for (MyResource myResource : myResources) {
-			TreeNode node = new TreeNode();//树节点
-			BeanUtils.copyProperties(myResource, node);//将菜单项复制到树节点
-			node.setText(myResource.getName());//设置树节点的名称
-			Map<String,String> attributes = new HashMap<String,String>();
-			attributes.put("url", myResource.getUrl());//菜单项对应的URL
-			attributes.put("target", myResource.getTarget());
-			node.setAttributes(attributes);
-			MyResource cy = myResource.getParetResource();
-			if(cy!=null){//存在上级节点的情况
-				node.setPid(cy.getId());//设置上级节点ID
+			
+			//如果是超级管理员登录，则没有收文这个菜单
+			if("历史收文".equals(myResource.getName())&&user.isAdmin()){
+				
+			}else{
+				TreeNode node = new TreeNode();//树节点
+				BeanUtils.copyProperties(myResource, node);//将菜单项复制到树节点
+				node.setText(myResource.getName());//设置树节点的名称
+				Map<String,String> attributes = new HashMap<String,String>();
+				attributes.put("url", myResource.getUrl());//菜单项对应的URL
+				attributes.put("target", myResource.getTarget());
+				node.setAttributes(attributes);
+				MyResource cy = myResource.getParetResource();
+				if(cy!=null){//存在上级节点的情况
+					node.setPid(cy.getId());//设置上级节点ID
+				}
+				tree.add(node);
 			}
-			tree.add(node);
 		}
 		
 		return tree;

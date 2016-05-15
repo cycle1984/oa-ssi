@@ -18,6 +18,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +52,7 @@ public class DocumentController extends BaseController {
 	 */
 	@RequestMapping("/publishGrid.do")
 	@ResponseBody
-	public Object publishGrid(Page<Document> page,Document document){
+	public Object publishGrid(Page<Document> page,Document document,Model model){
 		Subject subject = SecurityUtils.getSubject();
 		//取登录用户身份信息
 		User user = (User) subject.getPrincipal();

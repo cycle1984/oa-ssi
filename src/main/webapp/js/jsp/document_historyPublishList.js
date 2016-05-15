@@ -4,10 +4,10 @@ $(function(){
 	
 	publishGrid.datagrid({
 		idField:'id',//指定标识字段
-		url:contextPath+'/document/publishGrid.do',//URL从远程站点请求数据
-		queryParams:{//自定义的参数,在请求远程数据的时候发送额外的参数。 
-			history:true//查询的是否一年前历史公文
-		},
+		url:contextPath+'/document/publishGrid.do?history=true',//URL从远程站点请求数据
+//		queryParams:{//自定义的参数,在请求远程数据的时候发送额外的参数。 
+//			history:true//查询的是否一年前历史公文
+//		},
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		autoRowHeight:true,//定义设置行的高度，根据该行的内容。设置为false可以提高负载性能。
@@ -94,7 +94,9 @@ $(function(){
 				text : '确定',
 				iconCls:'icon-ok',
 				handler : function() {
-					document_saveUI_submit(dialog);//在document/saveUI.jsp页面定义
+					$('#document_historyPublishList_searchForm_unit').textbox('setText',$('#unit_searchByUnit_unit').val());
+					$('#document_historyPublishList_searchForm_unit').textbox('setValue',$('#unit_searchByUnit_unit').val());
+					dialog.dialog('close');
 				}
 			} ]
 		});

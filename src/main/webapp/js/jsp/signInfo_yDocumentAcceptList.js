@@ -15,11 +15,11 @@ $(function(){
 	
 	$('#signInfo_yDocumentAcceptList_grid').datagrid({
 		idField:'id',//指定标识字段
-		url:contextPath+'/signInfo/receiveListGrid.do',//URL从远程站点请求数据
-		queryParams:{//自定义的参数,在请求远程数据的时候发送额外的参数, 
-			history:false,//查询的是否历史公文,
-			state:true//是否已签收
-		},
+		url:contextPath+'/signInfo/receiveListGrid.do?history=false&state=true',//URL从远程站点请求数据
+//		queryParams:{//自定义的参数,在请求远程数据的时候发送额外的参数, 
+//			history:false,//查询的是否历史公文,
+//			state:true//是否已签收
+//		},
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		striped : true,//是否显示斑马线

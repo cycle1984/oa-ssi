@@ -4,10 +4,10 @@ $(function(){
 	
 	publishGrid.datagrid({
 		idField:'id',//指定标识字段
-		url:contextPath+'/document/publishGrid.do',//URL从远程站点请求数据
-		queryParams:{//在请求远程数据的时候发送额外的参数。 
-			history:false//查询的是否历史公文,自定义的参数
-		},
+		url:contextPath+'/document/publishGrid.do?history=false',//URL从远程站点请求数据
+//		queryParams:{//在请求远程数据的时候发送额外的参数。 
+//			history:false//查询的是否历史公文,自定义的参数
+//		},
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		autoRowHeight:true,//定义设置行的高度，根据该行的内容。设置为false可以提高负载性能。

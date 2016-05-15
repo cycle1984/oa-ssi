@@ -15,10 +15,10 @@ $(function(){
 	
 	$('#signInfo_historyDocumentAcceptList_grid').datagrid({
 		idField:'id',//指定标识字段
-		url:contextPath+'/signInfo/receiveListGrid.do',//URL从远程站点请求数据
-		queryParams:{//自定义的参数,在请求远程数据的时候发送额外的参数, 
-			history:true//查询的是否历史公文,
-		},
+		url:contextPath+'/signInfo/receiveListGrid.do?history=true',//URL从远程站点请求数据
+//		queryParams:{//自定义的参数,在请求远程数据的时候发送额外的参数, 
+//			history:true//查询的是否历史公文,
+//		},
 		fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		striped : true,//是否显示斑马线
@@ -149,6 +149,25 @@ $(function(){
 		onLoadError:function(){
 			 
 		},
+	});
+	//按发文单位查询框点击事件
+	$('#signInfo_historyDocumentAcceptList_searchForm_unit_id').on('click', function(){
+		dialog = sy.modalDialog({
+			title:'选择单位查询',
+			width : 640,
+			top:'10%',
+			href:contextPath+'/unit/goURL/unit/searchByUnit.do',
+			buttons : [ {
+				id:'historyDocumentAcceptList_searchForm_OKbtn',
+				text : '确定',
+				iconCls:'icon-ok',
+				handler : function() {
+					$('#signInfo_historyDocumentAcceptList_searchForm_unit').textbox('setText',$('#unit_searchByUnit_unit').val());
+					$('#signInfo_historyDocumentAcceptList_searchForm_unit').textbox('setValue',$('#unit_searchByUnit_unit').val());
+					dialog.dialog('close');
+				}
+			} ]
+		});
 	});
 	
 });
