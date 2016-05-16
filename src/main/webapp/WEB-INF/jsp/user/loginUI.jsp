@@ -12,6 +12,12 @@
 </head>
 
 <body style="width:100%;height: 100%;margin:0px;padding: 0px;overflow: hidden;"><!-- style里的属性解决在火狐浏览器窗口显示不完整的问题 -->
+	<script type="text/javascript"> 
+		// 登录页面被嵌套时就刷新上级窗口
+		if (window.location.pathname.indexOf("home/index.do", 1)!=-1) {
+			window.parent.location.reload(true);
+		}
+	</script>  
 	<!-- 用户已登录时，跳转到主页面-->
 	<shiro:user>
 		<script type="text/javascript">
@@ -169,6 +175,7 @@
 	    	<a href="javascript:void(0)" id="loginBtn" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="submitForm()">登录</a>
 	    	<a href="javascript:void(0)" id="regBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="regForm()">注册</a>
 	    </div>
-	</div> 
+	</div>
+	
 </body>
 </html>
