@@ -140,6 +140,7 @@ public class UnitController extends BaseController{
 					//将单位全称设置到节点的title，用户鼠标悬停时的提示信息
 					Map<String,String> attributes = new HashMap<String,String>();
 					attributes.put("title", unit.getFullName());
+					nodeUnit.setAttributes(attributes);
 					
 					treeUnit.add(nodeUnit);//添加到三级节点树
 					
@@ -228,6 +229,7 @@ public class UnitController extends BaseController{
 					//将单位全称设置到节点的title，用户鼠标悬停时的提示信息
 					Map<String,String> attributes = new HashMap<String,String>();
 					attributes.put("title", unit.getFullName());
+					nodeUnit.setAttributes(attributes);
 					
 					treeUnit.add(nodeUnit);//添加到三级节点树
 					

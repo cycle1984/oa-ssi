@@ -24,13 +24,13 @@
 	
 	<div id="home_main_tabs" class="easyui-tabs" data-options="fit:true,plain:false">
 		<!-- 管理员默认显示 -->
-		<c:if test="${userModel.loginName=='admin'}">
+		<c:if test="${sessionScope.userSession.loginName=='admin'}">
 		 	<div title="发文管理">
 		    	<jsp:include page="../document/publishList.jsp"></jsp:include>
 			</div>
 		</c:if>
 		
-		<c:if test="${userModel.loginName!='admin'}">
+		<c:if test="${sessionScope.userSession.loginName!='admin'}">
 		 	<div title="待办公文列表">
 		        <jsp:include page="../signInfo/nDocumentAcceptList.jsp" ></jsp:include>
 		    </div>

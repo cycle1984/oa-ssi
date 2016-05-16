@@ -1,6 +1,7 @@
 package cycle.oa.controller;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -26,7 +27,7 @@ public class HomeControl {
 	private UnitService unitService;
 	
 	@RequestMapping("/index.do")
-	public String index(Model model){
+	public String index(Model model,HttpSession httpSession){
 		Subject subject = SecurityUtils.getSubject();
 		//取身份信息
 		User userModel = (User) subject.getPrincipal();
@@ -35,37 +36,34 @@ public class HomeControl {
 			unit = unitService.selectById(userModel.getUnit().getId());
 		}
 		userModel.setUnit(unit);
-		System.out.println(userModel);
-		model.addAttribute("userModel", userModel);
-		System.out.println("index");
+		httpSession.setAttribute("userSession", userModel);
+//		model.addAttribute("userModel", userModel);
 		return "/home/index";
 	}
 	
 	@RequestMapping("/west.do")
 	public String west(){
 		
-		System.out.println("west");		
 		return "/home/west";
 	}
 	
 	@RequestMapping("/main.do")
 	public String main(Model model){
 		//从shiro的session中取activeUser
-		Subject subject = SecurityUtils.getSubject();
-		//取身份信息
-		User userModel = (User) subject.getPrincipal();
-		Unit unit = new Unit();
-		if(userModel.getUnit()!=null){
-			unit = unitService.selectById(userModel.getUnit().getId());
-		}
-		userModel.setUnit(unit);
-		model.addAttribute("userModel", userModel);
+//		Subject subject = SecurityUtils.getSubject();
+//		//取身份信息
+//		User userModel = (User) subject.getPrincipal();
+//		Unit unit = new Unit();
+//		if(userModel.getUnit()!=null){
+//			unit = unitService.selectById(userModel.getUnit().getId());
+//		}
+//		userModel.setUnit(unit);
+//		model.addAttribute("userModel", userModel);
 		return "/home/main";
 	}
 	
 	@RequestMapping("/south.do")
 	public String south(){
-		System.out.println("south");		
 		return "/home/south";
 	}
 }

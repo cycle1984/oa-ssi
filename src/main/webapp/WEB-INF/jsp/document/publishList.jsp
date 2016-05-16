@@ -18,7 +18,7 @@
 							<tr>
 								<td>公文标题</td>
 								<td><input name="documentTitle" style="width: 120px; " class="easyui-textbox" data-options="prompt:'支持模糊查询'"/></td>
-								<c:if test="${userModel.loginName=='admin'}">
+								<c:if test="${sessionScope.userSession.loginName=='admin'}">
 									<td>发文单位</td>
 									<td id="document_publishList_searchForm_unit_td"><input id="document_publishList_searchForm_unit" name="publishUnit.name" class="easyui-textbox" data-options="prompt:'支持模糊查询'" style="width:150px" ></input></td>
 								</c:if>

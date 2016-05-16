@@ -136,12 +136,24 @@ $(function(){
 	    	
 	    },
 	    onLoadSuccess:function(node, data){
-	    	console.info(node);
-	    	console.info(data);
+	    	addTreeTitle(data);
 	    }
 	});
 	
 });
+//给菜单增加title属性，用于提示单位全称
+function addTreeTitle(row){
+    $.each(row,function(idx,val){
+    	//attributes不为空，则需要加title属性
+    	if(val.attributes!=null){
+    		var domId = val.domId;
+    		$("#"+domId).attr("title",val.attributes.title);
+    	}
+        if(val.children){
+            addTreeTitle(val.children);//如果还有子节点则继续遍历
+        }
+    });
+}
 
 
 

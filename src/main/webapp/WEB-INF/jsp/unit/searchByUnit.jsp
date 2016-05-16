@@ -12,7 +12,7 @@
 			<ul id="document_searchByUnit_tree">
 			</ul>
 		</div>
-		<div title="所有单位列表" >
+		<div title="热度排序" >
 			<table id="unit_searchByUnit_table"></table>
 		</div>
 		<!-- <div title="按热度排序"  style="padding:10px">
@@ -21,6 +21,7 @@
 	</div>
 	
 	<script type="text/javascript">
+		$(function(){
 			$('#document_searchByUnit_tree').tree({
 				url : '${pageContext.request.contextPath}/unit/findMyGroupAndUnitTree.do',
 				parentField : 'pid',
@@ -44,8 +45,25 @@
 						$(this).tree(node.state === 'closed' ? 'expand' : 'collapse', node.target);  
 				        node.state = node.state === 'closed' ? 'open' : 'closed';
 					}
+			    },
+			    onLoadSuccess:function(node, data){
+			    	addTreeTitle(data);
 			    }
 			});
+		});
+		//给菜单增加title属性，用于提示单位全称
+		function addTreeTitle(row){
+		    $.each(row,function(idx,val){
+		    	//attributes不为空，则需要加title属性
+		    	if(val.attributes!=null){
+		    		var domId = val.domId;
+		    		$("#"+domId).attr("title",val.attributes.title);
+		    	}
+		        if(val.children){
+		            addTreeTitle(val.children);//如果还有子节点则继续遍历
+		        }
+		    });
+		}
 	</script>
 	
 </body>
