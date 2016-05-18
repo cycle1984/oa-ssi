@@ -1,22 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cycle.oa.mapper.NewsMapper" >
-  <resultMap id="myGroupResultMap" type="cycle.oa.po.MyGroup" >
+  <resultMap id="newsResultMap" type="cycle.oa.po.News" >
   	<id column="id" property="id"/>
+  	<result column="title" property="title"/>
+  	<result column="content" property="content"/>
+  	<result column="create_Time" property="createTime"/>
+  	<result column="author" property="author"/>
+  	
+  	<association property="unit" javaType="cycle.oa.po.Unit">
+  		<id column="unit_id" property="id"/>
+  		<result column="unit_name" property="name"/>
+  	</association>
   </resultMap>
   
   <!-- sql片段对应字段名,id属性值任意 -->
   <sql id="key">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="name!=null">
-  			name,
+  		<if test="title!=null and title!=''">
+  			title,
   		</if>
-  		<if test="ownerUnit!=null">
-  			owner_unit,
+  		<if test="content!=null and content!=''">
+  			content,
   		</if>
-  		<if test="remark!=null">
-  			remark,
+  		<if test="createTime!=null">
+  			create_Time,
+  		</if>
+  		<if test="updateTime!=null">
+  			update_Time,
+  		</if>
+  		<if test="author!=null and author!=''">
+  			author,
+  		</if>
+  		<if test="unit!=null">
+  			<if test="unit.id!=null">
+  				unit_id,
+  			</if>
   		</if>
   	</trim>
   </sql>
@@ -24,29 +44,40 @@
   <sql id="value">
   	<!-- 去掉最后一个, -->
   	<trim suffixOverrides=",">
-  		<if test="name!=null">
-  			#{name},
+  		<if test="title!=null and title!=''">
+  			#{title},
   		</if>
-  		<if test="ownerUnit!=null">
-  			#{ownerUnit},
+  		<if test="content!=null and content!=''">
+  			#{content},
   		</if>
-  		<if test="remark!=null">
-  			#{remark},
+  		<if test="createTime!=null">
+  			#{createTime},
+  		</if>
+  		<if test="updateTime!=null">
+  			#{updateTime},
+  		</if>
+  		<if test="author!=null and author!=''">
+  			#{author},
+  		</if>
+  		<if test="unit!=null">
+  			<if test="unit.id!=null">
+  				#{unit.id},
+  			</if>
   		</if>
   	</trim>
   </sql>
   
-  <insert id="insert" parameterType="cycle.oa.po.MyGroup">
+  <insert id="insert" parameterType="cycle.oa.po.News">
   	<!-- 在使用MyBatis做持久层时，insert语句默认是不返回记录的主键值，而是返回插入的记录条数；如果业务层需要得到记录的主键时，可以通过配置的方式来完成这个功能 -->
   	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 		SELECT LAST_INSERT_ID() AS id
 	</selectKey>
-  	insert into myGroup(<include refid="key"/>) values(<include refid="value"/>)
+  	insert into news(<include refid="key"/>) values(<include refid="value"/>)
   </insert>
   
   <!-- 传进数组,批量删除 -->
   <delete id="deleteByArray">
-  	delete from myGroup where id in 
+  	delete from news where id in 
   	<!-- foreach用于迭代数组元素
 		 open表示开始符号
 		 close表示结束符合
@@ -60,7 +91,7 @@
   </delete>
   
   <delete id="deleteByList">
-  	delete from myGroup where id in 
+  	delete from news where id in 
   	<!-- foreach用于迭代数组元素
 		 open表示开始符号
 		 close表示结束符合
@@ -73,60 +104,72 @@
   	</foreach>
   </delete>
   
-  <update id="update" parameterType="cycle.oa.po.MyGroup">
-  	update myGroup 
+  <update id="update" parameterType="cycle.oa.po.News">
+  	update news 
   	<set>
-  		<if test="name!=null">
-  			name = #{name},
+  		<if test="title!=null and title!=''">
+  			title = #{title},
   		</if>
-  		<if test="ownerUnit!=null">
-  			owner_unit = #{ownerUnit},
+  		<if test="content!=null and content!=''">
+  			content = #{content},
   		</if>
-  		<if test="remark!=null">
-  			remark = #{remark},
+  		<if test="createTime!=null">
+  			create_Time = #{createTime},
+  		</if>
+  		<if test="updateTime!=null">
+  			update_Time = #{updateTime},
+  		</if>
+  		<if test="author!=null and author!=''">
+  			author = #{author},
+  		</if>
+  		<if test="unit!=null">
+  			<if test="unit.id!=null">
+  				unit_id = #{unit.id},
+  			</if>
   		</if>
   	</set>
   	where id = #{id}
   </update>
   
   <select id="selectCount" resultType="long">
-  	select count(id) from myGroup
+  	select count(id) from news
   </select>
   
-  <select id="selectAll" parameterType="map" resultMap="myGroupResultMap">
-  	select id,name,owner_unit,remark from myGroup
-  	<where>
-  		<!-- 模糊查询，name字段传进来之前请在前后加上% -->
-  		<if test="name!=null">
-  			and name like #{name}
-  		</if>
-  	</where> 
-  </select>
-  
-  <select id="selectById" parameterType="int" resultMap="myGroupResultMap">
-  	select id,name,owner_unit,remark from myGroup
+  <select id="selectById" parameterType="int" resultMap="newsResultMap">
+  	select id,title,content,create_Time,update_Time,author from news
   	where id = #{id}
   </select>
   
   <!-- 通过多条件分页查询，返回数据集 -->
-  <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="myGroupResultMap">
-  	select id,name,owner_unit,remark from myGroup
+  <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="newsResultMap">
+  	select id,title,content,create_Time,update_Time,author
+  	from news
   	<where>
-  		<if test="paramEntity.name!=null">
-  			and name like #{paramEntity.name}
+  		<if test="paramEntity.title!=null">
+  			and title like #{paramEntity.title}
   		</if>
   	</where>
   	<if test="sort!=null">
-  		ORDER BY ${sort} ${order}
+  		<choose>
+  			<when test="sort=='createTime'">
+  				ORDER BY create_Time ${order}
+  			</when>
+  			<otherwise>
+  				ORDER BY ${sort} ${order}
+  			</otherwise>
+  		</choose>
+  		
   	</if>
   	limit #{start},#{rows}
   </select>
   
    <!-- 通过多条件分页查询，返回总记录数 -->
   <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
-  	select count(id) from myGroup
+  	select count(id) from news
   	<where>
-  		<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>
+  		<if test="paramEntity.title!=null">
+  			and title like #{paramEntity.title}
+  		</if>
   	</where>
   </select>
 </mapper>

@@ -9,6 +9,7 @@ import cycle.oa.service.DocumentService;
 import cycle.oa.service.MyFileService;
 import cycle.oa.service.MyGroupService;
 import cycle.oa.service.MyResourceService;
+import cycle.oa.service.NewsService;
 import cycle.oa.service.RoleService;
 import cycle.oa.service.SignInfoService;
 import cycle.oa.service.UnitService;
@@ -41,6 +42,10 @@ public class BaseController {
 	
 	@Autowired
 	protected MyFileService myFileService;
+	
+	@Autowired
+	protected NewsService newsService;
+	
 	
 	//跳到指定页面
 	@RequestMapping("/goURL/{folder}/{file}")

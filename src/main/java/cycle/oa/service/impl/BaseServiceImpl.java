@@ -14,6 +14,7 @@ import cycle.oa.mapper.DocumentMapper;
 import cycle.oa.mapper.MyFileMapper;
 import cycle.oa.mapper.MyGroupMapper;
 import cycle.oa.mapper.MyResourceMapper;
+import cycle.oa.mapper.NewsMapper;
 import cycle.oa.mapper.RoleMapper;
 import cycle.oa.mapper.SignInfoMapper;
 import cycle.oa.mapper.UnitMapper;
@@ -48,6 +49,9 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	
 	@Autowired
 	protected MyFileMapper myFileMapper;
+	
+	@Autowired
+	protected NewsMapper newsMapper;
 	
 	@PostConstruct//在构造方法后，初化前执行
 	private void initBaseMapper() throws Exception{

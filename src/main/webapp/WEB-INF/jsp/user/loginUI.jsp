@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ include file="/WEB-INF/jsp/common/common.jspf"%>
-<%@ page import="cycle.oa.po.User"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +13,7 @@
 <body style="width:100%;height: 100%;margin:0px;padding: 0px;overflow: hidden;"><!-- style里的属性解决在火狐浏览器窗口显示不完整的问题 -->
 	<script type="text/javascript"> 
 		// 登录页面被嵌套时就刷新上级窗口
-		if (window.location.pathname.indexOf("home/index.do", 1)!=-1) {
+		if (window.location.pathname.indexOf("loginUI", 1)==-1) {
 			window.parent.location.reload(true);
 		}
 	</script>  
