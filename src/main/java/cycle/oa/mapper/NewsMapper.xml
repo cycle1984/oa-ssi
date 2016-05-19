@@ -148,6 +148,14 @@
   		<if test="paramEntity.title!=null">
   			and title like #{paramEntity.title}
   		</if>
+  		<if test="paramEntity.unit!=null">
+  			<if test="paramEntity.unit.id!=null">
+  				and unit_id = #{paramEntity.title}
+  			</if>
+  			<if test="paramEntity.unit.name!=null and paramEntity.unit.name!=''">
+  				
+  			</if>
+  		</if>
   	</where>
   	<if test="sort!=null">
   		<choose>
@@ -169,6 +177,13 @@
   	<where>
   		<if test="paramEntity.title!=null">
   			and title like #{paramEntity.title}
+  		</if>
+  		<if test="paramEntity.unit!=null">
+  			<if test="paramEntity.unit.id!=null">
+  				and unit_id = #{paramEntity.unit.id}
+  			</if>
+  			<if test="paramEntity.unit.name!=null and paramEntity.unit.name!=''">
+  			</if>
   		</if>
   	</where>
   </select>
