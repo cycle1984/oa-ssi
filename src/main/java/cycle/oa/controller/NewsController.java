@@ -58,4 +58,9 @@ public class NewsController extends BaseController{
 		Page<News> p = newsService.selectPageDyc(page);
 		return p.getPageMap();
 	}
+	
+	public Object save(News news){
+		
+		return null;
+	}
 }
