@@ -22,20 +22,8 @@
 			<textarea id="news_saveUI_content" name="content"  rows="12" cols="80" style="width: 80%"></textarea>
 		</form>
 	<script type="text/javascript">
-// 		$(function(){
-// 			$('#news_saveUI_content').xheditor({
-// 				html5Upload:false,upMultiple:'1',
-// 				upLinkUrl:"upload.php",
-// 				upLinkExt:"zip,rar,txt",
-// 				upImgUrl:"news_uploadImg.action",
-// 				upImgExt:"jpg,jpeg,gif,png",
-// 				upFlashUrl:"upload.php",
-// 				upFlashExt:"swf",
-// 				upMediaUrl:"upload.php",
-// 				upMediaExt:"avi"});
-// 		})
 		var ck = CKEDITOR.replace('news_saveUI_content',{
-            filebrowserImageUploadUrl:"news_uploadImg.action"  //上传action 
+            filebrowserImageUploadUrl:"${pageContext.request.contextPath}/news/uploadImg.do"  //上传action 
 		});
 		
 		/**点击确定按钮方法定义 */
