@@ -21,7 +21,14 @@ $(function(){
 		}, {
 			field : 'createTime',
 			title : '发布时间',
-			sortable : true
+			sortable : true,
+			formatter: function(value,row,index){
+				if (value){
+					return getFormatDate(new Date(value));
+				} else {
+					return value;
+				}
+			}
 		}, {
 			field : 'unit.name',
 			title : '发布单位',
@@ -33,7 +40,7 @@ $(function(){
 				}
 			}
 		}, {
-			field : 'userName',
+			field : 'author',
 			title : '作者',
 			sortable : true
 		}, {
@@ -54,7 +61,7 @@ $(function(){
 				maximizable:true,
 				top:'10%',//dialog离页面顶部的距离
 				//content:'<iframe name="news_saveUI_frame"  src="'+url+'" frameborder="0" style="height:100%;width:100%;" "></iframe>',
-				href:'news_newsDetails.action?id='+row.id//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+				href:contextPath+'/news/newsDetails.do?id='+row.id//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 			});
 		}
 	});
@@ -102,7 +109,7 @@ var editFunNews = function(){
 			height:500,
 			top:'10%',//dialog离页面顶部的距离
 //			content:'<iframe id="news_saveUI_edit_frame" name="news_saveUI_edit_frame"  src="'+url+"?id="+arr[0].id+'" frameborder="0" style="height:100%;width:100%;" "></iframe>',
-			href:'news_saveUI.action?id='+arr[0].id,
+			href:contextPath+'/news/goURL/news/saveUI.do?id='+arr[0].id,
 			buttons : [ {
 				id:'news_saveUI_edit_OKbtn',
 				text : '确定',
@@ -126,17 +133,16 @@ var editFunNews = function(){
  */
 var deleteFunNews = function(){
 	var rows = newsMyGrid.datagrid('getChecked');//在复选框被选中的时候返回所有行
-	var ids ="";
+	var ids =new Array();
 	if (rows.length > 0) {
 		$.messager.confirm('提示信息', '即将删除' + rows.length + '条数据,确认删除？',function(r) {
 			if(r){//点击确认进入
-				// 将id拼成字符串
+				//给数组ids赋值
 				for (var i = 0; i < rows.length; i++) {
-					ids += rows[i].id + ',';
+					ids[i]= rows[i].id;
 				}
-				ids = ids.substring(0, ids.length - 1);
 				$.ajax({
-					url : 'news_delete.action',
+					url : contextPath+'/news/delete.do',
 					data : {
 						ids : ids
 					},

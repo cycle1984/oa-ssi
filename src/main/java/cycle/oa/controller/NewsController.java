@@ -3,6 +3,7 @@ package cycle.oa.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,10 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import cycle.oa.easyui.Json;
 import cycle.oa.po.News;
 import cycle.oa.po.Page;
 import cycle.oa.po.Unit;
@@ -67,10 +71,81 @@ public class NewsController extends BaseController{
 		return p.getPageMap();
 	}
 	
-	@RequestMapping("/save.do")
-	public Object save(News news){
+	@RequestMapping("/newsDetails.do")
+	public String newsDetails(Integer id,Model model){
+		News news = newsService.selectById(id);
+		model.addAttribute("news", news);
+		return "/news/newsDetails";
+	}
+	
+	@RequestMapping("/edit.do")
+	@ResponseBody
+	public Object edit(News news){
+		Json json = new Json();
+		news.setUpdateTime(new Date());
+		try {
+			newsService.update(news);
+			json.setSuccess(true);
+			json.setMsg("修改成功！");
+		} catch (Exception e) {
+			json.setMsg("操作失败！！！");
+			e.printStackTrace();
+		}
 		
-		return null;
+		return json;
+	}
+	
+	/**
+	 * 删除
+	 * @param ids
+	 * @return
+	 */
+	@RequestMapping("/delete.do")
+	@ResponseBody
+	public Object delete(@RequestParam(value="ids[]") Integer[] ids){
+		Json json = new Json();
+		try {
+			newsService.deleteByArray(ids);
+			json.setSuccess(true);
+			json.setMsg("成功删除【"+ids.length+"】数据！！！");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			json.setMsg("删除失败！！！");
+			e.printStackTrace();
+		}
+		return json;
+	}
+	
+	/**
+	 * 新增
+	 * @param news
+	 * @return
+	 */
+	@RequestMapping("/save.do")
+	@ResponseBody
+	public Object save(News news){
+		Json json = new Json();
+		Subject subject = SecurityUtils.getSubject();
+		//取身份信息
+		User user = (User) subject.getPrincipal();
+		news.setCreateTime(new Date());
+		news.setAuthor(user.getName());
+		if(user.getUnit()!=null){
+			news.setUnit(user.getUnit());
+		}
+		
+		try {
+			newsService.save(news);
+			json.setObj(news);
+			json.setSuccess(true);
+			json.setMsg("信息发布成功！");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			json.setMsg("发布失败！！！");
+			e.printStackTrace();
+		}
+		
+		return json;
 	}
 	
 	@RequestMapping("/uploadImg.do")

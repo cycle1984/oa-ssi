@@ -136,24 +136,29 @@
   </select>
   
   <select id="selectById" parameterType="int" resultMap="newsResultMap">
-  	select id,title,content,create_Time,update_Time,author from news
-  	where id = #{id}
+  	select news.id,news.title,news.create_Time,news.update_Time,news.content,news.author,
+  		   unit.id unit_id,unit.name unit_name
+  	from news
+  	left join unit on news.unit_id = unit.id
+  	where news.id = #{id}
   </select>
   
   <!-- 通过多条件分页查询，返回数据集 -->
   <select id="selectPageListDyc" parameterType="cycle.oa.po.Page" resultMap="newsResultMap">
-  	select id,title,content,create_Time,update_Time,author
+  	select news.id,news.title,news.create_Time,news.author,news.content,
+  		   unit.id unit_id,unit.name unit_name
   	from news
+  	left join unit on news.unit_id = unit.id
   	<where>
   		<if test="paramEntity.title!=null">
   			and title like #{paramEntity.title}
   		</if>
   		<if test="paramEntity.unit!=null">
   			<if test="paramEntity.unit.id!=null">
-  				and unit_id = #{paramEntity.title}
+  				and news.unit_id = #{paramEntity.unit.id}
   			</if>
   			<if test="paramEntity.unit.name!=null and paramEntity.unit.name!=''">
-  				
+  				and unit.name = #{paramEntity.unit.name}
   			</if>
   		</if>
   	</where>
@@ -173,16 +178,19 @@
   
    <!-- 通过多条件分页查询，返回总记录数 -->
   <select id="selectPageCountDyc" parameterType="cycle.oa.po.Page" resultType="long">
-  	select count(id) from news
+  	select count(news.id) 
+  	from news
+  	left join unit on news.unit_id = unit.id
   	<where>
   		<if test="paramEntity.title!=null">
   			and title like #{paramEntity.title}
   		</if>
   		<if test="paramEntity.unit!=null">
   			<if test="paramEntity.unit.id!=null">
-  				and unit_id = #{paramEntity.unit.id}
+  				and news.unit_id = #{paramEntity.unit.id}
   			</if>
   			<if test="paramEntity.unit.name!=null and paramEntity.unit.name!=''">
+  				and unit.name = #{paramEntity.unit.name}
   			</if>
   		</if>
   	</where>

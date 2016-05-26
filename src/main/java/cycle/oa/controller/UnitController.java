@@ -47,7 +47,6 @@ public class UnitController extends BaseController{
 	@ResponseBody
 	public Object getUnitsByMyGroupId(Unit unit) throws Exception{
 		
-		System.out.println("myGroupID = "+unit.getMyGroup().getId());
 		List<Unit> units =  unitService.selectListByEntity(unit);
 		return units;
 	}
@@ -57,7 +56,6 @@ public class UnitController extends BaseController{
 	@RequestMapping("/save.do")
 	@ResponseBody
 	public Json save(Unit unit){
-		System.out.println(unit);
 		Json json = new Json();
 		unit.setCreateDatetime(new Date());
 		try {

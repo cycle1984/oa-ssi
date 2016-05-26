@@ -9,18 +9,15 @@
 </head>
 <body >
 
-<%-- 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/xheditor-1.2.2/xheditor-1.2.2.min.js"></script> --%>
-<%-- 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/xheditor-1.2.2/xheditor_lang/zh-cn.js"></script> --%>
-
-		<script type="text/javascript" src="${pageContext.request.contextPath}/js/ckeditor/ckeditor.js"></script>
-		<form id="news_saveUI_form" method="post">
-			<input type="hidden" id="news_saveUI_form_id" name="id">
-			<br>
-			标题：<input id="news_saveUI_title" name="title" type="text"  style="width: 90%;">
-			<br>
-			<br>
-			<textarea id="news_saveUI_content" name="content"  rows="12" cols="80" style="width: 80%"></textarea>
-		</form>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/ckeditor/ckeditor.js"></script>
+	<form id="news_saveUI_form" method="post">
+		<input type="hidden" id="news_saveUI_form_id" name="id">
+		<br>
+		标题：<input id="news_saveUI_title" name="title" type="text"  style="width: 90%;">
+		<br>
+		<br>
+		<textarea id="news_saveUI_content" name="content"  rows="12" cols="80" style="width: 80%"></textarea>
+	</form>
 	<script type="text/javascript">
 		var ck = CKEDITOR.replace('news_saveUI_content',{
             filebrowserImageUploadUrl:"${pageContext.request.contextPath}/news/uploadImg.do"  //上传action 
@@ -32,9 +29,9 @@
 				$('#news_SaveUI_OKbtn').linkbutton('disable');//确定按钮禁用
 				var url=null;
 				if($('#news_saveUI_form_id').val().length>0){
-					url='news_edit.action';//若隐藏id有值，则是修改，反之是新增
+					url='${pageContext.request.contextPath}/news/edit.do';//若隐藏id有值，则是修改，反之是新增
 				}else{
-					url='news_save.action';
+					url='${pageContext.request.contextPath}/news/save.do';
 				}
 				$('#news_saveUI_content').val(ck.getData());
 				$.post(url,$('#news_saveUI_form').serialize(),function(r){

@@ -21,7 +21,14 @@ $(function(){
 		}, {
 			field : 'createTime',
 			title : '发布时间',
-			sortable : true
+			sortable : true,
+			formatter: function(value,row,index){
+				if (value){
+					return getFormatDate(new Date(value));
+				} else {
+					return value;
+				}
+			}
 		}, {
 			field : 'unit.name',
 			title : '发布单位',
@@ -54,7 +61,7 @@ $(function(){
 				maximizable:true,
 				top:'10%',//dialog离页面顶部的距离
 				//content:'<iframe name="news_saveUI_frame"  src="'+url+'" frameborder="0" style="height:100%;width:100%;" "></iframe>',
-				href:'news_newsDetails.action?id='+row.id//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
+				href:contextPath+'/news/newsDetails.do?id='+row.id//从URL读取远程数据并且显示到面板。注意：内容将不会被载入，直到面板打开或扩大，在创建延迟加载面板时是非常有用的
 			});
 		}
 	});
