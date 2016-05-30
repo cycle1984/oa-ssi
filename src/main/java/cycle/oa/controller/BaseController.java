@@ -12,6 +12,7 @@ import cycle.oa.service.MyResourceService;
 import cycle.oa.service.NewsService;
 import cycle.oa.service.RoleService;
 import cycle.oa.service.SignInfoService;
+import cycle.oa.service.SysBaseService;
 import cycle.oa.service.UnitService;
 import cycle.oa.service.UserService;
 
@@ -45,6 +46,9 @@ public class BaseController {
 	
 	@Autowired
 	protected NewsService newsService;
+	
+	@Autowired
+	protected SysBaseService sysBaseService;
 	
 	
 	//跳到指定页面

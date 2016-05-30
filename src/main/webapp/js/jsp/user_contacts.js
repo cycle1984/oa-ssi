@@ -1,14 +1,14 @@
 var contactsGrip = $("#user_contacts_table");
 $(function(){
 	contactsGrip.datagrid({    
-	    url:'${pageContext.request.contextPath}/user_contactsGrid.action',
+	    url:contextPath+'/user/grid.do',
 	    fit:true,//当设置为true的时候面板大小将自适应父容器
 		fitColumns:true,//适应网格的宽度，防止水平滚动
 		striped : true,//是否显示斑马线
 		rownumbers : true,//显示一个行号列
 		pagination : true,//DataGrid控件底部显示分页工具栏
 		singleSelect : true,//如果为true，则只允许选择一行
-		sortName:'unit.id',
+		sortName:'unit.name',
 		//sortOrder:'asc',
 		border:false,//是否显示面板边框
 		pageSize : 20,//每页显示记录数
@@ -81,22 +81,31 @@ $(function(){
 						rowspan: rowspan
 					});
 					
-//					if(rowspan!=1&&(rowspan!=(rowspan-1))){
-//						contactsGrip.datagrid('mergeCells',{
-//							index: index,
-//							field: 'unit.id',
-//							rowspan: rowspan
-//						});
-//						rowspan=1;//合并后重置rowspan
-//						index = contactsGrip.datagrid("getRowIndex",rows[i])+1;//合并后更新index值
-//						console.info("aa");
-//					}else{
-//						
-//					}
 				}
 				
 				
 			}
 		}
+	});
+	
+	//按单位查询输入框点击事件
+	$('#user_contacts_toolbar_form_unit_td').on('click', function(){
+		$('#user_contacts_toolbar_form_unit').textbox('clear');
+		dialog = sy.modalDialog({
+			title:'选择单位查询',
+			width : 350,
+			top:'10%',
+			href:contextPath+'/unit/goURL/unit/searchByUnit.do',
+			buttons : [ {
+				id:'document_searchByUnit_OKbtn',
+				text : '确定',
+				iconCls:'icon-ok',
+				handler : function() {
+					$('#user_contacts_toolbar_form_unit').textbox('setText',$('#unit_searchByUnit_unit').val());
+					$('#user_contacts_toolbar_form_unit').textbox('setValue',$('#unit_searchByUnit_unit').val());
+					dialog.dialog('close');
+				}
+			} ]
+		});
 	});
 });

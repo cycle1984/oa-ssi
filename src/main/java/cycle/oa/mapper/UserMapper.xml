@@ -244,6 +244,9 @@
   			<if test="paramEntity.unit.id!=null">
   				and user.unit_id = #{paramEntity.unit.id}
   			</if>
+  			<if test="paramEntity.unit.name!=null">
+  				and unit.name like #{paramEntity.unit.name}
+  			</if>
   		</if>
   		<if test="createDatetime_start!=null">
   			and user.create_Datetime <![CDATA[ >= ]]>#{createDatetime_start}
@@ -287,6 +290,9 @@
   		<if test="paramEntity.unit!=null">
   			<if test="paramEntity.unit.id!=null">
   				and user.unit_id = #{paramEntity.unit.id}
+  			</if>
+  			<if test="paramEntity.unit.name!=null">
+  				and unit.name like #{paramEntity.unit.name}
   			</if>
   		</if>
   		<if test="createDatetime_start!=null">

@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +32,7 @@ import cycle.oa.po.Document;
 import cycle.oa.po.MyFile;
 import cycle.oa.po.Page;
 import cycle.oa.po.SignInfo;
+import cycle.oa.po.SysBase;
 import cycle.oa.po.Unit;
 import cycle.oa.po.User;
 
@@ -199,7 +201,20 @@ public class DocumentController extends BaseController {
 	public Object uploadFile(MultipartFile file){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		String fileName = sdf.format(new Date())+"-" +file.getOriginalFilename();//文件名前加上精确到毫秒的时间，防止文件名重复
-		String fileBasePath ="D:/upload/";//附件存储路径
+		
+		//获得附件存储路径
+		String fileBasePath = "";
+		Map<String, Object> map = null;
+		List<SysBase> sysBaseList = sysBaseService.selectAll(map);
+		if(sysBaseList.size()>0){
+			SysBase sysBase = sysBaseList.get(0);
+			if(sysBase.getPath()!=null&&sysBase.getPath()!=""){
+				fileBasePath = sysBase.getPath();
+			}
+		}else{
+			fileBasePath ="D:/upload/";//默认附件存储路径
+		}
+		
 		// 写到指定的路径中
 		String filePath = fileBasePath+fileName;
 		File f = new File(fileBasePath);
@@ -242,8 +257,21 @@ public class DocumentController extends BaseController {
 			e1.printStackTrace();
 		}
         try {
-			String basePath = "D:/upload/";
-			InputStream inputStream = new FileInputStream(new File(basePath
+			
+			//获得附件存储路径
+			String fileBasePath = "";
+			Map<String, Object> map = null;
+			List<SysBase> sysBaseList = sysBaseService.selectAll(map);
+			if(sysBaseList.size()>0){
+				SysBase sysBase = sysBaseList.get(0);
+				if(sysBase.getPath()!=null&&sysBase.getPath()!=""){
+					fileBasePath = sysBase.getPath();
+				}
+			}else{
+				fileBasePath ="D:/upload/";//默认附件存储路径
+			}
+			
+			InputStream inputStream = new FileInputStream(new File(fileBasePath
 			        + fileName));
 			OutputStream os = response.getOutputStream();
 			byte[] b = new byte[2048];

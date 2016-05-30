@@ -123,7 +123,7 @@ $(function(){
 			title:'选择单位查询',
 			width : 350,
 			top:'10%',
-			href:contextPath+'/unit/searchByUnit.do',
+			href:contextPath+'/unit/goURL/unit/searchByUnit.do',
 			buttons : [ {
 				id:'document_searchByUnit_OKbtn',
 				text : '确定',

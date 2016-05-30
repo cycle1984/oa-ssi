@@ -53,6 +53,9 @@ public class UserController extends BaseController{
 		if(user.getName()!=null){//如果name属性不为空， 模糊查询
 			user.setName("%"+user.getName()+"%");
 		}
+		if(user.getUnit()!=null&&user.getUnit().getName()!=null){//模糊查询单位
+			user.getUnit().setName("%"+user.getUnit().getName()+"%");
+		}
 		page.setParamEntity(user);//将后台数据传到page模型中
 		
 		Page<User> p = userService.selectPageDyc(page);
