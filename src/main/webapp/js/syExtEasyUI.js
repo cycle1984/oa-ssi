@@ -114,7 +114,8 @@ sy.onLoadError = {
 		console.info(XMLHttpRequest.getResponseHeader);
 		console.info(textStatus);
 		console.info(errorThrown);
-		location.replace(contextPath+'/index.jsp');//出错后跳转到index页面
+		console.info("onLoadError");
+		//location.replace(contextPath+'/index.jsp');//出错后跳转到index页面
 	}
 };
 $.extend($.fn.datagrid.defaults, sy.onLoadError);

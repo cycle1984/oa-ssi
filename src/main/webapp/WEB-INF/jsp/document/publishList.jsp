@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,8 +34,12 @@
 				<td>
 					<table>
 						<tr>
-							<td><a onclick="addFunDocumentPublish();" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" title="公文添加">发布公文</a></td>
-							<td><a onclick="delFunDocumentPublish();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" title="公文删除">删除</a></td>
+							<shiro:hasPermission name="document:save">
+								<td><a onclick="addFunDocumentPublish();" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" title="公文添加">发布公文</a></td>
+							</shiro:hasPermission>
+							<shiro:hasPermission name="document:delete">
+								<td><a onclick="delFunDocumentPublish();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" title="公文删除">删除</a></td>
+							</shiro:hasPermission>
 							<td><a onclick="$('#document_publishList_grid').datagrid('reload');" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">刷新</a></td>
 						</tr>
 					</table>

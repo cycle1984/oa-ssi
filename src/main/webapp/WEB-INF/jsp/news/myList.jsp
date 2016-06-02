@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="utf-8"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,9 +38,15 @@
 				<td>
 					<table>
 						<tr>
-							<td><a onclick="addFunNews();" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" title="信息发布">发布</a></td>
-							<td><a onclick="editFunNews();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'" title="信息修改">修改</a></td>
-							<td><a onclick="deleteFunNews();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" title="信息删除">删除</a></td>
+							<shiro:hasPermission name="news:save">
+								<td><a onclick="addFunNews();" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" title="信息发布">发布</a></td>
+							</shiro:hasPermission>
+							<shiro:hasPermission name="news:edit">
+								<td><a onclick="editFunNews();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'" title="信息修改">修改</a></td>
+							</shiro:hasPermission>
+							<shiro:hasPermission name="news:delete">
+								<td><a onclick="deleteFunNews();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" title="信息删除">删除</a></td>
+							</shiro:hasPermission>
 							<td><a onclick="newsMyGrid.datagrid('reload');" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">刷新</a></td>
 						</tr>
 					</table>

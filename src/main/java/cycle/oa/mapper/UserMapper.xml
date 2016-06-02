@@ -198,7 +198,7 @@
   
   <select id="selectById" parameterType="int" resultMap="userResultMap">
   	select 
-  		id,create_Datetime,update_Datetime,login_Name,pwd,name,phone,tel,gender,remark,unit_id 
+  		id,create_Datetime,update_Datetime,login_Name,pwd,name,phone,tel,gender,remark,unit_id,role_id 
   	from user
   	where id = #{id}
   </select>

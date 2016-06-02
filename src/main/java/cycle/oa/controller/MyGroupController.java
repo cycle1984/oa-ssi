@@ -2,6 +2,7 @@ package cycle.oa.controller;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ public class MyGroupController extends BaseController{
 	 */
 	@RequestMapping("/grid.do")
 	@ResponseBody
+	@RequiresPermissions("myGroup:grid")
 	public Object grid(Page<MyGroup> page,MyGroup group) throws Exception{
 		if(group.getName()!=null){//如果name属性不为空， 模糊查询
 			group.setName("%"+group.getName()+"%");
@@ -48,6 +50,7 @@ public class MyGroupController extends BaseController{
 	
 	@RequestMapping("/save.do")
 	@ResponseBody
+	@RequiresPermissions("myGroup:save")
 	public Json save(MyGroup group){
 		
 		Json json = new Json();
@@ -65,6 +68,7 @@ public class MyGroupController extends BaseController{
 	
 	@RequestMapping("/edit.do")
 	@ResponseBody
+	@RequiresPermissions("myGroup:edit")
 	public Json edit(MyGroup group){
 		
 		Json json = new Json();
@@ -81,6 +85,7 @@ public class MyGroupController extends BaseController{
 	
 	@RequestMapping("/delete.do")
 	@ResponseBody
+	@RequiresPermissions("myGroup:delete")
 	public Json delete(@RequestParam(value="ids[]") Integer[] ids){
 		Json json = new Json();
 		try {

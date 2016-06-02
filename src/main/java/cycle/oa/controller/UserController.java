@@ -48,7 +48,7 @@ public class UserController extends BaseController{
 	 */
 	@RequestMapping("/grid.do")
 	@ResponseBody
-	@RequiresPermissions("user:grid")
+//	@RequiresPermissions("user:grid")
 	public Object grid(Page<User> page,User user) throws Exception{
 		if(user.getName()!=null){//如果name属性不为空， 模糊查询
 			user.setName("%"+user.getName()+"%");

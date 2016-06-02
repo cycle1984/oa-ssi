@@ -226,8 +226,10 @@ $.ajaxSetup({
 //            }
 //        }
         if(textStatus=="parsererror"){
-            location.href = contextPath+'/index.jsp';            
+            //location.href = contextPath+'/index.jsp';            
         }
+        console.info(XHR);
+    	console.info(textStatus);
 //	    if(resText=='ajaxSessionTimeOut'){   
 //	    	$.messager.alert('操作提示','用户登录会话已过期，请重新登录！','warning',function(){
 //	    		window.location.href='index.jsp';
@@ -235,6 +237,11 @@ $.ajaxSetup({
 //	    }else if(resText=='ajaxNoLimit'){   
 //	    	$.messager.alert('操作提示','无相应操作权限，请联系系统管理员！','warning');
 //	    }
+    },
+    error: function (xhr, status, e){
+    	console.info(xhr);
+    	console.info(status);
+    	console.info(e);
     }
 });
 

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,9 +35,15 @@
 				<td>
 					<table>
 						<tr>
-							<td><a onclick="addFunMyGroup();" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" title="机构添加">添加</a></td>
-							<td><a onclick="editFunMyGroup();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'" title="机构修改">修改</a></td>
-							<td><a onclick="deleteFunMyGroup();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" title="机构删除">删除</a></td>
+							<shiro:hasPermission name="myGroup:save">
+								<td><a onclick="addFunMyGroup();" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" title="机构添加">添加</a></td>
+							</shiro:hasPermission>
+							<shiro:hasPermission name="myGroup:edit">
+								<td><a onclick="editFunMyGroup();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'" title="机构修改">修改</a></td>
+							</shiro:hasPermission>
+							<shiro:hasPermission name="myGroup:delete">
+								<td><a onclick="deleteFunMyGroup();" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" title="机构删除">删除</a></td>
+							</shiro:hasPermission>
 							<td><a onclick="myGroupGrid.datagrid('reload');" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">刷新</a></td>
 						</tr>
 					</table>

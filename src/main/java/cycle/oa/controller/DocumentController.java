@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -83,6 +84,7 @@ public class DocumentController extends BaseController {
 	
 	@RequestMapping("/save.do")
 	@ResponseBody
+	@RequiresPermissions("document:save")
 	public Object save(@RequestParam(value="ids[]") Integer[] ids,@RequestParam(value="fileNewNames[]") String[] fileNewNames,Document document){
 		Json json = new Json();
 		document.setCreateDatetime(new Date());//创建时间
@@ -141,6 +143,7 @@ public class DocumentController extends BaseController {
 	
 	@RequestMapping("/delete")
 	@ResponseBody
+	@RequiresPermissions("document:delete")
 	public Object delete(@RequestParam(value="ids[]",required=true) Integer[] ids){
 		Json json = new Json();
 		//附件存储的基路径
@@ -198,6 +201,7 @@ public class DocumentController extends BaseController {
 	 */
 	@RequestMapping(value="/uploadFile.do",produces="text/html;charset=UTF-8")
 	@ResponseBody
+	@RequiresPermissions("document:save")
 	public Object uploadFile(MultipartFile file){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		String fileName = sdf.format(new Date())+"-" +file.getOriginalFilename();//文件名前加上精确到毫秒的时间，防止文件名重复

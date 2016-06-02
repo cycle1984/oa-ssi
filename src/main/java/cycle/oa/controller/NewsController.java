@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -80,6 +81,7 @@ public class NewsController extends BaseController{
 	
 	@RequestMapping("/edit.do")
 	@ResponseBody
+	@RequiresPermissions("news:edit")
 	public Object edit(News news){
 		Json json = new Json();
 		news.setUpdateTime(new Date());
@@ -102,6 +104,7 @@ public class NewsController extends BaseController{
 	 */
 	@RequestMapping("/delete.do")
 	@ResponseBody
+	@RequiresPermissions("news:delete")
 	public Object delete(@RequestParam(value="ids[]") Integer[] ids){
 		Json json = new Json();
 		try {
@@ -123,6 +126,7 @@ public class NewsController extends BaseController{
 	 */
 	@RequestMapping("/save.do")
 	@ResponseBody
+	@RequiresPermissions("news:save")
 	public Object save(News news){
 		Json json = new Json();
 		Subject subject = SecurityUtils.getSubject();
@@ -149,6 +153,7 @@ public class NewsController extends BaseController{
 	}
 	
 	@RequestMapping("/uploadImg.do")
+	@RequiresPermissions("news:save")
 	public void uploadImg(MultipartFile upload,String CKEditorFuncNum,HttpServletRequest request,HttpServletResponse response) throws IOException{// CKEditor提交的很重要的一个参数  
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
